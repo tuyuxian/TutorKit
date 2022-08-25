@@ -30,7 +30,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <TopNavBar />
+        <TopNavBar isAuth={false} />
         <Box sx={styles.container}>
           <Card sx={styles.loginForm}>
             <CardContent>
@@ -73,7 +73,7 @@ const LoginPage: React.FC<ILoginPageProps> = () => {
             </CardContent>
           </Card>
         </Box>
-        <Footer />
+        <Footer position="fixed" />
       </div>
     </ThemeProvider>
   );

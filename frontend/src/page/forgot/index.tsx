@@ -24,7 +24,7 @@ const ForgotPage: React.FC<IForgotPageProps> = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <TopNavBar />
+        <TopNavBar isAuth={false} />
         <Box sx={styles.container}>
           <Card sx={styles.loginForm}>
             <CardContent>
@@ -58,7 +58,7 @@ const ForgotPage: React.FC<IForgotPageProps> = () => {
             </CardContent>
           </Card>
         </Box>
-        <Footer />
+        <Footer position="fixed" />
       </div>
     </ThemeProvider>
   );

@@ -10,11 +10,13 @@ const customStyle = {
   },
 };
 
-export interface IFooterProps {}
+export interface IFooterProps {
+  position: string;
+}
 
-const Footer: React.FC<IFooterProps> = () => {
+const Footer: React.FC<IFooterProps> = ({ position }) => {
   return (
-    <Box sx={styles.footer}>
+    <Box sx={{ ...styles.footer, position: `${position}` }}>
       <Box sx={styles.footerCaption}>
         <img src={logo} alt="logo" width={16} height={16} />
         <Typography variant="caption" color="initial" sx={customStyle.caption}>

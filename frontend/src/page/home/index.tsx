@@ -9,9 +9,9 @@ export interface ILoginPageProps {}
 const HomePage: React.FC<ILoginPageProps> = () => {
   return (
     <div>
-      <TopNavBar />
+      <TopNavBar isAuth={false} />
       <Box>This is home page</Box>
-      <Footer />
+      <Footer position="fixed" />
     </div>
   );
 };

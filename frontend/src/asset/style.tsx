@@ -25,7 +25,7 @@ export const theme = createTheme({
     MuiAppBar: {
       styleOverrides: {
         colorPrimary: {
-          backgroundColor: "#F0F0FC",
+          backgroundColor: "rgba(240, 240, 252, 0.6)",
         },
       },
     },
@@ -47,6 +47,39 @@ export const theme = createTheme({
         },
       },
     },
+    MuiSpeedDial: {
+      styleOverrides: {
+        root: {
+          "& .MuiFab-primary": { backgroundColor: "#7B68EE", color: "#FFFFFF" },
+        },
+      },
+    },
+    MuiListItemButton: {
+      styleOverrides: {
+        root: {
+          transition: "none !important",
+          "&.Mui-selected": {
+            backgroundColor: "#F0F0FC",
+            borderRadius: "0 20px 20px 0",
+            "&:hover": {
+              backgroundColor: "#F0F0F0",
+            },
+            color: "#000000",
+            "& .MuiListItemIcon-root": {
+              color: "#000000",
+            },
+          },
+          ":hover": {
+            backgroundColor: "#F0F0F0",
+            borderRadius: "0 20px 20px 0",
+            color: "#000000",
+            "& .MuiListItemIcon-root": {
+              color: "#000000",
+            },
+          },
+        },
+      },
+    },
   },
 });
 
@@ -61,6 +94,24 @@ export const styles = {
     position: "fixed",
     justifyContent: "flex-end",
   },
+  sideNavContainer: {
+    height: "calc(100% - 64px)",
+    width: "inherit",
+    position: "absolute",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+    // backgroundColor: "rgba(240, 240, 252, 0.6)",
+  },
+  page: {
+    display: "flex",
+  },
+  pageSideBar: {
+    width: "220px",
+    display: "flex",
+    verticalAlign: "top",
+  },
+  pageContent: {},
   container: {
     display: "flex",
     justifyContent: "center",
@@ -94,11 +145,13 @@ export const styles = {
     width: "400px",
     height: "560px",
     boxShadow: 0,
+    marginTop: "16px",
   },
   registerForm: {
     width: "400px",
     height: "800px",
     boxShadow: 0,
+    marginTop: "16px",
   },
   supportText: {
     color: "rgb(118,118,118)",
@@ -123,7 +176,6 @@ export const styles = {
     ":hover": { backgroundColor: "#FFFFFF", boxShadow: 0 },
   },
   footer: {
-    position: "fixed",
     bottom: 0,
     width: "100%",
   },

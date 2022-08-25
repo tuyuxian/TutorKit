@@ -39,7 +39,7 @@ const RegisterPage: React.FC<IRegisterPageProps> = () => {
   return (
     <ThemeProvider theme={theme}>
       <div>
-        <TopNavBar />
+        <TopNavBar isAuth={false} />
         <Box sx={styles.container}>
           <Card sx={styles.registerForm}>
             <CardContent>
@@ -97,7 +97,7 @@ const RegisterPage: React.FC<IRegisterPageProps> = () => {
             </CardContent>
           </Card>
         </Box>
-        <Footer />
+        <Footer position="fixed" />
       </div>
     </ThemeProvider>
   );

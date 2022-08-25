@@ -1,4 +1,13 @@
-import { AppBar, Box, Button, Link, Toolbar, Typography } from "@mui/material";
+import AccountCircle from "@mui/icons-material/AccountCircle";
+import {
+  AppBar,
+  Box,
+  Button,
+  IconButton,
+  Link,
+  Toolbar,
+  Typography,
+} from "@mui/material";
 import { ThemeProvider } from "@mui/material/styles";
 import React from "react";
 import { useMediaQuery } from "react-responsive";
@@ -13,6 +22,9 @@ const customStyle = {
   },
   topNavLogoBar: {
     justifyContent: "center",
+  },
+  authTopNavLogoBar: {
+    justifyContent: "space-between",
   },
   brandLogo: {
     display: "flex",
@@ -32,18 +44,23 @@ const customStyle = {
     borderRadius: "20px",
     ":hover": { backgroundColor: "#7B68EE", boxShadow: 0 },
   },
+  accountIcon: {
+    color: "#7B68EE",
+  },
 };
 
-export interface ITopNavBarProps {}
+export interface ITopNavBarProps {
+  isAuth: boolean;
+}
 
-const TopNavBar: React.FC<ITopNavBarProps> = () => {
+const TopNavBar: React.FC<ITopNavBarProps> = ({ isAuth }) => {
   const location = useLocation().pathname;
   const isTabletOrMobile = useMediaQuery({ query: "(max-width: 768px)" });
 
   return (
     <ThemeProvider theme={theme}>
       <Box>
-        <AppBar position="static" elevation={0}>
+        <AppBar position="static" elevation={1}>
           {location === "/" && (
             <Toolbar
               sx={
@@ -81,7 +98,11 @@ const TopNavBar: React.FC<ITopNavBarProps> = () => {
               </Box>
             </Toolbar>
           )}
-          <Toolbar sx={customStyle.topNavLogoBar}>
+          <Toolbar
+            sx={
+              isAuth ? customStyle.authTopNavLogoBar : customStyle.topNavLogoBar
+            }
+          >
             <Box
               sx={
                 isTabletOrMobile && location === "/"
@@ -100,6 +121,11 @@ const TopNavBar: React.FC<ITopNavBarProps> = () => {
                 </Typography>
               </Link>
             </Box>
+            {isAuth && (
+              <IconButton size="large" sx={customStyle.accountIcon}>
+                <AccountCircle />
+              </IconButton>
+            )}
           </Toolbar>
         </AppBar>
       </Box>
