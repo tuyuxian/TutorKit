@@ -1,0 +1,15 @@
+version: "3.8"
+
+services:
+  db:
+    image: mysql:8
+    container_name: mysql-8
+    volumes:
+      - ~/mysql-docker-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: tutorkit
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: root
+      MYSQL_PASSWORD: root
+    ports:
+      - "3307:3306"
