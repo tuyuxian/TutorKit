@@ -857,25 +857,109 @@ func SundayNotNil() predicate.EntCourse {
 	})
 }
 
-// HasCourseOwner applies the HasEdge predicate on the "courseOwner" edge.
-func HasCourseOwner() predicate.EntCourse {
+// HasTodo applies the HasEdge predicate on the "todo" edge.
+func HasTodo() predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CourseOwnerTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, CourseOwnerTable, CourseOwnerPrimaryKey...),
+			sqlgraph.To(TodoTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TodoTable, TodoColumn),
 		)
 		sqlgraph.HasNeighbors(s, step)
 	})
 }
 
-// HasCourseOwnerWith applies the HasEdge predicate on the "courseOwner" edge with a given conditions (other predicates).
-func HasCourseOwnerWith(preds ...predicate.EntUser) predicate.EntCourse {
+// HasTodoWith applies the HasEdge predicate on the "todo" edge with a given conditions (other predicates).
+func HasTodoWith(preds ...predicate.EntTodo) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(Table, FieldID),
-			sqlgraph.To(CourseOwnerInverseTable, FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, CourseOwnerTable, CourseOwnerPrimaryKey...),
+			sqlgraph.To(TodoInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TodoTable, TodoColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAttendance applies the HasEdge predicate on the "attendance" edge.
+func HasAttendance() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AttendanceTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AttendanceTable, AttendanceColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAttendanceWith applies the HasEdge predicate on the "attendance" edge with a given conditions (other predicates).
+func HasAttendanceWith(preds ...predicate.EntAttendance) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AttendanceInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AttendanceTable, AttendanceColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPost applies the HasEdge predicate on the "post" edge.
+func HasPost() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PostTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PostTable, PostColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPostWith applies the HasEdge predicate on the "post" edge with a given conditions (other predicates).
+func HasPostWith(preds ...predicate.EntPost) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PostInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PostTable, PostColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasOwnedBy applies the HasEdge predicate on the "ownedBy" edge.
+func HasOwnedBy() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OwnedByTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, OwnedByTable, OwnedByPrimaryKey...),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasOwnedByWith applies the HasEdge predicate on the "ownedBy" edge with a given conditions (other predicates).
+func HasOwnedByWith(preds ...predicate.EntUser) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(OwnedByInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.M2M, true, OwnedByTable, OwnedByPrimaryKey...),
 		)
 		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
 			for _, p := range preds {

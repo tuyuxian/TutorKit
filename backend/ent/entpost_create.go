@@ -3,9 +3,14 @@
 package ent
 
 import (
+	"backend/ent/entcomment"
+	"backend/ent/entcourse"
 	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +21,101 @@ type EntPostCreate struct {
 	config
 	mutation *EntPostMutation
 	hooks    []Hook
+}
+
+// SetTimestamp sets the "timestamp" field.
+func (epc *EntPostCreate) SetTimestamp(t time.Time) *EntPostCreate {
+	epc.mutation.SetTimestamp(t)
+	return epc
+}
+
+// SetNillableTimestamp sets the "timestamp" field if the given value is not nil.
+func (epc *EntPostCreate) SetNillableTimestamp(t *time.Time) *EntPostCreate {
+	if t != nil {
+		epc.SetTimestamp(*t)
+	}
+	return epc
+}
+
+// SetContent sets the "content" field.
+func (epc *EntPostCreate) SetContent(s string) *EntPostCreate {
+	epc.mutation.SetContent(s)
+	return epc
+}
+
+// SetNillableContent sets the "content" field if the given value is not nil.
+func (epc *EntPostCreate) SetNillableContent(s *string) *EntPostCreate {
+	if s != nil {
+		epc.SetContent(*s)
+	}
+	return epc
+}
+
+// SetShare sets the "share" field.
+func (epc *EntPostCreate) SetShare(e entpost.Share) *EntPostCreate {
+	epc.mutation.SetShare(e)
+	return epc
+}
+
+// SetNillableShare sets the "share" field if the given value is not nil.
+func (epc *EntPostCreate) SetNillableShare(e *entpost.Share) *EntPostCreate {
+	if e != nil {
+		epc.SetShare(*e)
+	}
+	return epc
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by IDs.
+func (epc *EntPostCreate) AddCommentIDs(ids ...int) *EntPostCreate {
+	epc.mutation.AddCommentIDs(ids...)
+	return epc
+}
+
+// AddComment adds the "comment" edges to the EntComment entity.
+func (epc *EntPostCreate) AddComment(e ...*EntComment) *EntPostCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return epc.AddCommentIDs(ids...)
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntCourse entity by ID.
+func (epc *EntPostCreate) SetBelongsToID(id int) *EntPostCreate {
+	epc.mutation.SetBelongsToID(id)
+	return epc
+}
+
+// SetNillableBelongsToID sets the "belongsTo" edge to the EntCourse entity by ID if the given value is not nil.
+func (epc *EntPostCreate) SetNillableBelongsToID(id *int) *EntPostCreate {
+	if id != nil {
+		epc = epc.SetBelongsToID(*id)
+	}
+	return epc
+}
+
+// SetBelongsTo sets the "belongsTo" edge to the EntCourse entity.
+func (epc *EntPostCreate) SetBelongsTo(e *EntCourse) *EntPostCreate {
+	return epc.SetBelongsToID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (epc *EntPostCreate) SetOwnedByID(id int) *EntPostCreate {
+	epc.mutation.SetOwnedByID(id)
+	return epc
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (epc *EntPostCreate) SetNillableOwnedByID(id *int) *EntPostCreate {
+	if id != nil {
+		epc = epc.SetOwnedByID(*id)
+	}
+	return epc
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (epc *EntPostCreate) SetOwnedBy(e *EntUser) *EntPostCreate {
+	return epc.SetOwnedByID(e.ID)
 }
 
 // Mutation returns the EntPostMutation object of the builder.
@@ -29,6 +129,7 @@ func (epc *EntPostCreate) Save(ctx context.Context) (*EntPost, error) {
 		err  error
 		node *EntPost
 	)
+	epc.defaults()
 	if len(epc.hooks) == 0 {
 		if err = epc.check(); err != nil {
 			return nil, err
@@ -92,8 +193,24 @@ func (epc *EntPostCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (epc *EntPostCreate) defaults() {
+	if _, ok := epc.mutation.Timestamp(); !ok {
+		v := entpost.DefaultTimestamp
+		epc.mutation.SetTimestamp(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (epc *EntPostCreate) check() error {
+	if _, ok := epc.mutation.Timestamp(); !ok {
+		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntPost.timestamp"`)}
+	}
+	if v, ok := epc.mutation.Share(); ok {
+		if err := entpost.ShareValidator(v); err != nil {
+			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntPost.share": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -121,6 +238,89 @@ func (epc *EntPostCreate) createSpec() (*EntPost, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := epc.mutation.Timestamp(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entpost.FieldTimestamp,
+		})
+		_node.Timestamp = value
+	}
+	if value, ok := epc.mutation.Content(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entpost.FieldContent,
+		})
+		_node.Content = value
+	}
+	if value, ok := epc.mutation.Share(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: entpost.FieldShare,
+		})
+		_node.Share = value
+	}
+	if nodes := epc.mutation.CommentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entpost.CommentTable,
+			Columns: []string{entpost.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := epc.mutation.BelongsToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entpost.BelongsToTable,
+			Columns: []string{entpost.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_course_post = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := epc.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entpost.OwnedByTable,
+			Columns: []string{entpost.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_user_post = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -138,6 +338,7 @@ func (epcb *EntPostCreateBulk) Save(ctx context.Context) ([]*EntPost, error) {
 	for i := range epcb.builders {
 		func(i int, root context.Context) {
 			builder := epcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*EntPostMutation)
 				if !ok {

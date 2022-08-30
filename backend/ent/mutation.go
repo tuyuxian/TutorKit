@@ -3,7 +3,11 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
+	"backend/ent/entcomment"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
@@ -35,13 +39,27 @@ const (
 // EntAttendanceMutation represents an operation that mutates the EntAttendance nodes in the graph.
 type EntAttendanceMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*EntAttendance, error)
-	predicates    []predicate.EntAttendance
+	op                   Op
+	typ                  string
+	id                   *int
+	date                 *time.Time
+	startTime            *time.Time
+	endTime              *time.Time
+	day                  *time.Time
+	note                 *string
+	hours                *float64
+	addhours             *float64
+	checkedByTutor       *bool
+	checkedByStudent     *bool
+	checkedByParent      *bool
+	clearedFields        map[string]struct{}
+	attendanceFor        *int
+	clearedattendanceFor bool
+	ownedBy              *int
+	clearedownedBy       bool
+	done                 bool
+	oldValue             func(context.Context) (*EntAttendance, error)
+	predicates           []predicate.EntAttendance
 }
 
 var _ ent.Mutation = (*EntAttendanceMutation)(nil)
@@ -142,6 +160,494 @@ func (m *EntAttendanceMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetDate sets the "date" field.
+func (m *EntAttendanceMutation) SetDate(t time.Time) {
+	m.date = &t
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *EntAttendanceMutation) Date() (r time.Time, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *EntAttendanceMutation) ResetDate() {
+	m.date = nil
+}
+
+// SetStartTime sets the "startTime" field.
+func (m *EntAttendanceMutation) SetStartTime(t time.Time) {
+	m.startTime = &t
+}
+
+// StartTime returns the value of the "startTime" field in the mutation.
+func (m *EntAttendanceMutation) StartTime() (r time.Time, exists bool) {
+	v := m.startTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartTime returns the old "startTime" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
+	}
+	return oldValue.StartTime, nil
+}
+
+// ClearStartTime clears the value of the "startTime" field.
+func (m *EntAttendanceMutation) ClearStartTime() {
+	m.startTime = nil
+	m.clearedFields[entattendance.FieldStartTime] = struct{}{}
+}
+
+// StartTimeCleared returns if the "startTime" field was cleared in this mutation.
+func (m *EntAttendanceMutation) StartTimeCleared() bool {
+	_, ok := m.clearedFields[entattendance.FieldStartTime]
+	return ok
+}
+
+// ResetStartTime resets all changes to the "startTime" field.
+func (m *EntAttendanceMutation) ResetStartTime() {
+	m.startTime = nil
+	delete(m.clearedFields, entattendance.FieldStartTime)
+}
+
+// SetEndTime sets the "endTime" field.
+func (m *EntAttendanceMutation) SetEndTime(t time.Time) {
+	m.endTime = &t
+}
+
+// EndTime returns the value of the "endTime" field in the mutation.
+func (m *EntAttendanceMutation) EndTime() (r time.Time, exists bool) {
+	v := m.endTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndTime returns the old "endTime" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
+	}
+	return oldValue.EndTime, nil
+}
+
+// ClearEndTime clears the value of the "endTime" field.
+func (m *EntAttendanceMutation) ClearEndTime() {
+	m.endTime = nil
+	m.clearedFields[entattendance.FieldEndTime] = struct{}{}
+}
+
+// EndTimeCleared returns if the "endTime" field was cleared in this mutation.
+func (m *EntAttendanceMutation) EndTimeCleared() bool {
+	_, ok := m.clearedFields[entattendance.FieldEndTime]
+	return ok
+}
+
+// ResetEndTime resets all changes to the "endTime" field.
+func (m *EntAttendanceMutation) ResetEndTime() {
+	m.endTime = nil
+	delete(m.clearedFields, entattendance.FieldEndTime)
+}
+
+// SetDay sets the "day" field.
+func (m *EntAttendanceMutation) SetDay(t time.Time) {
+	m.day = &t
+}
+
+// Day returns the value of the "day" field in the mutation.
+func (m *EntAttendanceMutation) Day() (r time.Time, exists bool) {
+	v := m.day
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDay returns the old "day" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldDay(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDay is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDay requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDay: %w", err)
+	}
+	return oldValue.Day, nil
+}
+
+// ClearDay clears the value of the "day" field.
+func (m *EntAttendanceMutation) ClearDay() {
+	m.day = nil
+	m.clearedFields[entattendance.FieldDay] = struct{}{}
+}
+
+// DayCleared returns if the "day" field was cleared in this mutation.
+func (m *EntAttendanceMutation) DayCleared() bool {
+	_, ok := m.clearedFields[entattendance.FieldDay]
+	return ok
+}
+
+// ResetDay resets all changes to the "day" field.
+func (m *EntAttendanceMutation) ResetDay() {
+	m.day = nil
+	delete(m.clearedFields, entattendance.FieldDay)
+}
+
+// SetNote sets the "note" field.
+func (m *EntAttendanceMutation) SetNote(s string) {
+	m.note = &s
+}
+
+// Note returns the value of the "note" field in the mutation.
+func (m *EntAttendanceMutation) Note() (r string, exists bool) {
+	v := m.note
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldNote returns the old "note" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldNote(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldNote is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldNote requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldNote: %w", err)
+	}
+	return oldValue.Note, nil
+}
+
+// ClearNote clears the value of the "note" field.
+func (m *EntAttendanceMutation) ClearNote() {
+	m.note = nil
+	m.clearedFields[entattendance.FieldNote] = struct{}{}
+}
+
+// NoteCleared returns if the "note" field was cleared in this mutation.
+func (m *EntAttendanceMutation) NoteCleared() bool {
+	_, ok := m.clearedFields[entattendance.FieldNote]
+	return ok
+}
+
+// ResetNote resets all changes to the "note" field.
+func (m *EntAttendanceMutation) ResetNote() {
+	m.note = nil
+	delete(m.clearedFields, entattendance.FieldNote)
+}
+
+// SetHours sets the "hours" field.
+func (m *EntAttendanceMutation) SetHours(f float64) {
+	m.hours = &f
+	m.addhours = nil
+}
+
+// Hours returns the value of the "hours" field in the mutation.
+func (m *EntAttendanceMutation) Hours() (r float64, exists bool) {
+	v := m.hours
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHours returns the old "hours" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldHours(ctx context.Context) (v float64, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHours is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHours requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHours: %w", err)
+	}
+	return oldValue.Hours, nil
+}
+
+// AddHours adds f to the "hours" field.
+func (m *EntAttendanceMutation) AddHours(f float64) {
+	if m.addhours != nil {
+		*m.addhours += f
+	} else {
+		m.addhours = &f
+	}
+}
+
+// AddedHours returns the value that was added to the "hours" field in this mutation.
+func (m *EntAttendanceMutation) AddedHours() (r float64, exists bool) {
+	v := m.addhours
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// ClearHours clears the value of the "hours" field.
+func (m *EntAttendanceMutation) ClearHours() {
+	m.hours = nil
+	m.addhours = nil
+	m.clearedFields[entattendance.FieldHours] = struct{}{}
+}
+
+// HoursCleared returns if the "hours" field was cleared in this mutation.
+func (m *EntAttendanceMutation) HoursCleared() bool {
+	_, ok := m.clearedFields[entattendance.FieldHours]
+	return ok
+}
+
+// ResetHours resets all changes to the "hours" field.
+func (m *EntAttendanceMutation) ResetHours() {
+	m.hours = nil
+	m.addhours = nil
+	delete(m.clearedFields, entattendance.FieldHours)
+}
+
+// SetCheckedByTutor sets the "checkedByTutor" field.
+func (m *EntAttendanceMutation) SetCheckedByTutor(b bool) {
+	m.checkedByTutor = &b
+}
+
+// CheckedByTutor returns the value of the "checkedByTutor" field in the mutation.
+func (m *EntAttendanceMutation) CheckedByTutor() (r bool, exists bool) {
+	v := m.checkedByTutor
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCheckedByTutor returns the old "checkedByTutor" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldCheckedByTutor(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCheckedByTutor is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCheckedByTutor requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCheckedByTutor: %w", err)
+	}
+	return oldValue.CheckedByTutor, nil
+}
+
+// ResetCheckedByTutor resets all changes to the "checkedByTutor" field.
+func (m *EntAttendanceMutation) ResetCheckedByTutor() {
+	m.checkedByTutor = nil
+}
+
+// SetCheckedByStudent sets the "checkedByStudent" field.
+func (m *EntAttendanceMutation) SetCheckedByStudent(b bool) {
+	m.checkedByStudent = &b
+}
+
+// CheckedByStudent returns the value of the "checkedByStudent" field in the mutation.
+func (m *EntAttendanceMutation) CheckedByStudent() (r bool, exists bool) {
+	v := m.checkedByStudent
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCheckedByStudent returns the old "checkedByStudent" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldCheckedByStudent(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCheckedByStudent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCheckedByStudent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCheckedByStudent: %w", err)
+	}
+	return oldValue.CheckedByStudent, nil
+}
+
+// ResetCheckedByStudent resets all changes to the "checkedByStudent" field.
+func (m *EntAttendanceMutation) ResetCheckedByStudent() {
+	m.checkedByStudent = nil
+}
+
+// SetCheckedByParent sets the "checkedByParent" field.
+func (m *EntAttendanceMutation) SetCheckedByParent(b bool) {
+	m.checkedByParent = &b
+}
+
+// CheckedByParent returns the value of the "checkedByParent" field in the mutation.
+func (m *EntAttendanceMutation) CheckedByParent() (r bool, exists bool) {
+	v := m.checkedByParent
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldCheckedByParent returns the old "checkedByParent" field's value of the EntAttendance entity.
+// If the EntAttendance object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntAttendanceMutation) OldCheckedByParent(ctx context.Context) (v bool, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldCheckedByParent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldCheckedByParent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldCheckedByParent: %w", err)
+	}
+	return oldValue.CheckedByParent, nil
+}
+
+// ResetCheckedByParent resets all changes to the "checkedByParent" field.
+func (m *EntAttendanceMutation) ResetCheckedByParent() {
+	m.checkedByParent = nil
+}
+
+// SetAttendanceForID sets the "attendanceFor" edge to the EntCourse entity by id.
+func (m *EntAttendanceMutation) SetAttendanceForID(id int) {
+	m.attendanceFor = &id
+}
+
+// ClearAttendanceFor clears the "attendanceFor" edge to the EntCourse entity.
+func (m *EntAttendanceMutation) ClearAttendanceFor() {
+	m.clearedattendanceFor = true
+}
+
+// AttendanceForCleared reports if the "attendanceFor" edge to the EntCourse entity was cleared.
+func (m *EntAttendanceMutation) AttendanceForCleared() bool {
+	return m.clearedattendanceFor
+}
+
+// AttendanceForID returns the "attendanceFor" edge ID in the mutation.
+func (m *EntAttendanceMutation) AttendanceForID() (id int, exists bool) {
+	if m.attendanceFor != nil {
+		return *m.attendanceFor, true
+	}
+	return
+}
+
+// AttendanceForIDs returns the "attendanceFor" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// AttendanceForID instead. It exists only for internal usage by the builders.
+func (m *EntAttendanceMutation) AttendanceForIDs() (ids []int) {
+	if id := m.attendanceFor; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetAttendanceFor resets all changes to the "attendanceFor" edge.
+func (m *EntAttendanceMutation) ResetAttendanceFor() {
+	m.attendanceFor = nil
+	m.clearedattendanceFor = false
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by id.
+func (m *EntAttendanceMutation) SetOwnedByID(id int) {
+	m.ownedBy = &id
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (m *EntAttendanceMutation) ClearOwnedBy() {
+	m.clearedownedBy = true
+}
+
+// OwnedByCleared reports if the "ownedBy" edge to the EntUser entity was cleared.
+func (m *EntAttendanceMutation) OwnedByCleared() bool {
+	return m.clearedownedBy
+}
+
+// OwnedByID returns the "ownedBy" edge ID in the mutation.
+func (m *EntAttendanceMutation) OwnedByID() (id int, exists bool) {
+	if m.ownedBy != nil {
+		return *m.ownedBy, true
+	}
+	return
+}
+
+// OwnedByIDs returns the "ownedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// OwnedByID instead. It exists only for internal usage by the builders.
+func (m *EntAttendanceMutation) OwnedByIDs() (ids []int) {
+	if id := m.ownedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOwnedBy resets all changes to the "ownedBy" edge.
+func (m *EntAttendanceMutation) ResetOwnedBy() {
+	m.ownedBy = nil
+	m.clearedownedBy = false
+}
+
 // Where appends a list predicates to the EntAttendanceMutation builder.
 func (m *EntAttendanceMutation) Where(ps ...predicate.EntAttendance) {
 	m.predicates = append(m.predicates, ps...)
@@ -161,7 +667,34 @@ func (m *EntAttendanceMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntAttendanceMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 9)
+	if m.date != nil {
+		fields = append(fields, entattendance.FieldDate)
+	}
+	if m.startTime != nil {
+		fields = append(fields, entattendance.FieldStartTime)
+	}
+	if m.endTime != nil {
+		fields = append(fields, entattendance.FieldEndTime)
+	}
+	if m.day != nil {
+		fields = append(fields, entattendance.FieldDay)
+	}
+	if m.note != nil {
+		fields = append(fields, entattendance.FieldNote)
+	}
+	if m.hours != nil {
+		fields = append(fields, entattendance.FieldHours)
+	}
+	if m.checkedByTutor != nil {
+		fields = append(fields, entattendance.FieldCheckedByTutor)
+	}
+	if m.checkedByStudent != nil {
+		fields = append(fields, entattendance.FieldCheckedByStudent)
+	}
+	if m.checkedByParent != nil {
+		fields = append(fields, entattendance.FieldCheckedByParent)
+	}
 	return fields
 }
 
@@ -169,6 +702,26 @@ func (m *EntAttendanceMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EntAttendanceMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case entattendance.FieldDate:
+		return m.Date()
+	case entattendance.FieldStartTime:
+		return m.StartTime()
+	case entattendance.FieldEndTime:
+		return m.EndTime()
+	case entattendance.FieldDay:
+		return m.Day()
+	case entattendance.FieldNote:
+		return m.Note()
+	case entattendance.FieldHours:
+		return m.Hours()
+	case entattendance.FieldCheckedByTutor:
+		return m.CheckedByTutor()
+	case entattendance.FieldCheckedByStudent:
+		return m.CheckedByStudent()
+	case entattendance.FieldCheckedByParent:
+		return m.CheckedByParent()
+	}
 	return nil, false
 }
 
@@ -176,6 +729,26 @@ func (m *EntAttendanceMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EntAttendanceMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case entattendance.FieldDate:
+		return m.OldDate(ctx)
+	case entattendance.FieldStartTime:
+		return m.OldStartTime(ctx)
+	case entattendance.FieldEndTime:
+		return m.OldEndTime(ctx)
+	case entattendance.FieldDay:
+		return m.OldDay(ctx)
+	case entattendance.FieldNote:
+		return m.OldNote(ctx)
+	case entattendance.FieldHours:
+		return m.OldHours(ctx)
+	case entattendance.FieldCheckedByTutor:
+		return m.OldCheckedByTutor(ctx)
+	case entattendance.FieldCheckedByStudent:
+		return m.OldCheckedByStudent(ctx)
+	case entattendance.FieldCheckedByParent:
+		return m.OldCheckedByParent(ctx)
+	}
 	return nil, fmt.Errorf("unknown EntAttendance field %s", name)
 }
 
@@ -184,6 +757,69 @@ func (m *EntAttendanceMutation) OldField(ctx context.Context, name string) (ent.
 // type.
 func (m *EntAttendanceMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case entattendance.FieldDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
+		return nil
+	case entattendance.FieldStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartTime(v)
+		return nil
+	case entattendance.FieldEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEndTime(v)
+		return nil
+	case entattendance.FieldDay:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDay(v)
+		return nil
+	case entattendance.FieldNote:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetNote(v)
+		return nil
+	case entattendance.FieldHours:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHours(v)
+		return nil
+	case entattendance.FieldCheckedByTutor:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCheckedByTutor(v)
+		return nil
+	case entattendance.FieldCheckedByStudent:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCheckedByStudent(v)
+		return nil
+	case entattendance.FieldCheckedByParent:
+		v, ok := value.(bool)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetCheckedByParent(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EntAttendance field %s", name)
 }
@@ -191,13 +827,21 @@ func (m *EntAttendanceMutation) SetField(name string, value ent.Value) error {
 // AddedFields returns all numeric fields that were incremented/decremented during
 // this mutation.
 func (m *EntAttendanceMutation) AddedFields() []string {
-	return nil
+	var fields []string
+	if m.addhours != nil {
+		fields = append(fields, entattendance.FieldHours)
+	}
+	return fields
 }
 
 // AddedField returns the numeric value that was incremented/decremented on a field
 // with the given name. The second boolean return value indicates that this field
 // was not set, or was not defined in the schema.
 func (m *EntAttendanceMutation) AddedField(name string) (ent.Value, bool) {
+	switch name {
+	case entattendance.FieldHours:
+		return m.AddedHours()
+	}
 	return nil, false
 }
 
@@ -205,13 +849,38 @@ func (m *EntAttendanceMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EntAttendanceMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	case entattendance.FieldHours:
+		v, ok := value.(float64)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.AddHours(v)
+		return nil
+	}
 	return fmt.Errorf("unknown EntAttendance numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntAttendanceMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(entattendance.FieldStartTime) {
+		fields = append(fields, entattendance.FieldStartTime)
+	}
+	if m.FieldCleared(entattendance.FieldEndTime) {
+		fields = append(fields, entattendance.FieldEndTime)
+	}
+	if m.FieldCleared(entattendance.FieldDay) {
+		fields = append(fields, entattendance.FieldDay)
+	}
+	if m.FieldCleared(entattendance.FieldNote) {
+		fields = append(fields, entattendance.FieldNote)
+	}
+	if m.FieldCleared(entattendance.FieldHours) {
+		fields = append(fields, entattendance.FieldHours)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -224,73 +893,172 @@ func (m *EntAttendanceMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntAttendanceMutation) ClearField(name string) error {
+	switch name {
+	case entattendance.FieldStartTime:
+		m.ClearStartTime()
+		return nil
+	case entattendance.FieldEndTime:
+		m.ClearEndTime()
+		return nil
+	case entattendance.FieldDay:
+		m.ClearDay()
+		return nil
+	case entattendance.FieldNote:
+		m.ClearNote()
+		return nil
+	case entattendance.FieldHours:
+		m.ClearHours()
+		return nil
+	}
 	return fmt.Errorf("unknown EntAttendance nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EntAttendanceMutation) ResetField(name string) error {
+	switch name {
+	case entattendance.FieldDate:
+		m.ResetDate()
+		return nil
+	case entattendance.FieldStartTime:
+		m.ResetStartTime()
+		return nil
+	case entattendance.FieldEndTime:
+		m.ResetEndTime()
+		return nil
+	case entattendance.FieldDay:
+		m.ResetDay()
+		return nil
+	case entattendance.FieldNote:
+		m.ResetNote()
+		return nil
+	case entattendance.FieldHours:
+		m.ResetHours()
+		return nil
+	case entattendance.FieldCheckedByTutor:
+		m.ResetCheckedByTutor()
+		return nil
+	case entattendance.FieldCheckedByStudent:
+		m.ResetCheckedByStudent()
+		return nil
+	case entattendance.FieldCheckedByParent:
+		m.ResetCheckedByParent()
+		return nil
+	}
 	return fmt.Errorf("unknown EntAttendance field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntAttendanceMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.attendanceFor != nil {
+		edges = append(edges, entattendance.EdgeAttendanceFor)
+	}
+	if m.ownedBy != nil {
+		edges = append(edges, entattendance.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *EntAttendanceMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case entattendance.EdgeAttendanceFor:
+		if id := m.attendanceFor; id != nil {
+			return []ent.Value{*id}
+		}
+	case entattendance.EdgeOwnedBy:
+		if id := m.ownedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntAttendanceMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *EntAttendanceMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntAttendanceMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.clearedattendanceFor {
+		edges = append(edges, entattendance.EdgeAttendanceFor)
+	}
+	if m.clearedownedBy {
+		edges = append(edges, entattendance.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *EntAttendanceMutation) EdgeCleared(name string) bool {
+	switch name {
+	case entattendance.EdgeAttendanceFor:
+		return m.clearedattendanceFor
+	case entattendance.EdgeOwnedBy:
+		return m.clearedownedBy
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *EntAttendanceMutation) ClearEdge(name string) error {
+	switch name {
+	case entattendance.EdgeAttendanceFor:
+		m.ClearAttendanceFor()
+		return nil
+	case entattendance.EdgeOwnedBy:
+		m.ClearOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntAttendance unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *EntAttendanceMutation) ResetEdge(name string) error {
+	switch name {
+	case entattendance.EdgeAttendanceFor:
+		m.ResetAttendanceFor()
+		return nil
+	case entattendance.EdgeOwnedBy:
+		m.ResetOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntAttendance edge %s", name)
 }
 
 // EntCommentMutation represents an operation that mutates the EntComment nodes in the graph.
 type EntCommentMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*EntComment, error)
-	predicates    []predicate.EntComment
+	op               Op
+	typ              string
+	id               *int
+	timestamp        *time.Time
+	content          *string
+	share            *entcomment.Share
+	clearedFields    map[string]struct{}
+	belongsTo        *int
+	clearedbelongsTo bool
+	ownedBy          *int
+	clearedownedBy   bool
+	done             bool
+	oldValue         func(context.Context) (*EntComment, error)
+	predicates       []predicate.EntComment
 }
 
 var _ ent.Mutation = (*EntCommentMutation)(nil)
@@ -391,6 +1159,218 @@ func (m *EntCommentMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetTimestamp sets the "timestamp" field.
+func (m *EntCommentMutation) SetTimestamp(t time.Time) {
+	m.timestamp = &t
+}
+
+// Timestamp returns the value of the "timestamp" field in the mutation.
+func (m *EntCommentMutation) Timestamp() (r time.Time, exists bool) {
+	v := m.timestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTimestamp returns the old "timestamp" field's value of the EntComment entity.
+// If the EntComment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCommentMutation) OldTimestamp(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTimestamp is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTimestamp requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTimestamp: %w", err)
+	}
+	return oldValue.Timestamp, nil
+}
+
+// ResetTimestamp resets all changes to the "timestamp" field.
+func (m *EntCommentMutation) ResetTimestamp() {
+	m.timestamp = nil
+}
+
+// SetContent sets the "content" field.
+func (m *EntCommentMutation) SetContent(s string) {
+	m.content = &s
+}
+
+// Content returns the value of the "content" field in the mutation.
+func (m *EntCommentMutation) Content() (r string, exists bool) {
+	v := m.content
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContent returns the old "content" field's value of the EntComment entity.
+// If the EntComment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCommentMutation) OldContent(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContent: %w", err)
+	}
+	return oldValue.Content, nil
+}
+
+// ClearContent clears the value of the "content" field.
+func (m *EntCommentMutation) ClearContent() {
+	m.content = nil
+	m.clearedFields[entcomment.FieldContent] = struct{}{}
+}
+
+// ContentCleared returns if the "content" field was cleared in this mutation.
+func (m *EntCommentMutation) ContentCleared() bool {
+	_, ok := m.clearedFields[entcomment.FieldContent]
+	return ok
+}
+
+// ResetContent resets all changes to the "content" field.
+func (m *EntCommentMutation) ResetContent() {
+	m.content = nil
+	delete(m.clearedFields, entcomment.FieldContent)
+}
+
+// SetShare sets the "share" field.
+func (m *EntCommentMutation) SetShare(e entcomment.Share) {
+	m.share = &e
+}
+
+// Share returns the value of the "share" field in the mutation.
+func (m *EntCommentMutation) Share() (r entcomment.Share, exists bool) {
+	v := m.share
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShare returns the old "share" field's value of the EntComment entity.
+// If the EntComment object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCommentMutation) OldShare(ctx context.Context) (v entcomment.Share, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShare is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShare requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShare: %w", err)
+	}
+	return oldValue.Share, nil
+}
+
+// ClearShare clears the value of the "share" field.
+func (m *EntCommentMutation) ClearShare() {
+	m.share = nil
+	m.clearedFields[entcomment.FieldShare] = struct{}{}
+}
+
+// ShareCleared returns if the "share" field was cleared in this mutation.
+func (m *EntCommentMutation) ShareCleared() bool {
+	_, ok := m.clearedFields[entcomment.FieldShare]
+	return ok
+}
+
+// ResetShare resets all changes to the "share" field.
+func (m *EntCommentMutation) ResetShare() {
+	m.share = nil
+	delete(m.clearedFields, entcomment.FieldShare)
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntPost entity by id.
+func (m *EntCommentMutation) SetBelongsToID(id int) {
+	m.belongsTo = &id
+}
+
+// ClearBelongsTo clears the "belongsTo" edge to the EntPost entity.
+func (m *EntCommentMutation) ClearBelongsTo() {
+	m.clearedbelongsTo = true
+}
+
+// BelongsToCleared reports if the "belongsTo" edge to the EntPost entity was cleared.
+func (m *EntCommentMutation) BelongsToCleared() bool {
+	return m.clearedbelongsTo
+}
+
+// BelongsToID returns the "belongsTo" edge ID in the mutation.
+func (m *EntCommentMutation) BelongsToID() (id int, exists bool) {
+	if m.belongsTo != nil {
+		return *m.belongsTo, true
+	}
+	return
+}
+
+// BelongsToIDs returns the "belongsTo" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// BelongsToID instead. It exists only for internal usage by the builders.
+func (m *EntCommentMutation) BelongsToIDs() (ids []int) {
+	if id := m.belongsTo; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetBelongsTo resets all changes to the "belongsTo" edge.
+func (m *EntCommentMutation) ResetBelongsTo() {
+	m.belongsTo = nil
+	m.clearedbelongsTo = false
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by id.
+func (m *EntCommentMutation) SetOwnedByID(id int) {
+	m.ownedBy = &id
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (m *EntCommentMutation) ClearOwnedBy() {
+	m.clearedownedBy = true
+}
+
+// OwnedByCleared reports if the "ownedBy" edge to the EntUser entity was cleared.
+func (m *EntCommentMutation) OwnedByCleared() bool {
+	return m.clearedownedBy
+}
+
+// OwnedByID returns the "ownedBy" edge ID in the mutation.
+func (m *EntCommentMutation) OwnedByID() (id int, exists bool) {
+	if m.ownedBy != nil {
+		return *m.ownedBy, true
+	}
+	return
+}
+
+// OwnedByIDs returns the "ownedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// OwnedByID instead. It exists only for internal usage by the builders.
+func (m *EntCommentMutation) OwnedByIDs() (ids []int) {
+	if id := m.ownedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOwnedBy resets all changes to the "ownedBy" edge.
+func (m *EntCommentMutation) ResetOwnedBy() {
+	m.ownedBy = nil
+	m.clearedownedBy = false
+}
+
 // Where appends a list predicates to the EntCommentMutation builder.
 func (m *EntCommentMutation) Where(ps ...predicate.EntComment) {
 	m.predicates = append(m.predicates, ps...)
@@ -410,7 +1390,16 @@ func (m *EntCommentMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntCommentMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 3)
+	if m.timestamp != nil {
+		fields = append(fields, entcomment.FieldTimestamp)
+	}
+	if m.content != nil {
+		fields = append(fields, entcomment.FieldContent)
+	}
+	if m.share != nil {
+		fields = append(fields, entcomment.FieldShare)
+	}
 	return fields
 }
 
@@ -418,6 +1407,14 @@ func (m *EntCommentMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EntCommentMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case entcomment.FieldTimestamp:
+		return m.Timestamp()
+	case entcomment.FieldContent:
+		return m.Content()
+	case entcomment.FieldShare:
+		return m.Share()
+	}
 	return nil, false
 }
 
@@ -425,6 +1422,14 @@ func (m *EntCommentMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EntCommentMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case entcomment.FieldTimestamp:
+		return m.OldTimestamp(ctx)
+	case entcomment.FieldContent:
+		return m.OldContent(ctx)
+	case entcomment.FieldShare:
+		return m.OldShare(ctx)
+	}
 	return nil, fmt.Errorf("unknown EntComment field %s", name)
 }
 
@@ -433,6 +1438,27 @@ func (m *EntCommentMutation) OldField(ctx context.Context, name string) (ent.Val
 // type.
 func (m *EntCommentMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case entcomment.FieldTimestamp:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTimestamp(v)
+		return nil
+	case entcomment.FieldContent:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContent(v)
+		return nil
+	case entcomment.FieldShare:
+		v, ok := value.(entcomment.Share)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShare(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EntComment field %s", name)
 }
@@ -454,13 +1480,22 @@ func (m *EntCommentMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EntCommentMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown EntComment numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntCommentMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(entcomment.FieldContent) {
+		fields = append(fields, entcomment.FieldContent)
+	}
+	if m.FieldCleared(entcomment.FieldShare) {
+		fields = append(fields, entcomment.FieldShare)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -473,90 +1508,164 @@ func (m *EntCommentMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntCommentMutation) ClearField(name string) error {
+	switch name {
+	case entcomment.FieldContent:
+		m.ClearContent()
+		return nil
+	case entcomment.FieldShare:
+		m.ClearShare()
+		return nil
+	}
 	return fmt.Errorf("unknown EntComment nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EntCommentMutation) ResetField(name string) error {
+	switch name {
+	case entcomment.FieldTimestamp:
+		m.ResetTimestamp()
+		return nil
+	case entcomment.FieldContent:
+		m.ResetContent()
+		return nil
+	case entcomment.FieldShare:
+		m.ResetShare()
+		return nil
+	}
 	return fmt.Errorf("unknown EntComment field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntCommentMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.belongsTo != nil {
+		edges = append(edges, entcomment.EdgeBelongsTo)
+	}
+	if m.ownedBy != nil {
+		edges = append(edges, entcomment.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *EntCommentMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case entcomment.EdgeBelongsTo:
+		if id := m.belongsTo; id != nil {
+			return []ent.Value{*id}
+		}
+	case entcomment.EdgeOwnedBy:
+		if id := m.ownedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntCommentMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *EntCommentMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntCommentMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.clearedbelongsTo {
+		edges = append(edges, entcomment.EdgeBelongsTo)
+	}
+	if m.clearedownedBy {
+		edges = append(edges, entcomment.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *EntCommentMutation) EdgeCleared(name string) bool {
+	switch name {
+	case entcomment.EdgeBelongsTo:
+		return m.clearedbelongsTo
+	case entcomment.EdgeOwnedBy:
+		return m.clearedownedBy
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *EntCommentMutation) ClearEdge(name string) error {
+	switch name {
+	case entcomment.EdgeBelongsTo:
+		m.ClearBelongsTo()
+		return nil
+	case entcomment.EdgeOwnedBy:
+		m.ClearOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntComment unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *EntCommentMutation) ResetEdge(name string) error {
+	switch name {
+	case entcomment.EdgeBelongsTo:
+		m.ResetBelongsTo()
+		return nil
+	case entcomment.EdgeOwnedBy:
+		m.ResetOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntComment edge %s", name)
 }
 
 // EntCourseMutation represents an operation that mutates the EntCourse nodes in the graph.
 type EntCourseMutation struct {
 	config
-	op                 Op
-	typ                string
-	id                 *int
-	name               *string
-	courseUrl          *string
-	paymentMethod      *entcourse.PaymentMethod
-	paymentAmount      *float64
-	addpaymentAmount   *float64
-	startDate          *time.Time
-	endDate            *time.Time
-	monday             *bool
-	tuesday            *bool
-	wednesday          *bool
-	thursday           *bool
-	friday             *bool
-	saturday           *bool
-	sunday             *bool
-	clearedFields      map[string]struct{}
-	courseOwner        map[int]struct{}
-	removedcourseOwner map[int]struct{}
-	clearedcourseOwner bool
-	done               bool
-	oldValue           func(context.Context) (*EntCourse, error)
-	predicates         []predicate.EntCourse
+	op                Op
+	typ               string
+	id                *int
+	name              *string
+	courseUrl         *string
+	paymentMethod     *entcourse.PaymentMethod
+	paymentAmount     *float64
+	addpaymentAmount  *float64
+	startDate         *time.Time
+	endDate           *time.Time
+	monday            *bool
+	tuesday           *bool
+	wednesday         *bool
+	thursday          *bool
+	friday            *bool
+	saturday          *bool
+	sunday            *bool
+	clearedFields     map[string]struct{}
+	todo              map[int]struct{}
+	removedtodo       map[int]struct{}
+	clearedtodo       bool
+	attendance        map[int]struct{}
+	removedattendance map[int]struct{}
+	clearedattendance bool
+	post              map[int]struct{}
+	removedpost       map[int]struct{}
+	clearedpost       bool
+	ownedBy           map[int]struct{}
+	removedownedBy    map[int]struct{}
+	clearedownedBy    bool
+	done              bool
+	oldValue          func(context.Context) (*EntCourse, error)
+	predicates        []predicate.EntCourse
 }
 
 var _ ent.Mutation = (*EntCourseMutation)(nil)
@@ -1302,58 +2411,220 @@ func (m *EntCourseMutation) ResetSunday() {
 	delete(m.clearedFields, entcourse.FieldSunday)
 }
 
-// AddCourseOwnerIDs adds the "courseOwner" edge to the EntUser entity by ids.
-func (m *EntCourseMutation) AddCourseOwnerIDs(ids ...int) {
-	if m.courseOwner == nil {
-		m.courseOwner = make(map[int]struct{})
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by ids.
+func (m *EntCourseMutation) AddTodoIDs(ids ...int) {
+	if m.todo == nil {
+		m.todo = make(map[int]struct{})
 	}
 	for i := range ids {
-		m.courseOwner[ids[i]] = struct{}{}
+		m.todo[ids[i]] = struct{}{}
 	}
 }
 
-// ClearCourseOwner clears the "courseOwner" edge to the EntUser entity.
-func (m *EntCourseMutation) ClearCourseOwner() {
-	m.clearedcourseOwner = true
+// ClearTodo clears the "todo" edge to the EntTodo entity.
+func (m *EntCourseMutation) ClearTodo() {
+	m.clearedtodo = true
 }
 
-// CourseOwnerCleared reports if the "courseOwner" edge to the EntUser entity was cleared.
-func (m *EntCourseMutation) CourseOwnerCleared() bool {
-	return m.clearedcourseOwner
+// TodoCleared reports if the "todo" edge to the EntTodo entity was cleared.
+func (m *EntCourseMutation) TodoCleared() bool {
+	return m.clearedtodo
 }
 
-// RemoveCourseOwnerIDs removes the "courseOwner" edge to the EntUser entity by IDs.
-func (m *EntCourseMutation) RemoveCourseOwnerIDs(ids ...int) {
-	if m.removedcourseOwner == nil {
-		m.removedcourseOwner = make(map[int]struct{})
+// RemoveTodoIDs removes the "todo" edge to the EntTodo entity by IDs.
+func (m *EntCourseMutation) RemoveTodoIDs(ids ...int) {
+	if m.removedtodo == nil {
+		m.removedtodo = make(map[int]struct{})
 	}
 	for i := range ids {
-		delete(m.courseOwner, ids[i])
-		m.removedcourseOwner[ids[i]] = struct{}{}
+		delete(m.todo, ids[i])
+		m.removedtodo[ids[i]] = struct{}{}
 	}
 }
 
-// RemovedCourseOwner returns the removed IDs of the "courseOwner" edge to the EntUser entity.
-func (m *EntCourseMutation) RemovedCourseOwnerIDs() (ids []int) {
-	for id := range m.removedcourseOwner {
+// RemovedTodo returns the removed IDs of the "todo" edge to the EntTodo entity.
+func (m *EntCourseMutation) RemovedTodoIDs() (ids []int) {
+	for id := range m.removedtodo {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// CourseOwnerIDs returns the "courseOwner" edge IDs in the mutation.
-func (m *EntCourseMutation) CourseOwnerIDs() (ids []int) {
-	for id := range m.courseOwner {
+// TodoIDs returns the "todo" edge IDs in the mutation.
+func (m *EntCourseMutation) TodoIDs() (ids []int) {
+	for id := range m.todo {
 		ids = append(ids, id)
 	}
 	return
 }
 
-// ResetCourseOwner resets all changes to the "courseOwner" edge.
-func (m *EntCourseMutation) ResetCourseOwner() {
-	m.courseOwner = nil
-	m.clearedcourseOwner = false
-	m.removedcourseOwner = nil
+// ResetTodo resets all changes to the "todo" edge.
+func (m *EntCourseMutation) ResetTodo() {
+	m.todo = nil
+	m.clearedtodo = false
+	m.removedtodo = nil
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by ids.
+func (m *EntCourseMutation) AddAttendanceIDs(ids ...int) {
+	if m.attendance == nil {
+		m.attendance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.attendance[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAttendance clears the "attendance" edge to the EntAttendance entity.
+func (m *EntCourseMutation) ClearAttendance() {
+	m.clearedattendance = true
+}
+
+// AttendanceCleared reports if the "attendance" edge to the EntAttendance entity was cleared.
+func (m *EntCourseMutation) AttendanceCleared() bool {
+	return m.clearedattendance
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to the EntAttendance entity by IDs.
+func (m *EntCourseMutation) RemoveAttendanceIDs(ids ...int) {
+	if m.removedattendance == nil {
+		m.removedattendance = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.attendance, ids[i])
+		m.removedattendance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAttendance returns the removed IDs of the "attendance" edge to the EntAttendance entity.
+func (m *EntCourseMutation) RemovedAttendanceIDs() (ids []int) {
+	for id := range m.removedattendance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AttendanceIDs returns the "attendance" edge IDs in the mutation.
+func (m *EntCourseMutation) AttendanceIDs() (ids []int) {
+	for id := range m.attendance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAttendance resets all changes to the "attendance" edge.
+func (m *EntCourseMutation) ResetAttendance() {
+	m.attendance = nil
+	m.clearedattendance = false
+	m.removedattendance = nil
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by ids.
+func (m *EntCourseMutation) AddPostIDs(ids ...int) {
+	if m.post == nil {
+		m.post = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.post[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPost clears the "post" edge to the EntPost entity.
+func (m *EntCourseMutation) ClearPost() {
+	m.clearedpost = true
+}
+
+// PostCleared reports if the "post" edge to the EntPost entity was cleared.
+func (m *EntCourseMutation) PostCleared() bool {
+	return m.clearedpost
+}
+
+// RemovePostIDs removes the "post" edge to the EntPost entity by IDs.
+func (m *EntCourseMutation) RemovePostIDs(ids ...int) {
+	if m.removedpost == nil {
+		m.removedpost = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.post, ids[i])
+		m.removedpost[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPost returns the removed IDs of the "post" edge to the EntPost entity.
+func (m *EntCourseMutation) RemovedPostIDs() (ids []int) {
+	for id := range m.removedpost {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PostIDs returns the "post" edge IDs in the mutation.
+func (m *EntCourseMutation) PostIDs() (ids []int) {
+	for id := range m.post {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPost resets all changes to the "post" edge.
+func (m *EntCourseMutation) ResetPost() {
+	m.post = nil
+	m.clearedpost = false
+	m.removedpost = nil
+}
+
+// AddOwnedByIDs adds the "ownedBy" edge to the EntUser entity by ids.
+func (m *EntCourseMutation) AddOwnedByIDs(ids ...int) {
+	if m.ownedBy == nil {
+		m.ownedBy = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.ownedBy[ids[i]] = struct{}{}
+	}
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (m *EntCourseMutation) ClearOwnedBy() {
+	m.clearedownedBy = true
+}
+
+// OwnedByCleared reports if the "ownedBy" edge to the EntUser entity was cleared.
+func (m *EntCourseMutation) OwnedByCleared() bool {
+	return m.clearedownedBy
+}
+
+// RemoveOwnedByIDs removes the "ownedBy" edge to the EntUser entity by IDs.
+func (m *EntCourseMutation) RemoveOwnedByIDs(ids ...int) {
+	if m.removedownedBy == nil {
+		m.removedownedBy = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.ownedBy, ids[i])
+		m.removedownedBy[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedOwnedBy returns the removed IDs of the "ownedBy" edge to the EntUser entity.
+func (m *EntCourseMutation) RemovedOwnedByIDs() (ids []int) {
+	for id := range m.removedownedBy {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// OwnedByIDs returns the "ownedBy" edge IDs in the mutation.
+func (m *EntCourseMutation) OwnedByIDs() (ids []int) {
+	for id := range m.ownedBy {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetOwnedBy resets all changes to the "ownedBy" edge.
+func (m *EntCourseMutation) ResetOwnedBy() {
+	m.ownedBy = nil
+	m.clearedownedBy = false
+	m.removedownedBy = nil
 }
 
 // Where appends a list predicates to the EntCourseMutation builder.
@@ -1768,9 +3039,18 @@ func (m *EntCourseMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntCourseMutation) AddedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.courseOwner != nil {
-		edges = append(edges, entcourse.EdgeCourseOwner)
+	edges := make([]string, 0, 4)
+	if m.todo != nil {
+		edges = append(edges, entcourse.EdgeTodo)
+	}
+	if m.attendance != nil {
+		edges = append(edges, entcourse.EdgeAttendance)
+	}
+	if m.post != nil {
+		edges = append(edges, entcourse.EdgePost)
+	}
+	if m.ownedBy != nil {
+		edges = append(edges, entcourse.EdgeOwnedBy)
 	}
 	return edges
 }
@@ -1779,9 +3059,27 @@ func (m *EntCourseMutation) AddedEdges() []string {
 // name in this mutation.
 func (m *EntCourseMutation) AddedIDs(name string) []ent.Value {
 	switch name {
-	case entcourse.EdgeCourseOwner:
-		ids := make([]ent.Value, 0, len(m.courseOwner))
-		for id := range m.courseOwner {
+	case entcourse.EdgeTodo:
+		ids := make([]ent.Value, 0, len(m.todo))
+		for id := range m.todo {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgeAttendance:
+		ids := make([]ent.Value, 0, len(m.attendance))
+		for id := range m.attendance {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgePost:
+		ids := make([]ent.Value, 0, len(m.post))
+		for id := range m.post {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgeOwnedBy:
+		ids := make([]ent.Value, 0, len(m.ownedBy))
+		for id := range m.ownedBy {
 			ids = append(ids, id)
 		}
 		return ids
@@ -1791,9 +3089,18 @@ func (m *EntCourseMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntCourseMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.removedcourseOwner != nil {
-		edges = append(edges, entcourse.EdgeCourseOwner)
+	edges := make([]string, 0, 4)
+	if m.removedtodo != nil {
+		edges = append(edges, entcourse.EdgeTodo)
+	}
+	if m.removedattendance != nil {
+		edges = append(edges, entcourse.EdgeAttendance)
+	}
+	if m.removedpost != nil {
+		edges = append(edges, entcourse.EdgePost)
+	}
+	if m.removedownedBy != nil {
+		edges = append(edges, entcourse.EdgeOwnedBy)
 	}
 	return edges
 }
@@ -1802,9 +3109,27 @@ func (m *EntCourseMutation) RemovedEdges() []string {
 // the given name in this mutation.
 func (m *EntCourseMutation) RemovedIDs(name string) []ent.Value {
 	switch name {
-	case entcourse.EdgeCourseOwner:
-		ids := make([]ent.Value, 0, len(m.removedcourseOwner))
-		for id := range m.removedcourseOwner {
+	case entcourse.EdgeTodo:
+		ids := make([]ent.Value, 0, len(m.removedtodo))
+		for id := range m.removedtodo {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgeAttendance:
+		ids := make([]ent.Value, 0, len(m.removedattendance))
+		for id := range m.removedattendance {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgePost:
+		ids := make([]ent.Value, 0, len(m.removedpost))
+		for id := range m.removedpost {
+			ids = append(ids, id)
+		}
+		return ids
+	case entcourse.EdgeOwnedBy:
+		ids := make([]ent.Value, 0, len(m.removedownedBy))
+		for id := range m.removedownedBy {
 			ids = append(ids, id)
 		}
 		return ids
@@ -1814,9 +3139,18 @@ func (m *EntCourseMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntCourseMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 1)
-	if m.clearedcourseOwner {
-		edges = append(edges, entcourse.EdgeCourseOwner)
+	edges := make([]string, 0, 4)
+	if m.clearedtodo {
+		edges = append(edges, entcourse.EdgeTodo)
+	}
+	if m.clearedattendance {
+		edges = append(edges, entcourse.EdgeAttendance)
+	}
+	if m.clearedpost {
+		edges = append(edges, entcourse.EdgePost)
+	}
+	if m.clearedownedBy {
+		edges = append(edges, entcourse.EdgeOwnedBy)
 	}
 	return edges
 }
@@ -1825,8 +3159,14 @@ func (m *EntCourseMutation) ClearedEdges() []string {
 // was cleared in this mutation.
 func (m *EntCourseMutation) EdgeCleared(name string) bool {
 	switch name {
-	case entcourse.EdgeCourseOwner:
-		return m.clearedcourseOwner
+	case entcourse.EdgeTodo:
+		return m.clearedtodo
+	case entcourse.EdgeAttendance:
+		return m.clearedattendance
+	case entcourse.EdgePost:
+		return m.clearedpost
+	case entcourse.EdgeOwnedBy:
+		return m.clearedownedBy
 	}
 	return false
 }
@@ -1843,8 +3183,17 @@ func (m *EntCourseMutation) ClearEdge(name string) error {
 // It returns an error if the edge is not defined in the schema.
 func (m *EntCourseMutation) ResetEdge(name string) error {
 	switch name {
-	case entcourse.EdgeCourseOwner:
-		m.ResetCourseOwner()
+	case entcourse.EdgeTodo:
+		m.ResetTodo()
+		return nil
+	case entcourse.EdgeAttendance:
+		m.ResetAttendance()
+		return nil
+	case entcourse.EdgePost:
+		m.ResetPost()
+		return nil
+	case entcourse.EdgeOwnedBy:
+		m.ResetOwnedBy()
 		return nil
 	}
 	return fmt.Errorf("unknown EntCourse edge %s", name)
@@ -1853,13 +3202,23 @@ func (m *EntCourseMutation) ResetEdge(name string) error {
 // EntPostMutation represents an operation that mutates the EntPost nodes in the graph.
 type EntPostMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*EntPost, error)
-	predicates    []predicate.EntPost
+	op               Op
+	typ              string
+	id               *int
+	timestamp        *time.Time
+	content          *string
+	share            *entpost.Share
+	clearedFields    map[string]struct{}
+	comment          map[int]struct{}
+	removedcomment   map[int]struct{}
+	clearedcomment   bool
+	belongsTo        *int
+	clearedbelongsTo bool
+	ownedBy          *int
+	clearedownedBy   bool
+	done             bool
+	oldValue         func(context.Context) (*EntPost, error)
+	predicates       []predicate.EntPost
 }
 
 var _ ent.Mutation = (*EntPostMutation)(nil)
@@ -1960,6 +3319,272 @@ func (m *EntPostMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetTimestamp sets the "timestamp" field.
+func (m *EntPostMutation) SetTimestamp(t time.Time) {
+	m.timestamp = &t
+}
+
+// Timestamp returns the value of the "timestamp" field in the mutation.
+func (m *EntPostMutation) Timestamp() (r time.Time, exists bool) {
+	v := m.timestamp
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTimestamp returns the old "timestamp" field's value of the EntPost entity.
+// If the EntPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntPostMutation) OldTimestamp(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTimestamp is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTimestamp requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTimestamp: %w", err)
+	}
+	return oldValue.Timestamp, nil
+}
+
+// ResetTimestamp resets all changes to the "timestamp" field.
+func (m *EntPostMutation) ResetTimestamp() {
+	m.timestamp = nil
+}
+
+// SetContent sets the "content" field.
+func (m *EntPostMutation) SetContent(s string) {
+	m.content = &s
+}
+
+// Content returns the value of the "content" field in the mutation.
+func (m *EntPostMutation) Content() (r string, exists bool) {
+	v := m.content
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldContent returns the old "content" field's value of the EntPost entity.
+// If the EntPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntPostMutation) OldContent(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldContent is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldContent requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldContent: %w", err)
+	}
+	return oldValue.Content, nil
+}
+
+// ClearContent clears the value of the "content" field.
+func (m *EntPostMutation) ClearContent() {
+	m.content = nil
+	m.clearedFields[entpost.FieldContent] = struct{}{}
+}
+
+// ContentCleared returns if the "content" field was cleared in this mutation.
+func (m *EntPostMutation) ContentCleared() bool {
+	_, ok := m.clearedFields[entpost.FieldContent]
+	return ok
+}
+
+// ResetContent resets all changes to the "content" field.
+func (m *EntPostMutation) ResetContent() {
+	m.content = nil
+	delete(m.clearedFields, entpost.FieldContent)
+}
+
+// SetShare sets the "share" field.
+func (m *EntPostMutation) SetShare(e entpost.Share) {
+	m.share = &e
+}
+
+// Share returns the value of the "share" field in the mutation.
+func (m *EntPostMutation) Share() (r entpost.Share, exists bool) {
+	v := m.share
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldShare returns the old "share" field's value of the EntPost entity.
+// If the EntPost object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntPostMutation) OldShare(ctx context.Context) (v entpost.Share, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldShare is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldShare requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldShare: %w", err)
+	}
+	return oldValue.Share, nil
+}
+
+// ClearShare clears the value of the "share" field.
+func (m *EntPostMutation) ClearShare() {
+	m.share = nil
+	m.clearedFields[entpost.FieldShare] = struct{}{}
+}
+
+// ShareCleared returns if the "share" field was cleared in this mutation.
+func (m *EntPostMutation) ShareCleared() bool {
+	_, ok := m.clearedFields[entpost.FieldShare]
+	return ok
+}
+
+// ResetShare resets all changes to the "share" field.
+func (m *EntPostMutation) ResetShare() {
+	m.share = nil
+	delete(m.clearedFields, entpost.FieldShare)
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by ids.
+func (m *EntPostMutation) AddCommentIDs(ids ...int) {
+	if m.comment == nil {
+		m.comment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.comment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearComment clears the "comment" edge to the EntComment entity.
+func (m *EntPostMutation) ClearComment() {
+	m.clearedcomment = true
+}
+
+// CommentCleared reports if the "comment" edge to the EntComment entity was cleared.
+func (m *EntPostMutation) CommentCleared() bool {
+	return m.clearedcomment
+}
+
+// RemoveCommentIDs removes the "comment" edge to the EntComment entity by IDs.
+func (m *EntPostMutation) RemoveCommentIDs(ids ...int) {
+	if m.removedcomment == nil {
+		m.removedcomment = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.comment, ids[i])
+		m.removedcomment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedComment returns the removed IDs of the "comment" edge to the EntComment entity.
+func (m *EntPostMutation) RemovedCommentIDs() (ids []int) {
+	for id := range m.removedcomment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CommentIDs returns the "comment" edge IDs in the mutation.
+func (m *EntPostMutation) CommentIDs() (ids []int) {
+	for id := range m.comment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetComment resets all changes to the "comment" edge.
+func (m *EntPostMutation) ResetComment() {
+	m.comment = nil
+	m.clearedcomment = false
+	m.removedcomment = nil
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntCourse entity by id.
+func (m *EntPostMutation) SetBelongsToID(id int) {
+	m.belongsTo = &id
+}
+
+// ClearBelongsTo clears the "belongsTo" edge to the EntCourse entity.
+func (m *EntPostMutation) ClearBelongsTo() {
+	m.clearedbelongsTo = true
+}
+
+// BelongsToCleared reports if the "belongsTo" edge to the EntCourse entity was cleared.
+func (m *EntPostMutation) BelongsToCleared() bool {
+	return m.clearedbelongsTo
+}
+
+// BelongsToID returns the "belongsTo" edge ID in the mutation.
+func (m *EntPostMutation) BelongsToID() (id int, exists bool) {
+	if m.belongsTo != nil {
+		return *m.belongsTo, true
+	}
+	return
+}
+
+// BelongsToIDs returns the "belongsTo" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// BelongsToID instead. It exists only for internal usage by the builders.
+func (m *EntPostMutation) BelongsToIDs() (ids []int) {
+	if id := m.belongsTo; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetBelongsTo resets all changes to the "belongsTo" edge.
+func (m *EntPostMutation) ResetBelongsTo() {
+	m.belongsTo = nil
+	m.clearedbelongsTo = false
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by id.
+func (m *EntPostMutation) SetOwnedByID(id int) {
+	m.ownedBy = &id
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (m *EntPostMutation) ClearOwnedBy() {
+	m.clearedownedBy = true
+}
+
+// OwnedByCleared reports if the "ownedBy" edge to the EntUser entity was cleared.
+func (m *EntPostMutation) OwnedByCleared() bool {
+	return m.clearedownedBy
+}
+
+// OwnedByID returns the "ownedBy" edge ID in the mutation.
+func (m *EntPostMutation) OwnedByID() (id int, exists bool) {
+	if m.ownedBy != nil {
+		return *m.ownedBy, true
+	}
+	return
+}
+
+// OwnedByIDs returns the "ownedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// OwnedByID instead. It exists only for internal usage by the builders.
+func (m *EntPostMutation) OwnedByIDs() (ids []int) {
+	if id := m.ownedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOwnedBy resets all changes to the "ownedBy" edge.
+func (m *EntPostMutation) ResetOwnedBy() {
+	m.ownedBy = nil
+	m.clearedownedBy = false
+}
+
 // Where appends a list predicates to the EntPostMutation builder.
 func (m *EntPostMutation) Where(ps ...predicate.EntPost) {
 	m.predicates = append(m.predicates, ps...)
@@ -1979,7 +3604,16 @@ func (m *EntPostMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntPostMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 3)
+	if m.timestamp != nil {
+		fields = append(fields, entpost.FieldTimestamp)
+	}
+	if m.content != nil {
+		fields = append(fields, entpost.FieldContent)
+	}
+	if m.share != nil {
+		fields = append(fields, entpost.FieldShare)
+	}
 	return fields
 }
 
@@ -1987,6 +3621,14 @@ func (m *EntPostMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EntPostMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case entpost.FieldTimestamp:
+		return m.Timestamp()
+	case entpost.FieldContent:
+		return m.Content()
+	case entpost.FieldShare:
+		return m.Share()
+	}
 	return nil, false
 }
 
@@ -1994,6 +3636,14 @@ func (m *EntPostMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EntPostMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case entpost.FieldTimestamp:
+		return m.OldTimestamp(ctx)
+	case entpost.FieldContent:
+		return m.OldContent(ctx)
+	case entpost.FieldShare:
+		return m.OldShare(ctx)
+	}
 	return nil, fmt.Errorf("unknown EntPost field %s", name)
 }
 
@@ -2002,6 +3652,27 @@ func (m *EntPostMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *EntPostMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case entpost.FieldTimestamp:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTimestamp(v)
+		return nil
+	case entpost.FieldContent:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetContent(v)
+		return nil
+	case entpost.FieldShare:
+		v, ok := value.(entpost.Share)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetShare(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EntPost field %s", name)
 }
@@ -2023,13 +3694,22 @@ func (m *EntPostMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EntPostMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown EntPost numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntPostMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(entpost.FieldContent) {
+		fields = append(fields, entpost.FieldContent)
+	}
+	if m.FieldCleared(entpost.FieldShare) {
+		fields = append(fields, entpost.FieldShare)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -2042,73 +3722,175 @@ func (m *EntPostMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntPostMutation) ClearField(name string) error {
+	switch name {
+	case entpost.FieldContent:
+		m.ClearContent()
+		return nil
+	case entpost.FieldShare:
+		m.ClearShare()
+		return nil
+	}
 	return fmt.Errorf("unknown EntPost nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EntPostMutation) ResetField(name string) error {
+	switch name {
+	case entpost.FieldTimestamp:
+		m.ResetTimestamp()
+		return nil
+	case entpost.FieldContent:
+		m.ResetContent()
+		return nil
+	case entpost.FieldShare:
+		m.ResetShare()
+		return nil
+	}
 	return fmt.Errorf("unknown EntPost field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntPostMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 3)
+	if m.comment != nil {
+		edges = append(edges, entpost.EdgeComment)
+	}
+	if m.belongsTo != nil {
+		edges = append(edges, entpost.EdgeBelongsTo)
+	}
+	if m.ownedBy != nil {
+		edges = append(edges, entpost.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *EntPostMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case entpost.EdgeComment:
+		ids := make([]ent.Value, 0, len(m.comment))
+		for id := range m.comment {
+			ids = append(ids, id)
+		}
+		return ids
+	case entpost.EdgeBelongsTo:
+		if id := m.belongsTo; id != nil {
+			return []ent.Value{*id}
+		}
+	case entpost.EdgeOwnedBy:
+		if id := m.ownedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntPostMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 3)
+	if m.removedcomment != nil {
+		edges = append(edges, entpost.EdgeComment)
+	}
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *EntPostMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	case entpost.EdgeComment:
+		ids := make([]ent.Value, 0, len(m.removedcomment))
+		for id := range m.removedcomment {
+			ids = append(ids, id)
+		}
+		return ids
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntPostMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 3)
+	if m.clearedcomment {
+		edges = append(edges, entpost.EdgeComment)
+	}
+	if m.clearedbelongsTo {
+		edges = append(edges, entpost.EdgeBelongsTo)
+	}
+	if m.clearedownedBy {
+		edges = append(edges, entpost.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *EntPostMutation) EdgeCleared(name string) bool {
+	switch name {
+	case entpost.EdgeComment:
+		return m.clearedcomment
+	case entpost.EdgeBelongsTo:
+		return m.clearedbelongsTo
+	case entpost.EdgeOwnedBy:
+		return m.clearedownedBy
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *EntPostMutation) ClearEdge(name string) error {
+	switch name {
+	case entpost.EdgeBelongsTo:
+		m.ClearBelongsTo()
+		return nil
+	case entpost.EdgeOwnedBy:
+		m.ClearOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntPost unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *EntPostMutation) ResetEdge(name string) error {
+	switch name {
+	case entpost.EdgeComment:
+		m.ResetComment()
+		return nil
+	case entpost.EdgeBelongsTo:
+		m.ResetBelongsTo()
+		return nil
+	case entpost.EdgeOwnedBy:
+		m.ResetOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntPost edge %s", name)
 }
 
 // EntTodoMutation represents an operation that mutates the EntTodo nodes in the graph.
 type EntTodoMutation struct {
 	config
-	op            Op
-	typ           string
-	id            *int
-	clearedFields map[string]struct{}
-	done          bool
-	oldValue      func(context.Context) (*EntTodo, error)
-	predicates    []predicate.EntTodo
+	op             Op
+	typ            string
+	id             *int
+	date           *time.Time
+	startTime      *time.Time
+	endTime        *time.Time
+	day            *time.Time
+	lesson         *string
+	homework       *string
+	status         *enttodo.Status
+	clearedFields  map[string]struct{}
+	todoFor        *int
+	clearedtodoFor bool
+	ownedBy        *int
+	clearedownedBy bool
+	done           bool
+	oldValue       func(context.Context) (*EntTodo, error)
+	predicates     []predicate.EntTodo
 }
 
 var _ ent.Mutation = (*EntTodoMutation)(nil)
@@ -2209,6 +3991,401 @@ func (m *EntTodoMutation) IDs(ctx context.Context) ([]int, error) {
 	}
 }
 
+// SetDate sets the "date" field.
+func (m *EntTodoMutation) SetDate(t time.Time) {
+	m.date = &t
+}
+
+// Date returns the value of the "date" field in the mutation.
+func (m *EntTodoMutation) Date() (r time.Time, exists bool) {
+	v := m.date
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDate returns the old "date" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldDate(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDate is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDate requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDate: %w", err)
+	}
+	return oldValue.Date, nil
+}
+
+// ResetDate resets all changes to the "date" field.
+func (m *EntTodoMutation) ResetDate() {
+	m.date = nil
+}
+
+// SetStartTime sets the "startTime" field.
+func (m *EntTodoMutation) SetStartTime(t time.Time) {
+	m.startTime = &t
+}
+
+// StartTime returns the value of the "startTime" field in the mutation.
+func (m *EntTodoMutation) StartTime() (r time.Time, exists bool) {
+	v := m.startTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStartTime returns the old "startTime" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStartTime: %w", err)
+	}
+	return oldValue.StartTime, nil
+}
+
+// ClearStartTime clears the value of the "startTime" field.
+func (m *EntTodoMutation) ClearStartTime() {
+	m.startTime = nil
+	m.clearedFields[enttodo.FieldStartTime] = struct{}{}
+}
+
+// StartTimeCleared returns if the "startTime" field was cleared in this mutation.
+func (m *EntTodoMutation) StartTimeCleared() bool {
+	_, ok := m.clearedFields[enttodo.FieldStartTime]
+	return ok
+}
+
+// ResetStartTime resets all changes to the "startTime" field.
+func (m *EntTodoMutation) ResetStartTime() {
+	m.startTime = nil
+	delete(m.clearedFields, enttodo.FieldStartTime)
+}
+
+// SetEndTime sets the "endTime" field.
+func (m *EntTodoMutation) SetEndTime(t time.Time) {
+	m.endTime = &t
+}
+
+// EndTime returns the value of the "endTime" field in the mutation.
+func (m *EntTodoMutation) EndTime() (r time.Time, exists bool) {
+	v := m.endTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldEndTime returns the old "endTime" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldEndTime: %w", err)
+	}
+	return oldValue.EndTime, nil
+}
+
+// ClearEndTime clears the value of the "endTime" field.
+func (m *EntTodoMutation) ClearEndTime() {
+	m.endTime = nil
+	m.clearedFields[enttodo.FieldEndTime] = struct{}{}
+}
+
+// EndTimeCleared returns if the "endTime" field was cleared in this mutation.
+func (m *EntTodoMutation) EndTimeCleared() bool {
+	_, ok := m.clearedFields[enttodo.FieldEndTime]
+	return ok
+}
+
+// ResetEndTime resets all changes to the "endTime" field.
+func (m *EntTodoMutation) ResetEndTime() {
+	m.endTime = nil
+	delete(m.clearedFields, enttodo.FieldEndTime)
+}
+
+// SetDay sets the "day" field.
+func (m *EntTodoMutation) SetDay(t time.Time) {
+	m.day = &t
+}
+
+// Day returns the value of the "day" field in the mutation.
+func (m *EntTodoMutation) Day() (r time.Time, exists bool) {
+	v := m.day
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDay returns the old "day" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldDay(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDay is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDay requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDay: %w", err)
+	}
+	return oldValue.Day, nil
+}
+
+// ClearDay clears the value of the "day" field.
+func (m *EntTodoMutation) ClearDay() {
+	m.day = nil
+	m.clearedFields[enttodo.FieldDay] = struct{}{}
+}
+
+// DayCleared returns if the "day" field was cleared in this mutation.
+func (m *EntTodoMutation) DayCleared() bool {
+	_, ok := m.clearedFields[enttodo.FieldDay]
+	return ok
+}
+
+// ResetDay resets all changes to the "day" field.
+func (m *EntTodoMutation) ResetDay() {
+	m.day = nil
+	delete(m.clearedFields, enttodo.FieldDay)
+}
+
+// SetLesson sets the "lesson" field.
+func (m *EntTodoMutation) SetLesson(s string) {
+	m.lesson = &s
+}
+
+// Lesson returns the value of the "lesson" field in the mutation.
+func (m *EntTodoMutation) Lesson() (r string, exists bool) {
+	v := m.lesson
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLesson returns the old "lesson" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldLesson(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLesson is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLesson requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLesson: %w", err)
+	}
+	return oldValue.Lesson, nil
+}
+
+// ClearLesson clears the value of the "lesson" field.
+func (m *EntTodoMutation) ClearLesson() {
+	m.lesson = nil
+	m.clearedFields[enttodo.FieldLesson] = struct{}{}
+}
+
+// LessonCleared returns if the "lesson" field was cleared in this mutation.
+func (m *EntTodoMutation) LessonCleared() bool {
+	_, ok := m.clearedFields[enttodo.FieldLesson]
+	return ok
+}
+
+// ResetLesson resets all changes to the "lesson" field.
+func (m *EntTodoMutation) ResetLesson() {
+	m.lesson = nil
+	delete(m.clearedFields, enttodo.FieldLesson)
+}
+
+// SetHomework sets the "homework" field.
+func (m *EntTodoMutation) SetHomework(s string) {
+	m.homework = &s
+}
+
+// Homework returns the value of the "homework" field in the mutation.
+func (m *EntTodoMutation) Homework() (r string, exists bool) {
+	v := m.homework
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldHomework returns the old "homework" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldHomework(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldHomework is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldHomework requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldHomework: %w", err)
+	}
+	return oldValue.Homework, nil
+}
+
+// ClearHomework clears the value of the "homework" field.
+func (m *EntTodoMutation) ClearHomework() {
+	m.homework = nil
+	m.clearedFields[enttodo.FieldHomework] = struct{}{}
+}
+
+// HomeworkCleared returns if the "homework" field was cleared in this mutation.
+func (m *EntTodoMutation) HomeworkCleared() bool {
+	_, ok := m.clearedFields[enttodo.FieldHomework]
+	return ok
+}
+
+// ResetHomework resets all changes to the "homework" field.
+func (m *EntTodoMutation) ResetHomework() {
+	m.homework = nil
+	delete(m.clearedFields, enttodo.FieldHomework)
+}
+
+// SetStatus sets the "status" field.
+func (m *EntTodoMutation) SetStatus(e enttodo.Status) {
+	m.status = &e
+}
+
+// Status returns the value of the "status" field in the mutation.
+func (m *EntTodoMutation) Status() (r enttodo.Status, exists bool) {
+	v := m.status
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldStatus returns the old "status" field's value of the EntTodo entity.
+// If the EntTodo object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntTodoMutation) OldStatus(ctx context.Context) (v enttodo.Status, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldStatus is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldStatus requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldStatus: %w", err)
+	}
+	return oldValue.Status, nil
+}
+
+// ResetStatus resets all changes to the "status" field.
+func (m *EntTodoMutation) ResetStatus() {
+	m.status = nil
+}
+
+// SetTodoForID sets the "todoFor" edge to the EntCourse entity by id.
+func (m *EntTodoMutation) SetTodoForID(id int) {
+	m.todoFor = &id
+}
+
+// ClearTodoFor clears the "todoFor" edge to the EntCourse entity.
+func (m *EntTodoMutation) ClearTodoFor() {
+	m.clearedtodoFor = true
+}
+
+// TodoForCleared reports if the "todoFor" edge to the EntCourse entity was cleared.
+func (m *EntTodoMutation) TodoForCleared() bool {
+	return m.clearedtodoFor
+}
+
+// TodoForID returns the "todoFor" edge ID in the mutation.
+func (m *EntTodoMutation) TodoForID() (id int, exists bool) {
+	if m.todoFor != nil {
+		return *m.todoFor, true
+	}
+	return
+}
+
+// TodoForIDs returns the "todoFor" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// TodoForID instead. It exists only for internal usage by the builders.
+func (m *EntTodoMutation) TodoForIDs() (ids []int) {
+	if id := m.todoFor; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetTodoFor resets all changes to the "todoFor" edge.
+func (m *EntTodoMutation) ResetTodoFor() {
+	m.todoFor = nil
+	m.clearedtodoFor = false
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by id.
+func (m *EntTodoMutation) SetOwnedByID(id int) {
+	m.ownedBy = &id
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (m *EntTodoMutation) ClearOwnedBy() {
+	m.clearedownedBy = true
+}
+
+// OwnedByCleared reports if the "ownedBy" edge to the EntUser entity was cleared.
+func (m *EntTodoMutation) OwnedByCleared() bool {
+	return m.clearedownedBy
+}
+
+// OwnedByID returns the "ownedBy" edge ID in the mutation.
+func (m *EntTodoMutation) OwnedByID() (id int, exists bool) {
+	if m.ownedBy != nil {
+		return *m.ownedBy, true
+	}
+	return
+}
+
+// OwnedByIDs returns the "ownedBy" edge IDs in the mutation.
+// Note that IDs always returns len(IDs) <= 1 for unique edges, and you should use
+// OwnedByID instead. It exists only for internal usage by the builders.
+func (m *EntTodoMutation) OwnedByIDs() (ids []int) {
+	if id := m.ownedBy; id != nil {
+		ids = append(ids, *id)
+	}
+	return
+}
+
+// ResetOwnedBy resets all changes to the "ownedBy" edge.
+func (m *EntTodoMutation) ResetOwnedBy() {
+	m.ownedBy = nil
+	m.clearedownedBy = false
+}
+
 // Where appends a list predicates to the EntTodoMutation builder.
 func (m *EntTodoMutation) Where(ps ...predicate.EntTodo) {
 	m.predicates = append(m.predicates, ps...)
@@ -2228,7 +4405,28 @@ func (m *EntTodoMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntTodoMutation) Fields() []string {
-	fields := make([]string, 0, 0)
+	fields := make([]string, 0, 7)
+	if m.date != nil {
+		fields = append(fields, enttodo.FieldDate)
+	}
+	if m.startTime != nil {
+		fields = append(fields, enttodo.FieldStartTime)
+	}
+	if m.endTime != nil {
+		fields = append(fields, enttodo.FieldEndTime)
+	}
+	if m.day != nil {
+		fields = append(fields, enttodo.FieldDay)
+	}
+	if m.lesson != nil {
+		fields = append(fields, enttodo.FieldLesson)
+	}
+	if m.homework != nil {
+		fields = append(fields, enttodo.FieldHomework)
+	}
+	if m.status != nil {
+		fields = append(fields, enttodo.FieldStatus)
+	}
 	return fields
 }
 
@@ -2236,6 +4434,22 @@ func (m *EntTodoMutation) Fields() []string {
 // return value indicates that this field was not set, or was not defined in the
 // schema.
 func (m *EntTodoMutation) Field(name string) (ent.Value, bool) {
+	switch name {
+	case enttodo.FieldDate:
+		return m.Date()
+	case enttodo.FieldStartTime:
+		return m.StartTime()
+	case enttodo.FieldEndTime:
+		return m.EndTime()
+	case enttodo.FieldDay:
+		return m.Day()
+	case enttodo.FieldLesson:
+		return m.Lesson()
+	case enttodo.FieldHomework:
+		return m.Homework()
+	case enttodo.FieldStatus:
+		return m.Status()
+	}
 	return nil, false
 }
 
@@ -2243,6 +4457,22 @@ func (m *EntTodoMutation) Field(name string) (ent.Value, bool) {
 // returned if the mutation operation is not UpdateOne, or the query to the
 // database failed.
 func (m *EntTodoMutation) OldField(ctx context.Context, name string) (ent.Value, error) {
+	switch name {
+	case enttodo.FieldDate:
+		return m.OldDate(ctx)
+	case enttodo.FieldStartTime:
+		return m.OldStartTime(ctx)
+	case enttodo.FieldEndTime:
+		return m.OldEndTime(ctx)
+	case enttodo.FieldDay:
+		return m.OldDay(ctx)
+	case enttodo.FieldLesson:
+		return m.OldLesson(ctx)
+	case enttodo.FieldHomework:
+		return m.OldHomework(ctx)
+	case enttodo.FieldStatus:
+		return m.OldStatus(ctx)
+	}
 	return nil, fmt.Errorf("unknown EntTodo field %s", name)
 }
 
@@ -2251,6 +4481,55 @@ func (m *EntTodoMutation) OldField(ctx context.Context, name string) (ent.Value,
 // type.
 func (m *EntTodoMutation) SetField(name string, value ent.Value) error {
 	switch name {
+	case enttodo.FieldDate:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDate(v)
+		return nil
+	case enttodo.FieldStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStartTime(v)
+		return nil
+	case enttodo.FieldEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetEndTime(v)
+		return nil
+	case enttodo.FieldDay:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDay(v)
+		return nil
+	case enttodo.FieldLesson:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLesson(v)
+		return nil
+	case enttodo.FieldHomework:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetHomework(v)
+		return nil
+	case enttodo.FieldStatus:
+		v, ok := value.(enttodo.Status)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetStatus(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EntTodo field %s", name)
 }
@@ -2272,13 +4551,31 @@ func (m *EntTodoMutation) AddedField(name string) (ent.Value, bool) {
 // the field is not defined in the schema, or if the type mismatched the field
 // type.
 func (m *EntTodoMutation) AddField(name string, value ent.Value) error {
+	switch name {
+	}
 	return fmt.Errorf("unknown EntTodo numeric field %s", name)
 }
 
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntTodoMutation) ClearedFields() []string {
-	return nil
+	var fields []string
+	if m.FieldCleared(enttodo.FieldStartTime) {
+		fields = append(fields, enttodo.FieldStartTime)
+	}
+	if m.FieldCleared(enttodo.FieldEndTime) {
+		fields = append(fields, enttodo.FieldEndTime)
+	}
+	if m.FieldCleared(enttodo.FieldDay) {
+		fields = append(fields, enttodo.FieldDay)
+	}
+	if m.FieldCleared(enttodo.FieldLesson) {
+		fields = append(fields, enttodo.FieldLesson)
+	}
+	if m.FieldCleared(enttodo.FieldHomework) {
+		fields = append(fields, enttodo.FieldHomework)
+	}
+	return fields
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -2291,60 +4588,146 @@ func (m *EntTodoMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntTodoMutation) ClearField(name string) error {
+	switch name {
+	case enttodo.FieldStartTime:
+		m.ClearStartTime()
+		return nil
+	case enttodo.FieldEndTime:
+		m.ClearEndTime()
+		return nil
+	case enttodo.FieldDay:
+		m.ClearDay()
+		return nil
+	case enttodo.FieldLesson:
+		m.ClearLesson()
+		return nil
+	case enttodo.FieldHomework:
+		m.ClearHomework()
+		return nil
+	}
 	return fmt.Errorf("unknown EntTodo nullable field %s", name)
 }
 
 // ResetField resets all changes in the mutation for the field with the given name.
 // It returns an error if the field is not defined in the schema.
 func (m *EntTodoMutation) ResetField(name string) error {
+	switch name {
+	case enttodo.FieldDate:
+		m.ResetDate()
+		return nil
+	case enttodo.FieldStartTime:
+		m.ResetStartTime()
+		return nil
+	case enttodo.FieldEndTime:
+		m.ResetEndTime()
+		return nil
+	case enttodo.FieldDay:
+		m.ResetDay()
+		return nil
+	case enttodo.FieldLesson:
+		m.ResetLesson()
+		return nil
+	case enttodo.FieldHomework:
+		m.ResetHomework()
+		return nil
+	case enttodo.FieldStatus:
+		m.ResetStatus()
+		return nil
+	}
 	return fmt.Errorf("unknown EntTodo field %s", name)
 }
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntTodoMutation) AddedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.todoFor != nil {
+		edges = append(edges, enttodo.EdgeTodoFor)
+	}
+	if m.ownedBy != nil {
+		edges = append(edges, enttodo.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // AddedIDs returns all IDs (to other nodes) that were added for the given edge
 // name in this mutation.
 func (m *EntTodoMutation) AddedIDs(name string) []ent.Value {
+	switch name {
+	case enttodo.EdgeTodoFor:
+		if id := m.todoFor; id != nil {
+			return []ent.Value{*id}
+		}
+	case enttodo.EdgeOwnedBy:
+		if id := m.ownedBy; id != nil {
+			return []ent.Value{*id}
+		}
+	}
 	return nil
 }
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntTodoMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
 	return edges
 }
 
 // RemovedIDs returns all IDs (to other nodes) that were removed for the edge with
 // the given name in this mutation.
 func (m *EntTodoMutation) RemovedIDs(name string) []ent.Value {
+	switch name {
+	}
 	return nil
 }
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntTodoMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 0)
+	edges := make([]string, 0, 2)
+	if m.clearedtodoFor {
+		edges = append(edges, enttodo.EdgeTodoFor)
+	}
+	if m.clearedownedBy {
+		edges = append(edges, enttodo.EdgeOwnedBy)
+	}
 	return edges
 }
 
 // EdgeCleared returns a boolean which indicates if the edge with the given name
 // was cleared in this mutation.
 func (m *EntTodoMutation) EdgeCleared(name string) bool {
+	switch name {
+	case enttodo.EdgeTodoFor:
+		return m.clearedtodoFor
+	case enttodo.EdgeOwnedBy:
+		return m.clearedownedBy
+	}
 	return false
 }
 
 // ClearEdge clears the value of the edge with the given name. It returns an error
 // if that edge is not defined in the schema.
 func (m *EntTodoMutation) ClearEdge(name string) error {
+	switch name {
+	case enttodo.EdgeTodoFor:
+		m.ClearTodoFor()
+		return nil
+	case enttodo.EdgeOwnedBy:
+		m.ClearOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntTodo unique edge %s", name)
 }
 
 // ResetEdge resets all changes to the edge with the given name in this mutation.
 // It returns an error if the edge is not defined in the schema.
 func (m *EntTodoMutation) ResetEdge(name string) error {
+	switch name {
+	case enttodo.EdgeTodoFor:
+		m.ResetTodoFor()
+		return nil
+	case enttodo.EdgeOwnedBy:
+		m.ResetOwnedBy()
+		return nil
+	}
 	return fmt.Errorf("unknown EntTodo edge %s", name)
 }
 
@@ -2366,6 +4749,18 @@ type EntUserMutation struct {
 	course            map[int]struct{}
 	removedcourse     map[int]struct{}
 	clearedcourse     bool
+	todo              map[int]struct{}
+	removedtodo       map[int]struct{}
+	clearedtodo       bool
+	attendance        map[int]struct{}
+	removedattendance map[int]struct{}
+	clearedattendance bool
+	post              map[int]struct{}
+	removedpost       map[int]struct{}
+	clearedpost       bool
+	comment           map[int]struct{}
+	removedcomment    map[int]struct{}
+	clearedcomment    bool
 	children          map[int]struct{}
 	removedchildren   map[int]struct{}
 	clearedchildren   bool
@@ -2853,6 +5248,222 @@ func (m *EntUserMutation) ResetCourse() {
 	m.course = nil
 	m.clearedcourse = false
 	m.removedcourse = nil
+}
+
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by ids.
+func (m *EntUserMutation) AddTodoIDs(ids ...int) {
+	if m.todo == nil {
+		m.todo = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.todo[ids[i]] = struct{}{}
+	}
+}
+
+// ClearTodo clears the "todo" edge to the EntTodo entity.
+func (m *EntUserMutation) ClearTodo() {
+	m.clearedtodo = true
+}
+
+// TodoCleared reports if the "todo" edge to the EntTodo entity was cleared.
+func (m *EntUserMutation) TodoCleared() bool {
+	return m.clearedtodo
+}
+
+// RemoveTodoIDs removes the "todo" edge to the EntTodo entity by IDs.
+func (m *EntUserMutation) RemoveTodoIDs(ids ...int) {
+	if m.removedtodo == nil {
+		m.removedtodo = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.todo, ids[i])
+		m.removedtodo[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedTodo returns the removed IDs of the "todo" edge to the EntTodo entity.
+func (m *EntUserMutation) RemovedTodoIDs() (ids []int) {
+	for id := range m.removedtodo {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// TodoIDs returns the "todo" edge IDs in the mutation.
+func (m *EntUserMutation) TodoIDs() (ids []int) {
+	for id := range m.todo {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetTodo resets all changes to the "todo" edge.
+func (m *EntUserMutation) ResetTodo() {
+	m.todo = nil
+	m.clearedtodo = false
+	m.removedtodo = nil
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by ids.
+func (m *EntUserMutation) AddAttendanceIDs(ids ...int) {
+	if m.attendance == nil {
+		m.attendance = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.attendance[ids[i]] = struct{}{}
+	}
+}
+
+// ClearAttendance clears the "attendance" edge to the EntAttendance entity.
+func (m *EntUserMutation) ClearAttendance() {
+	m.clearedattendance = true
+}
+
+// AttendanceCleared reports if the "attendance" edge to the EntAttendance entity was cleared.
+func (m *EntUserMutation) AttendanceCleared() bool {
+	return m.clearedattendance
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to the EntAttendance entity by IDs.
+func (m *EntUserMutation) RemoveAttendanceIDs(ids ...int) {
+	if m.removedattendance == nil {
+		m.removedattendance = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.attendance, ids[i])
+		m.removedattendance[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedAttendance returns the removed IDs of the "attendance" edge to the EntAttendance entity.
+func (m *EntUserMutation) RemovedAttendanceIDs() (ids []int) {
+	for id := range m.removedattendance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// AttendanceIDs returns the "attendance" edge IDs in the mutation.
+func (m *EntUserMutation) AttendanceIDs() (ids []int) {
+	for id := range m.attendance {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetAttendance resets all changes to the "attendance" edge.
+func (m *EntUserMutation) ResetAttendance() {
+	m.attendance = nil
+	m.clearedattendance = false
+	m.removedattendance = nil
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by ids.
+func (m *EntUserMutation) AddPostIDs(ids ...int) {
+	if m.post == nil {
+		m.post = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.post[ids[i]] = struct{}{}
+	}
+}
+
+// ClearPost clears the "post" edge to the EntPost entity.
+func (m *EntUserMutation) ClearPost() {
+	m.clearedpost = true
+}
+
+// PostCleared reports if the "post" edge to the EntPost entity was cleared.
+func (m *EntUserMutation) PostCleared() bool {
+	return m.clearedpost
+}
+
+// RemovePostIDs removes the "post" edge to the EntPost entity by IDs.
+func (m *EntUserMutation) RemovePostIDs(ids ...int) {
+	if m.removedpost == nil {
+		m.removedpost = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.post, ids[i])
+		m.removedpost[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedPost returns the removed IDs of the "post" edge to the EntPost entity.
+func (m *EntUserMutation) RemovedPostIDs() (ids []int) {
+	for id := range m.removedpost {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// PostIDs returns the "post" edge IDs in the mutation.
+func (m *EntUserMutation) PostIDs() (ids []int) {
+	for id := range m.post {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetPost resets all changes to the "post" edge.
+func (m *EntUserMutation) ResetPost() {
+	m.post = nil
+	m.clearedpost = false
+	m.removedpost = nil
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by ids.
+func (m *EntUserMutation) AddCommentIDs(ids ...int) {
+	if m.comment == nil {
+		m.comment = make(map[int]struct{})
+	}
+	for i := range ids {
+		m.comment[ids[i]] = struct{}{}
+	}
+}
+
+// ClearComment clears the "comment" edge to the EntComment entity.
+func (m *EntUserMutation) ClearComment() {
+	m.clearedcomment = true
+}
+
+// CommentCleared reports if the "comment" edge to the EntComment entity was cleared.
+func (m *EntUserMutation) CommentCleared() bool {
+	return m.clearedcomment
+}
+
+// RemoveCommentIDs removes the "comment" edge to the EntComment entity by IDs.
+func (m *EntUserMutation) RemoveCommentIDs(ids ...int) {
+	if m.removedcomment == nil {
+		m.removedcomment = make(map[int]struct{})
+	}
+	for i := range ids {
+		delete(m.comment, ids[i])
+		m.removedcomment[ids[i]] = struct{}{}
+	}
+}
+
+// RemovedComment returns the removed IDs of the "comment" edge to the EntComment entity.
+func (m *EntUserMutation) RemovedCommentIDs() (ids []int) {
+	for id := range m.removedcomment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// CommentIDs returns the "comment" edge IDs in the mutation.
+func (m *EntUserMutation) CommentIDs() (ids []int) {
+	for id := range m.comment {
+		ids = append(ids, id)
+	}
+	return
+}
+
+// ResetComment resets all changes to the "comment" edge.
+func (m *EntUserMutation) ResetComment() {
+	m.comment = nil
+	m.clearedcomment = false
+	m.removedcomment = nil
 }
 
 // AddChildIDs adds the "children" edge to the EntUser entity by ids.
@@ -3431,9 +6042,21 @@ func (m *EntUserMutation) ResetField(name string) error {
 
 // AddedEdges returns all edge names that were set/added in this mutation.
 func (m *EntUserMutation) AddedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 11)
 	if m.course != nil {
 		edges = append(edges, entuser.EdgeCourse)
+	}
+	if m.todo != nil {
+		edges = append(edges, entuser.EdgeTodo)
+	}
+	if m.attendance != nil {
+		edges = append(edges, entuser.EdgeAttendance)
+	}
+	if m.post != nil {
+		edges = append(edges, entuser.EdgePost)
+	}
+	if m.comment != nil {
+		edges = append(edges, entuser.EdgeComment)
 	}
 	if m.children != nil {
 		edges = append(edges, entuser.EdgeChildren)
@@ -3463,6 +6086,30 @@ func (m *EntUserMutation) AddedIDs(name string) []ent.Value {
 	case entuser.EdgeCourse:
 		ids := make([]ent.Value, 0, len(m.course))
 		for id := range m.course {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeTodo:
+		ids := make([]ent.Value, 0, len(m.todo))
+		for id := range m.todo {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeAttendance:
+		ids := make([]ent.Value, 0, len(m.attendance))
+		for id := range m.attendance {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgePost:
+		ids := make([]ent.Value, 0, len(m.post))
+		for id := range m.post {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeComment:
+		ids := make([]ent.Value, 0, len(m.comment))
+		for id := range m.comment {
 			ids = append(ids, id)
 		}
 		return ids
@@ -3508,9 +6155,21 @@ func (m *EntUserMutation) AddedIDs(name string) []ent.Value {
 
 // RemovedEdges returns all edge names that were removed in this mutation.
 func (m *EntUserMutation) RemovedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 11)
 	if m.removedcourse != nil {
 		edges = append(edges, entuser.EdgeCourse)
+	}
+	if m.removedtodo != nil {
+		edges = append(edges, entuser.EdgeTodo)
+	}
+	if m.removedattendance != nil {
+		edges = append(edges, entuser.EdgeAttendance)
+	}
+	if m.removedpost != nil {
+		edges = append(edges, entuser.EdgePost)
+	}
+	if m.removedcomment != nil {
+		edges = append(edges, entuser.EdgeComment)
 	}
 	if m.removedchildren != nil {
 		edges = append(edges, entuser.EdgeChildren)
@@ -3540,6 +6199,30 @@ func (m *EntUserMutation) RemovedIDs(name string) []ent.Value {
 	case entuser.EdgeCourse:
 		ids := make([]ent.Value, 0, len(m.removedcourse))
 		for id := range m.removedcourse {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeTodo:
+		ids := make([]ent.Value, 0, len(m.removedtodo))
+		for id := range m.removedtodo {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeAttendance:
+		ids := make([]ent.Value, 0, len(m.removedattendance))
+		for id := range m.removedattendance {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgePost:
+		ids := make([]ent.Value, 0, len(m.removedpost))
+		for id := range m.removedpost {
+			ids = append(ids, id)
+		}
+		return ids
+	case entuser.EdgeComment:
+		ids := make([]ent.Value, 0, len(m.removedcomment))
+		for id := range m.removedcomment {
 			ids = append(ids, id)
 		}
 		return ids
@@ -3585,9 +6268,21 @@ func (m *EntUserMutation) RemovedIDs(name string) []ent.Value {
 
 // ClearedEdges returns all edge names that were cleared in this mutation.
 func (m *EntUserMutation) ClearedEdges() []string {
-	edges := make([]string, 0, 7)
+	edges := make([]string, 0, 11)
 	if m.clearedcourse {
 		edges = append(edges, entuser.EdgeCourse)
+	}
+	if m.clearedtodo {
+		edges = append(edges, entuser.EdgeTodo)
+	}
+	if m.clearedattendance {
+		edges = append(edges, entuser.EdgeAttendance)
+	}
+	if m.clearedpost {
+		edges = append(edges, entuser.EdgePost)
+	}
+	if m.clearedcomment {
+		edges = append(edges, entuser.EdgeComment)
 	}
 	if m.clearedchildren {
 		edges = append(edges, entuser.EdgeChildren)
@@ -3616,6 +6311,14 @@ func (m *EntUserMutation) EdgeCleared(name string) bool {
 	switch name {
 	case entuser.EdgeCourse:
 		return m.clearedcourse
+	case entuser.EdgeTodo:
+		return m.clearedtodo
+	case entuser.EdgeAttendance:
+		return m.clearedattendance
+	case entuser.EdgePost:
+		return m.clearedpost
+	case entuser.EdgeComment:
+		return m.clearedcomment
 	case entuser.EdgeChildren:
 		return m.clearedchildren
 	case entuser.EdgeParent:
@@ -3646,6 +6349,18 @@ func (m *EntUserMutation) ResetEdge(name string) error {
 	switch name {
 	case entuser.EdgeCourse:
 		m.ResetCourse()
+		return nil
+	case entuser.EdgeTodo:
+		m.ResetTodo()
+		return nil
+	case entuser.EdgeAttendance:
+		m.ResetAttendance()
+		return nil
+	case entuser.EdgePost:
+		m.ResetPost()
+		return nil
+	case entuser.EdgeComment:
+		m.ResetComment()
 		return nil
 	case entuser.EdgeChildren:
 		m.ResetChildren()

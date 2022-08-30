@@ -34,11 +34,18 @@ func (EntUser) Fields() []ent.Field {
 // Edges of the User.
 func (EntUser) Edges() []ent.Edge {
 	return []ent.Edge{
-		// Create an edge called "course" to EntCourse
+		// Create an edge called "course" between EntUser and EntCourse (M to M)
 		edge.To("course", EntCourse.Type),
+		// Create an edge called "todo" between EntUser and EntTodo (M to M)
+		edge.To("todo", EntTodo.Type),
+		// Create an edge called "attendance" between EntUser and EntAttendance (M to M)
+		edge.To("attendance", EntAttendance.Type),
+		// Create an edge called "post" between EntUser and EntPost (1 to M)
+		edge.To("post", EntPost.Type),
+		// Create an edge called "comment" between EntUser and EntPost (1 to M)
+		edge.To("comment", EntComment.Type),
 
 		// Below are the edge between EntUser
-
 		// Create an bidirectional edge called "parent/children"
 		edge.To("parent", EntUser.Type).
 			From("children"),

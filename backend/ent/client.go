@@ -243,6 +243,38 @@ func (c *EntAttendanceClient) GetX(ctx context.Context, id int) *EntAttendance {
 	return obj
 }
 
+// QueryAttendanceFor queries the attendanceFor edge of a EntAttendance.
+func (c *EntAttendanceClient) QueryAttendanceFor(ea *EntAttendance) *EntCourseQuery {
+	query := &EntCourseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ea.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entattendance.Table, entattendance.FieldID, id),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entattendance.AttendanceForTable, entattendance.AttendanceForColumn),
+		)
+		fromV = sqlgraph.Neighbors(ea.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOwnedBy queries the ownedBy edge of a EntAttendance.
+func (c *EntAttendanceClient) QueryOwnedBy(ea *EntAttendance) *EntUserQuery {
+	query := &EntUserQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ea.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entattendance.Table, entattendance.FieldID, id),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entattendance.OwnedByTable, entattendance.OwnedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(ea.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *EntAttendanceClient) Hooks() []Hook {
 	return c.hooks.EntAttendance
@@ -331,6 +363,38 @@ func (c *EntCommentClient) GetX(ctx context.Context, id int) *EntComment {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryBelongsTo queries the belongsTo edge of a EntComment.
+func (c *EntCommentClient) QueryBelongsTo(ec *EntComment) *EntPostQuery {
+	query := &EntPostQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ec.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcomment.Table, entcomment.FieldID, id),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entcomment.BelongsToTable, entcomment.BelongsToColumn),
+		)
+		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOwnedBy queries the ownedBy edge of a EntComment.
+func (c *EntCommentClient) QueryOwnedBy(ec *EntComment) *EntUserQuery {
+	query := &EntUserQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ec.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcomment.Table, entcomment.FieldID, id),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entcomment.OwnedByTable, entcomment.OwnedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -423,15 +487,63 @@ func (c *EntCourseClient) GetX(ctx context.Context, id int) *EntCourse {
 	return obj
 }
 
-// QueryCourseOwner queries the courseOwner edge of a EntCourse.
-func (c *EntCourseClient) QueryCourseOwner(ec *EntCourse) *EntUserQuery {
+// QueryTodo queries the todo edge of a EntCourse.
+func (c *EntCourseClient) QueryTodo(ec *EntCourse) *EntTodoQuery {
+	query := &EntTodoQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ec.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, id),
+			sqlgraph.To(enttodo.Table, enttodo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.TodoTable, entcourse.TodoColumn),
+		)
+		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAttendance queries the attendance edge of a EntCourse.
+func (c *EntCourseClient) QueryAttendance(ec *EntCourse) *EntAttendanceQuery {
+	query := &EntAttendanceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ec.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, id),
+			sqlgraph.To(entattendance.Table, entattendance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.AttendanceTable, entcourse.AttendanceColumn),
+		)
+		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPost queries the post edge of a EntCourse.
+func (c *EntCourseClient) QueryPost(ec *EntCourse) *EntPostQuery {
+	query := &EntPostQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ec.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, id),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.PostTable, entcourse.PostColumn),
+		)
+		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOwnedBy queries the ownedBy edge of a EntCourse.
+func (c *EntCourseClient) QueryOwnedBy(ec *EntCourse) *EntUserQuery {
 	query := &EntUserQuery{config: c.config}
 	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
 		id := ec.ID
 		step := sqlgraph.NewStep(
 			sqlgraph.From(entcourse.Table, entcourse.FieldID, id),
 			sqlgraph.To(entuser.Table, entuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, entcourse.CourseOwnerTable, entcourse.CourseOwnerPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, entcourse.OwnedByTable, entcourse.OwnedByPrimaryKey...),
 		)
 		fromV = sqlgraph.Neighbors(ec.driver.Dialect(), step)
 		return fromV, nil
@@ -529,6 +641,54 @@ func (c *EntPostClient) GetX(ctx context.Context, id int) *EntPost {
 	return obj
 }
 
+// QueryComment queries the comment edge of a EntPost.
+func (c *EntPostClient) QueryComment(ep *EntPost) *EntCommentQuery {
+	query := &EntCommentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ep.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, id),
+			sqlgraph.To(entcomment.Table, entcomment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entpost.CommentTable, entpost.CommentColumn),
+		)
+		fromV = sqlgraph.Neighbors(ep.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryBelongsTo queries the belongsTo edge of a EntPost.
+func (c *EntPostClient) QueryBelongsTo(ep *EntPost) *EntCourseQuery {
+	query := &EntCourseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ep.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, id),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entpost.BelongsToTable, entpost.BelongsToColumn),
+		)
+		fromV = sqlgraph.Neighbors(ep.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOwnedBy queries the ownedBy edge of a EntPost.
+func (c *EntPostClient) QueryOwnedBy(ep *EntPost) *EntUserQuery {
+	query := &EntUserQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := ep.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, id),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entpost.OwnedByTable, entpost.OwnedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(ep.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
 // Hooks returns the client hooks.
 func (c *EntPostClient) Hooks() []Hook {
 	return c.hooks.EntPost
@@ -617,6 +777,38 @@ func (c *EntTodoClient) GetX(ctx context.Context, id int) *EntTodo {
 		panic(err)
 	}
 	return obj
+}
+
+// QueryTodoFor queries the todoFor edge of a EntTodo.
+func (c *EntTodoClient) QueryTodoFor(et *EntTodo) *EntCourseQuery {
+	query := &EntCourseQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := et.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(enttodo.Table, enttodo.FieldID, id),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, enttodo.TodoForTable, enttodo.TodoForColumn),
+		)
+		fromV = sqlgraph.Neighbors(et.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryOwnedBy queries the ownedBy edge of a EntTodo.
+func (c *EntTodoClient) QueryOwnedBy(et *EntTodo) *EntUserQuery {
+	query := &EntUserQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := et.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(enttodo.Table, enttodo.FieldID, id),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, enttodo.OwnedByTable, enttodo.OwnedByColumn),
+		)
+		fromV = sqlgraph.Neighbors(et.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
 }
 
 // Hooks returns the client hooks.
@@ -718,6 +910,70 @@ func (c *EntUserClient) QueryCourse(eu *EntUser) *EntCourseQuery {
 			sqlgraph.From(entuser.Table, entuser.FieldID, id),
 			sqlgraph.To(entcourse.Table, entcourse.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, entuser.CourseTable, entuser.CoursePrimaryKey...),
+		)
+		fromV = sqlgraph.Neighbors(eu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryTodo queries the todo edge of a EntUser.
+func (c *EntUserClient) QueryTodo(eu *EntUser) *EntTodoQuery {
+	query := &EntTodoQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := eu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, id),
+			sqlgraph.To(enttodo.Table, enttodo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.TodoTable, entuser.TodoColumn),
+		)
+		fromV = sqlgraph.Neighbors(eu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryAttendance queries the attendance edge of a EntUser.
+func (c *EntUserClient) QueryAttendance(eu *EntUser) *EntAttendanceQuery {
+	query := &EntAttendanceQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := eu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, id),
+			sqlgraph.To(entattendance.Table, entattendance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.AttendanceTable, entuser.AttendanceColumn),
+		)
+		fromV = sqlgraph.Neighbors(eu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryPost queries the post edge of a EntUser.
+func (c *EntUserClient) QueryPost(eu *EntUser) *EntPostQuery {
+	query := &EntPostQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := eu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, id),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.PostTable, entuser.PostColumn),
+		)
+		fromV = sqlgraph.Neighbors(eu.driver.Dialect(), step)
+		return fromV, nil
+	}
+	return query
+}
+
+// QueryComment queries the comment edge of a EntUser.
+func (c *EntUserClient) QueryComment(eu *EntUser) *EntCommentQuery {
+	query := &EntCommentQuery{config: c.config}
+	query.path = func(ctx context.Context) (fromV *sql.Selector, _ error) {
+		id := eu.ID
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, id),
+			sqlgraph.To(entcomment.Table, entcomment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.CommentTable, entuser.CommentColumn),
 		)
 		fromV = sqlgraph.Neighbors(eu.driver.Dialect(), step)
 		return fromV, nil

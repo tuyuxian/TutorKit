@@ -40,6 +40,14 @@ type EntUser struct {
 type EntUserEdges struct {
 	// Course holds the value of the course edge.
 	Course []*EntCourse `json:"course,omitempty"`
+	// Todo holds the value of the todo edge.
+	Todo []*EntTodo `json:"todo,omitempty"`
+	// Attendance holds the value of the attendance edge.
+	Attendance []*EntAttendance `json:"attendance,omitempty"`
+	// Post holds the value of the post edge.
+	Post []*EntPost `json:"post,omitempty"`
+	// Comment holds the value of the comment edge.
+	Comment []*EntComment `json:"comment,omitempty"`
 	// Children holds the value of the children edge.
 	Children []*EntUser `json:"children,omitempty"`
 	// Parent holds the value of the parent edge.
@@ -54,7 +62,7 @@ type EntUserEdges struct {
 	STutor []*EntUser `json:"STutor,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [7]bool
+	loadedTypes [11]bool
 }
 
 // CourseOrErr returns the Course value or an error if the edge
@@ -66,10 +74,46 @@ func (e EntUserEdges) CourseOrErr() ([]*EntCourse, error) {
 	return nil, &NotLoadedError{edge: "course"}
 }
 
+// TodoOrErr returns the Todo value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntUserEdges) TodoOrErr() ([]*EntTodo, error) {
+	if e.loadedTypes[1] {
+		return e.Todo, nil
+	}
+	return nil, &NotLoadedError{edge: "todo"}
+}
+
+// AttendanceOrErr returns the Attendance value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntUserEdges) AttendanceOrErr() ([]*EntAttendance, error) {
+	if e.loadedTypes[2] {
+		return e.Attendance, nil
+	}
+	return nil, &NotLoadedError{edge: "attendance"}
+}
+
+// PostOrErr returns the Post value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntUserEdges) PostOrErr() ([]*EntPost, error) {
+	if e.loadedTypes[3] {
+		return e.Post, nil
+	}
+	return nil, &NotLoadedError{edge: "post"}
+}
+
+// CommentOrErr returns the Comment value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntUserEdges) CommentOrErr() ([]*EntComment, error) {
+	if e.loadedTypes[4] {
+		return e.Comment, nil
+	}
+	return nil, &NotLoadedError{edge: "comment"}
+}
+
 // ChildrenOrErr returns the Children value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) ChildrenOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[1] {
+	if e.loadedTypes[5] {
 		return e.Children, nil
 	}
 	return nil, &NotLoadedError{edge: "children"}
@@ -78,7 +122,7 @@ func (e EntUserEdges) ChildrenOrErr() ([]*EntUser, error) {
 // ParentOrErr returns the Parent value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) ParentOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[2] {
+	if e.loadedTypes[6] {
 		return e.Parent, nil
 	}
 	return nil, &NotLoadedError{edge: "parent"}
@@ -87,7 +131,7 @@ func (e EntUserEdges) ParentOrErr() ([]*EntUser, error) {
 // StudentOrErr returns the Student value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) StudentOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[3] {
+	if e.loadedTypes[7] {
 		return e.Student, nil
 	}
 	return nil, &NotLoadedError{edge: "student"}
@@ -96,7 +140,7 @@ func (e EntUserEdges) StudentOrErr() ([]*EntUser, error) {
 // TutorOrErr returns the Tutor value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) TutorOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[4] {
+	if e.loadedTypes[8] {
 		return e.Tutor, nil
 	}
 	return nil, &NotLoadedError{edge: "tutor"}
@@ -105,7 +149,7 @@ func (e EntUserEdges) TutorOrErr() ([]*EntUser, error) {
 // SParentOrErr returns the SParent value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) SParentOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[5] {
+	if e.loadedTypes[9] {
 		return e.SParent, nil
 	}
 	return nil, &NotLoadedError{edge: "SParent"}
@@ -114,7 +158,7 @@ func (e EntUserEdges) SParentOrErr() ([]*EntUser, error) {
 // STutorOrErr returns the STutor value or an error if the edge
 // was not loaded in eager-loading.
 func (e EntUserEdges) STutorOrErr() ([]*EntUser, error) {
-	if e.loadedTypes[6] {
+	if e.loadedTypes[10] {
 		return e.STutor, nil
 	}
 	return nil, &NotLoadedError{edge: "STutor"}
@@ -208,6 +252,26 @@ func (eu *EntUser) assignValues(columns []string, values []interface{}) error {
 // QueryCourse queries the "course" edge of the EntUser entity.
 func (eu *EntUser) QueryCourse() *EntCourseQuery {
 	return (&EntUserClient{config: eu.config}).QueryCourse(eu)
+}
+
+// QueryTodo queries the "todo" edge of the EntUser entity.
+func (eu *EntUser) QueryTodo() *EntTodoQuery {
+	return (&EntUserClient{config: eu.config}).QueryTodo(eu)
+}
+
+// QueryAttendance queries the "attendance" edge of the EntUser entity.
+func (eu *EntUser) QueryAttendance() *EntAttendanceQuery {
+	return (&EntUserClient{config: eu.config}).QueryAttendance(eu)
+}
+
+// QueryPost queries the "post" edge of the EntUser entity.
+func (eu *EntUser) QueryPost() *EntPostQuery {
+	return (&EntUserClient{config: eu.config}).QueryPost(eu)
+}
+
+// QueryComment queries the "comment" edge of the EntUser entity.
+func (eu *EntUser) QueryComment() *EntCommentQuery {
+	return (&EntUserClient{config: eu.config}).QueryComment(eu)
 }
 
 // QueryChildren queries the "children" edge of the EntUser entity.

@@ -25,6 +25,14 @@ const (
 	FieldIsParent = "is_parent"
 	// EdgeCourse holds the string denoting the course edge name in mutations.
 	EdgeCourse = "course"
+	// EdgeTodo holds the string denoting the todo edge name in mutations.
+	EdgeTodo = "todo"
+	// EdgeAttendance holds the string denoting the attendance edge name in mutations.
+	EdgeAttendance = "attendance"
+	// EdgePost holds the string denoting the post edge name in mutations.
+	EdgePost = "post"
+	// EdgeComment holds the string denoting the comment edge name in mutations.
+	EdgeComment = "comment"
 	// EdgeChildren holds the string denoting the children edge name in mutations.
 	EdgeChildren = "children"
 	// EdgeParent holds the string denoting the parent edge name in mutations.
@@ -44,6 +52,34 @@ const (
 	// CourseInverseTable is the table name for the EntCourse entity.
 	// It exists in this package in order to avoid circular dependency with the "entcourse" package.
 	CourseInverseTable = "ent_courses"
+	// TodoTable is the table that holds the todo relation/edge.
+	TodoTable = "ent_todos"
+	// TodoInverseTable is the table name for the EntTodo entity.
+	// It exists in this package in order to avoid circular dependency with the "enttodo" package.
+	TodoInverseTable = "ent_todos"
+	// TodoColumn is the table column denoting the todo relation/edge.
+	TodoColumn = "ent_user_todo"
+	// AttendanceTable is the table that holds the attendance relation/edge.
+	AttendanceTable = "ent_attendances"
+	// AttendanceInverseTable is the table name for the EntAttendance entity.
+	// It exists in this package in order to avoid circular dependency with the "entattendance" package.
+	AttendanceInverseTable = "ent_attendances"
+	// AttendanceColumn is the table column denoting the attendance relation/edge.
+	AttendanceColumn = "ent_user_attendance"
+	// PostTable is the table that holds the post relation/edge.
+	PostTable = "ent_posts"
+	// PostInverseTable is the table name for the EntPost entity.
+	// It exists in this package in order to avoid circular dependency with the "entpost" package.
+	PostInverseTable = "ent_posts"
+	// PostColumn is the table column denoting the post relation/edge.
+	PostColumn = "ent_user_post"
+	// CommentTable is the table that holds the comment relation/edge.
+	CommentTable = "ent_comments"
+	// CommentInverseTable is the table name for the EntComment entity.
+	// It exists in this package in order to avoid circular dependency with the "entcomment" package.
+	CommentInverseTable = "ent_comments"
+	// CommentColumn is the table column denoting the comment relation/edge.
+	CommentColumn = "ent_user_comment"
 	// ChildrenTable is the table that holds the children relation/edge. The primary key declared below.
 	ChildrenTable = "ent_user_parent"
 	// ParentTable is the table that holds the parent relation/edge. The primary key declared below.

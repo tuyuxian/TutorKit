@@ -3,7 +3,10 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
@@ -282,19 +285,64 @@ func (ecu *EntCourseUpdate) ClearSunday() *EntCourseUpdate {
 	return ecu
 }
 
-// AddCourseOwnerIDs adds the "courseOwner" edge to the EntUser entity by IDs.
-func (ecu *EntCourseUpdate) AddCourseOwnerIDs(ids ...int) *EntCourseUpdate {
-	ecu.mutation.AddCourseOwnerIDs(ids...)
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (ecu *EntCourseUpdate) AddTodoIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.AddTodoIDs(ids...)
 	return ecu
 }
 
-// AddCourseOwner adds the "courseOwner" edges to the EntUser entity.
-func (ecu *EntCourseUpdate) AddCourseOwner(e ...*EntUser) *EntCourseUpdate {
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (ecu *EntCourseUpdate) AddTodo(e ...*EntTodo) *EntCourseUpdate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ecu.AddCourseOwnerIDs(ids...)
+	return ecu.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (ecu *EntCourseUpdate) AddAttendanceIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.AddAttendanceIDs(ids...)
+	return ecu
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (ecu *EntCourseUpdate) AddAttendance(e ...*EntAttendance) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (ecu *EntCourseUpdate) AddPostIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.AddPostIDs(ids...)
+	return ecu
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (ecu *EntCourseUpdate) AddPost(e ...*EntPost) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.AddPostIDs(ids...)
+}
+
+// AddOwnedByIDs adds the "ownedBy" edge to the EntUser entity by IDs.
+func (ecu *EntCourseUpdate) AddOwnedByIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.AddOwnedByIDs(ids...)
+	return ecu
+}
+
+// AddOwnedBy adds the "ownedBy" edges to the EntUser entity.
+func (ecu *EntCourseUpdate) AddOwnedBy(e ...*EntUser) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.AddOwnedByIDs(ids...)
 }
 
 // Mutation returns the EntCourseMutation object of the builder.
@@ -302,25 +350,88 @@ func (ecu *EntCourseUpdate) Mutation() *EntCourseMutation {
 	return ecu.mutation
 }
 
-// ClearCourseOwner clears all "courseOwner" edges to the EntUser entity.
-func (ecu *EntCourseUpdate) ClearCourseOwner() *EntCourseUpdate {
-	ecu.mutation.ClearCourseOwner()
+// ClearTodo clears all "todo" edges to the EntTodo entity.
+func (ecu *EntCourseUpdate) ClearTodo() *EntCourseUpdate {
+	ecu.mutation.ClearTodo()
 	return ecu
 }
 
-// RemoveCourseOwnerIDs removes the "courseOwner" edge to EntUser entities by IDs.
-func (ecu *EntCourseUpdate) RemoveCourseOwnerIDs(ids ...int) *EntCourseUpdate {
-	ecu.mutation.RemoveCourseOwnerIDs(ids...)
+// RemoveTodoIDs removes the "todo" edge to EntTodo entities by IDs.
+func (ecu *EntCourseUpdate) RemoveTodoIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.RemoveTodoIDs(ids...)
 	return ecu
 }
 
-// RemoveCourseOwner removes "courseOwner" edges to EntUser entities.
-func (ecu *EntCourseUpdate) RemoveCourseOwner(e ...*EntUser) *EntCourseUpdate {
+// RemoveTodo removes "todo" edges to EntTodo entities.
+func (ecu *EntCourseUpdate) RemoveTodo(e ...*EntTodo) *EntCourseUpdate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ecu.RemoveCourseOwnerIDs(ids...)
+	return ecu.RemoveTodoIDs(ids...)
+}
+
+// ClearAttendance clears all "attendance" edges to the EntAttendance entity.
+func (ecu *EntCourseUpdate) ClearAttendance() *EntCourseUpdate {
+	ecu.mutation.ClearAttendance()
+	return ecu
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to EntAttendance entities by IDs.
+func (ecu *EntCourseUpdate) RemoveAttendanceIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.RemoveAttendanceIDs(ids...)
+	return ecu
+}
+
+// RemoveAttendance removes "attendance" edges to EntAttendance entities.
+func (ecu *EntCourseUpdate) RemoveAttendance(e ...*EntAttendance) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.RemoveAttendanceIDs(ids...)
+}
+
+// ClearPost clears all "post" edges to the EntPost entity.
+func (ecu *EntCourseUpdate) ClearPost() *EntCourseUpdate {
+	ecu.mutation.ClearPost()
+	return ecu
+}
+
+// RemovePostIDs removes the "post" edge to EntPost entities by IDs.
+func (ecu *EntCourseUpdate) RemovePostIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.RemovePostIDs(ids...)
+	return ecu
+}
+
+// RemovePost removes "post" edges to EntPost entities.
+func (ecu *EntCourseUpdate) RemovePost(e ...*EntPost) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.RemovePostIDs(ids...)
+}
+
+// ClearOwnedBy clears all "ownedBy" edges to the EntUser entity.
+func (ecu *EntCourseUpdate) ClearOwnedBy() *EntCourseUpdate {
+	ecu.mutation.ClearOwnedBy()
+	return ecu
+}
+
+// RemoveOwnedByIDs removes the "ownedBy" edge to EntUser entities by IDs.
+func (ecu *EntCourseUpdate) RemoveOwnedByIDs(ids ...int) *EntCourseUpdate {
+	ecu.mutation.RemoveOwnedByIDs(ids...)
+	return ecu
+}
+
+// RemoveOwnedBy removes "ownedBy" edges to EntUser entities.
+func (ecu *EntCourseUpdate) RemoveOwnedBy(e ...*EntUser) *EntCourseUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecu.RemoveOwnedByIDs(ids...)
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -586,12 +697,174 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldSunday,
 		})
 	}
-	if ecu.mutation.CourseOwnerCleared() {
+	if ecu.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.RemovedTodoIDs(); len(nodes) > 0 && !ecu.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecu.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.RemovedAttendanceIDs(); len(nodes) > 0 && !ecu.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecu.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.RemovedPostIDs(); len(nodes) > 0 && !ecu.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecu.mutation.OwnedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -602,12 +875,12 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ecu.mutation.RemovedCourseOwnerIDs(); len(nodes) > 0 && !ecu.mutation.CourseOwnerCleared() {
+	if nodes := ecu.mutation.RemovedOwnedByIDs(); len(nodes) > 0 && !ecu.mutation.OwnedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -621,12 +894,12 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ecu.mutation.CourseOwnerIDs(); len(nodes) > 0 {
+	if nodes := ecu.mutation.OwnedByIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -912,19 +1185,64 @@ func (ecuo *EntCourseUpdateOne) ClearSunday() *EntCourseUpdateOne {
 	return ecuo
 }
 
-// AddCourseOwnerIDs adds the "courseOwner" edge to the EntUser entity by IDs.
-func (ecuo *EntCourseUpdateOne) AddCourseOwnerIDs(ids ...int) *EntCourseUpdateOne {
-	ecuo.mutation.AddCourseOwnerIDs(ids...)
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (ecuo *EntCourseUpdateOne) AddTodoIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.AddTodoIDs(ids...)
 	return ecuo
 }
 
-// AddCourseOwner adds the "courseOwner" edges to the EntUser entity.
-func (ecuo *EntCourseUpdateOne) AddCourseOwner(e ...*EntUser) *EntCourseUpdateOne {
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (ecuo *EntCourseUpdateOne) AddTodo(e ...*EntTodo) *EntCourseUpdateOne {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ecuo.AddCourseOwnerIDs(ids...)
+	return ecuo.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (ecuo *EntCourseUpdateOne) AddAttendanceIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.AddAttendanceIDs(ids...)
+	return ecuo
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (ecuo *EntCourseUpdateOne) AddAttendance(e ...*EntAttendance) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (ecuo *EntCourseUpdateOne) AddPostIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.AddPostIDs(ids...)
+	return ecuo
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (ecuo *EntCourseUpdateOne) AddPost(e ...*EntPost) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.AddPostIDs(ids...)
+}
+
+// AddOwnedByIDs adds the "ownedBy" edge to the EntUser entity by IDs.
+func (ecuo *EntCourseUpdateOne) AddOwnedByIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.AddOwnedByIDs(ids...)
+	return ecuo
+}
+
+// AddOwnedBy adds the "ownedBy" edges to the EntUser entity.
+func (ecuo *EntCourseUpdateOne) AddOwnedBy(e ...*EntUser) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.AddOwnedByIDs(ids...)
 }
 
 // Mutation returns the EntCourseMutation object of the builder.
@@ -932,25 +1250,88 @@ func (ecuo *EntCourseUpdateOne) Mutation() *EntCourseMutation {
 	return ecuo.mutation
 }
 
-// ClearCourseOwner clears all "courseOwner" edges to the EntUser entity.
-func (ecuo *EntCourseUpdateOne) ClearCourseOwner() *EntCourseUpdateOne {
-	ecuo.mutation.ClearCourseOwner()
+// ClearTodo clears all "todo" edges to the EntTodo entity.
+func (ecuo *EntCourseUpdateOne) ClearTodo() *EntCourseUpdateOne {
+	ecuo.mutation.ClearTodo()
 	return ecuo
 }
 
-// RemoveCourseOwnerIDs removes the "courseOwner" edge to EntUser entities by IDs.
-func (ecuo *EntCourseUpdateOne) RemoveCourseOwnerIDs(ids ...int) *EntCourseUpdateOne {
-	ecuo.mutation.RemoveCourseOwnerIDs(ids...)
+// RemoveTodoIDs removes the "todo" edge to EntTodo entities by IDs.
+func (ecuo *EntCourseUpdateOne) RemoveTodoIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.RemoveTodoIDs(ids...)
 	return ecuo
 }
 
-// RemoveCourseOwner removes "courseOwner" edges to EntUser entities.
-func (ecuo *EntCourseUpdateOne) RemoveCourseOwner(e ...*EntUser) *EntCourseUpdateOne {
+// RemoveTodo removes "todo" edges to EntTodo entities.
+func (ecuo *EntCourseUpdateOne) RemoveTodo(e ...*EntTodo) *EntCourseUpdateOne {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ecuo.RemoveCourseOwnerIDs(ids...)
+	return ecuo.RemoveTodoIDs(ids...)
+}
+
+// ClearAttendance clears all "attendance" edges to the EntAttendance entity.
+func (ecuo *EntCourseUpdateOne) ClearAttendance() *EntCourseUpdateOne {
+	ecuo.mutation.ClearAttendance()
+	return ecuo
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to EntAttendance entities by IDs.
+func (ecuo *EntCourseUpdateOne) RemoveAttendanceIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.RemoveAttendanceIDs(ids...)
+	return ecuo
+}
+
+// RemoveAttendance removes "attendance" edges to EntAttendance entities.
+func (ecuo *EntCourseUpdateOne) RemoveAttendance(e ...*EntAttendance) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.RemoveAttendanceIDs(ids...)
+}
+
+// ClearPost clears all "post" edges to the EntPost entity.
+func (ecuo *EntCourseUpdateOne) ClearPost() *EntCourseUpdateOne {
+	ecuo.mutation.ClearPost()
+	return ecuo
+}
+
+// RemovePostIDs removes the "post" edge to EntPost entities by IDs.
+func (ecuo *EntCourseUpdateOne) RemovePostIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.RemovePostIDs(ids...)
+	return ecuo
+}
+
+// RemovePost removes "post" edges to EntPost entities.
+func (ecuo *EntCourseUpdateOne) RemovePost(e ...*EntPost) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.RemovePostIDs(ids...)
+}
+
+// ClearOwnedBy clears all "ownedBy" edges to the EntUser entity.
+func (ecuo *EntCourseUpdateOne) ClearOwnedBy() *EntCourseUpdateOne {
+	ecuo.mutation.ClearOwnedBy()
+	return ecuo
+}
+
+// RemoveOwnedByIDs removes the "ownedBy" edge to EntUser entities by IDs.
+func (ecuo *EntCourseUpdateOne) RemoveOwnedByIDs(ids ...int) *EntCourseUpdateOne {
+	ecuo.mutation.RemoveOwnedByIDs(ids...)
+	return ecuo
+}
+
+// RemoveOwnedBy removes "ownedBy" edges to EntUser entities.
+func (ecuo *EntCourseUpdateOne) RemoveOwnedBy(e ...*EntUser) *EntCourseUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecuo.RemoveOwnedByIDs(ids...)
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -1246,12 +1627,174 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldSunday,
 		})
 	}
-	if ecuo.mutation.CourseOwnerCleared() {
+	if ecuo.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.RemovedTodoIDs(); len(nodes) > 0 && !ecuo.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecuo.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.RemovedAttendanceIDs(); len(nodes) > 0 && !ecuo.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecuo.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.RemovedPostIDs(); len(nodes) > 0 && !ecuo.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecuo.mutation.OwnedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -1262,12 +1805,12 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ecuo.mutation.RemovedCourseOwnerIDs(); len(nodes) > 0 && !ecuo.mutation.CourseOwnerCleared() {
+	if nodes := ecuo.mutation.RemovedOwnedByIDs(); len(nodes) > 0 && !ecuo.mutation.OwnedByCleared() {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{
@@ -1281,12 +1824,12 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 		}
 		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
 	}
-	if nodes := ecuo.mutation.CourseOwnerIDs(); len(nodes) > 0 {
+	if nodes := ecuo.mutation.OwnedByIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

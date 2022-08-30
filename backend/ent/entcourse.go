@@ -49,20 +49,53 @@ type EntCourse struct {
 
 // EntCourseEdges holds the relations/edges for other nodes in the graph.
 type EntCourseEdges struct {
-	// CourseOwner holds the value of the courseOwner edge.
-	CourseOwner []*EntUser `json:"courseOwner,omitempty"`
+	// Todo holds the value of the todo edge.
+	Todo []*EntTodo `json:"todo,omitempty"`
+	// Attendance holds the value of the attendance edge.
+	Attendance []*EntAttendance `json:"attendance,omitempty"`
+	// Post holds the value of the post edge.
+	Post []*EntPost `json:"post,omitempty"`
+	// OwnedBy holds the value of the ownedBy edge.
+	OwnedBy []*EntUser `json:"ownedBy,omitempty"`
 	// loadedTypes holds the information for reporting if a
 	// type was loaded (or requested) in eager-loading or not.
-	loadedTypes [1]bool
+	loadedTypes [4]bool
 }
 
-// CourseOwnerOrErr returns the CourseOwner value or an error if the edge
+// TodoOrErr returns the Todo value or an error if the edge
 // was not loaded in eager-loading.
-func (e EntCourseEdges) CourseOwnerOrErr() ([]*EntUser, error) {
+func (e EntCourseEdges) TodoOrErr() ([]*EntTodo, error) {
 	if e.loadedTypes[0] {
-		return e.CourseOwner, nil
+		return e.Todo, nil
 	}
-	return nil, &NotLoadedError{edge: "courseOwner"}
+	return nil, &NotLoadedError{edge: "todo"}
+}
+
+// AttendanceOrErr returns the Attendance value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntCourseEdges) AttendanceOrErr() ([]*EntAttendance, error) {
+	if e.loadedTypes[1] {
+		return e.Attendance, nil
+	}
+	return nil, &NotLoadedError{edge: "attendance"}
+}
+
+// PostOrErr returns the Post value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntCourseEdges) PostOrErr() ([]*EntPost, error) {
+	if e.loadedTypes[2] {
+		return e.Post, nil
+	}
+	return nil, &NotLoadedError{edge: "post"}
+}
+
+// OwnedByOrErr returns the OwnedBy value or an error if the edge
+// was not loaded in eager-loading.
+func (e EntCourseEdges) OwnedByOrErr() ([]*EntUser, error) {
+	if e.loadedTypes[3] {
+		return e.OwnedBy, nil
+	}
+	return nil, &NotLoadedError{edge: "ownedBy"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -184,9 +217,24 @@ func (ec *EntCourse) assignValues(columns []string, values []interface{}) error 
 	return nil
 }
 
-// QueryCourseOwner queries the "courseOwner" edge of the EntCourse entity.
-func (ec *EntCourse) QueryCourseOwner() *EntUserQuery {
-	return (&EntCourseClient{config: ec.config}).QueryCourseOwner(ec)
+// QueryTodo queries the "todo" edge of the EntCourse entity.
+func (ec *EntCourse) QueryTodo() *EntTodoQuery {
+	return (&EntCourseClient{config: ec.config}).QueryTodo(ec)
+}
+
+// QueryAttendance queries the "attendance" edge of the EntCourse entity.
+func (ec *EntCourse) QueryAttendance() *EntAttendanceQuery {
+	return (&EntCourseClient{config: ec.config}).QueryAttendance(ec)
+}
+
+// QueryPost queries the "post" edge of the EntCourse entity.
+func (ec *EntCourse) QueryPost() *EntPostQuery {
+	return (&EntCourseClient{config: ec.config}).QueryPost(ec)
+}
+
+// QueryOwnedBy queries the "ownedBy" edge of the EntCourse entity.
+func (ec *EntCourse) QueryOwnedBy() *EntUserQuery {
+	return (&EntCourseClient{config: ec.config}).QueryOwnedBy(ec)
 }
 
 // Update returns a builder for updating this EntCourse.

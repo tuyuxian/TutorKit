@@ -4,10 +4,13 @@ package ent
 
 import (
 	"backend/ent/entcomment"
+	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,9 +30,113 @@ func (ecu *EntCommentUpdate) Where(ps ...predicate.EntComment) *EntCommentUpdate
 	return ecu
 }
 
+// SetTimestamp sets the "timestamp" field.
+func (ecu *EntCommentUpdate) SetTimestamp(t time.Time) *EntCommentUpdate {
+	ecu.mutation.SetTimestamp(t)
+	return ecu
+}
+
+// SetNillableTimestamp sets the "timestamp" field if the given value is not nil.
+func (ecu *EntCommentUpdate) SetNillableTimestamp(t *time.Time) *EntCommentUpdate {
+	if t != nil {
+		ecu.SetTimestamp(*t)
+	}
+	return ecu
+}
+
+// SetContent sets the "content" field.
+func (ecu *EntCommentUpdate) SetContent(s string) *EntCommentUpdate {
+	ecu.mutation.SetContent(s)
+	return ecu
+}
+
+// SetNillableContent sets the "content" field if the given value is not nil.
+func (ecu *EntCommentUpdate) SetNillableContent(s *string) *EntCommentUpdate {
+	if s != nil {
+		ecu.SetContent(*s)
+	}
+	return ecu
+}
+
+// ClearContent clears the value of the "content" field.
+func (ecu *EntCommentUpdate) ClearContent() *EntCommentUpdate {
+	ecu.mutation.ClearContent()
+	return ecu
+}
+
+// SetShare sets the "share" field.
+func (ecu *EntCommentUpdate) SetShare(e entcomment.Share) *EntCommentUpdate {
+	ecu.mutation.SetShare(e)
+	return ecu
+}
+
+// SetNillableShare sets the "share" field if the given value is not nil.
+func (ecu *EntCommentUpdate) SetNillableShare(e *entcomment.Share) *EntCommentUpdate {
+	if e != nil {
+		ecu.SetShare(*e)
+	}
+	return ecu
+}
+
+// ClearShare clears the value of the "share" field.
+func (ecu *EntCommentUpdate) ClearShare() *EntCommentUpdate {
+	ecu.mutation.ClearShare()
+	return ecu
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntPost entity by ID.
+func (ecu *EntCommentUpdate) SetBelongsToID(id int) *EntCommentUpdate {
+	ecu.mutation.SetBelongsToID(id)
+	return ecu
+}
+
+// SetNillableBelongsToID sets the "belongsTo" edge to the EntPost entity by ID if the given value is not nil.
+func (ecu *EntCommentUpdate) SetNillableBelongsToID(id *int) *EntCommentUpdate {
+	if id != nil {
+		ecu = ecu.SetBelongsToID(*id)
+	}
+	return ecu
+}
+
+// SetBelongsTo sets the "belongsTo" edge to the EntPost entity.
+func (ecu *EntCommentUpdate) SetBelongsTo(e *EntPost) *EntCommentUpdate {
+	return ecu.SetBelongsToID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (ecu *EntCommentUpdate) SetOwnedByID(id int) *EntCommentUpdate {
+	ecu.mutation.SetOwnedByID(id)
+	return ecu
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (ecu *EntCommentUpdate) SetNillableOwnedByID(id *int) *EntCommentUpdate {
+	if id != nil {
+		ecu = ecu.SetOwnedByID(*id)
+	}
+	return ecu
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (ecu *EntCommentUpdate) SetOwnedBy(e *EntUser) *EntCommentUpdate {
+	return ecu.SetOwnedByID(e.ID)
+}
+
 // Mutation returns the EntCommentMutation object of the builder.
 func (ecu *EntCommentUpdate) Mutation() *EntCommentMutation {
 	return ecu.mutation
+}
+
+// ClearBelongsTo clears the "belongsTo" edge to the EntPost entity.
+func (ecu *EntCommentUpdate) ClearBelongsTo() *EntCommentUpdate {
+	ecu.mutation.ClearBelongsTo()
+	return ecu
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (ecu *EntCommentUpdate) ClearOwnedBy() *EntCommentUpdate {
+	ecu.mutation.ClearOwnedBy()
+	return ecu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -39,12 +146,18 @@ func (ecu *EntCommentUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(ecu.hooks) == 0 {
+		if err = ecu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = ecu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntCommentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = ecu.check(); err != nil {
+				return 0, err
 			}
 			ecu.mutation = mutation
 			affected, err = ecu.sqlSave(ctx)
@@ -86,6 +199,16 @@ func (ecu *EntCommentUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (ecu *EntCommentUpdate) check() error {
+	if v, ok := ecu.mutation.Share(); ok {
+		if err := entcomment.ShareValidator(v); err != nil {
+			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntComment.share": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (ecu *EntCommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -103,6 +226,109 @@ func (ecu *EntCommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecu.mutation.Timestamp(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldTimestamp,
+		})
+	}
+	if value, ok := ecu.mutation.Content(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entcomment.FieldContent,
+		})
+	}
+	if ecu.mutation.ContentCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: entcomment.FieldContent,
+		})
+	}
+	if value, ok := ecu.mutation.Share(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: entcomment.FieldShare,
+		})
+	}
+	if ecu.mutation.ShareCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Column: entcomment.FieldShare,
+		})
+	}
+	if ecu.mutation.BelongsToCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.BelongsToTable,
+			Columns: []string{entcomment.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.BelongsToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.BelongsToTable,
+			Columns: []string{entcomment.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecu.mutation.OwnedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.OwnedByTable,
+			Columns: []string{entcomment.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecu.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.OwnedByTable,
+			Columns: []string{entcomment.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, ecu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -123,9 +349,113 @@ type EntCommentUpdateOne struct {
 	mutation *EntCommentMutation
 }
 
+// SetTimestamp sets the "timestamp" field.
+func (ecuo *EntCommentUpdateOne) SetTimestamp(t time.Time) *EntCommentUpdateOne {
+	ecuo.mutation.SetTimestamp(t)
+	return ecuo
+}
+
+// SetNillableTimestamp sets the "timestamp" field if the given value is not nil.
+func (ecuo *EntCommentUpdateOne) SetNillableTimestamp(t *time.Time) *EntCommentUpdateOne {
+	if t != nil {
+		ecuo.SetTimestamp(*t)
+	}
+	return ecuo
+}
+
+// SetContent sets the "content" field.
+func (ecuo *EntCommentUpdateOne) SetContent(s string) *EntCommentUpdateOne {
+	ecuo.mutation.SetContent(s)
+	return ecuo
+}
+
+// SetNillableContent sets the "content" field if the given value is not nil.
+func (ecuo *EntCommentUpdateOne) SetNillableContent(s *string) *EntCommentUpdateOne {
+	if s != nil {
+		ecuo.SetContent(*s)
+	}
+	return ecuo
+}
+
+// ClearContent clears the value of the "content" field.
+func (ecuo *EntCommentUpdateOne) ClearContent() *EntCommentUpdateOne {
+	ecuo.mutation.ClearContent()
+	return ecuo
+}
+
+// SetShare sets the "share" field.
+func (ecuo *EntCommentUpdateOne) SetShare(e entcomment.Share) *EntCommentUpdateOne {
+	ecuo.mutation.SetShare(e)
+	return ecuo
+}
+
+// SetNillableShare sets the "share" field if the given value is not nil.
+func (ecuo *EntCommentUpdateOne) SetNillableShare(e *entcomment.Share) *EntCommentUpdateOne {
+	if e != nil {
+		ecuo.SetShare(*e)
+	}
+	return ecuo
+}
+
+// ClearShare clears the value of the "share" field.
+func (ecuo *EntCommentUpdateOne) ClearShare() *EntCommentUpdateOne {
+	ecuo.mutation.ClearShare()
+	return ecuo
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntPost entity by ID.
+func (ecuo *EntCommentUpdateOne) SetBelongsToID(id int) *EntCommentUpdateOne {
+	ecuo.mutation.SetBelongsToID(id)
+	return ecuo
+}
+
+// SetNillableBelongsToID sets the "belongsTo" edge to the EntPost entity by ID if the given value is not nil.
+func (ecuo *EntCommentUpdateOne) SetNillableBelongsToID(id *int) *EntCommentUpdateOne {
+	if id != nil {
+		ecuo = ecuo.SetBelongsToID(*id)
+	}
+	return ecuo
+}
+
+// SetBelongsTo sets the "belongsTo" edge to the EntPost entity.
+func (ecuo *EntCommentUpdateOne) SetBelongsTo(e *EntPost) *EntCommentUpdateOne {
+	return ecuo.SetBelongsToID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (ecuo *EntCommentUpdateOne) SetOwnedByID(id int) *EntCommentUpdateOne {
+	ecuo.mutation.SetOwnedByID(id)
+	return ecuo
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (ecuo *EntCommentUpdateOne) SetNillableOwnedByID(id *int) *EntCommentUpdateOne {
+	if id != nil {
+		ecuo = ecuo.SetOwnedByID(*id)
+	}
+	return ecuo
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (ecuo *EntCommentUpdateOne) SetOwnedBy(e *EntUser) *EntCommentUpdateOne {
+	return ecuo.SetOwnedByID(e.ID)
+}
+
 // Mutation returns the EntCommentMutation object of the builder.
 func (ecuo *EntCommentUpdateOne) Mutation() *EntCommentMutation {
 	return ecuo.mutation
+}
+
+// ClearBelongsTo clears the "belongsTo" edge to the EntPost entity.
+func (ecuo *EntCommentUpdateOne) ClearBelongsTo() *EntCommentUpdateOne {
+	ecuo.mutation.ClearBelongsTo()
+	return ecuo
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (ecuo *EntCommentUpdateOne) ClearOwnedBy() *EntCommentUpdateOne {
+	ecuo.mutation.ClearOwnedBy()
+	return ecuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -142,12 +472,18 @@ func (ecuo *EntCommentUpdateOne) Save(ctx context.Context) (*EntComment, error) 
 		node *EntComment
 	)
 	if len(ecuo.hooks) == 0 {
+		if err = ecuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = ecuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntCommentMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = ecuo.check(); err != nil {
+				return nil, err
 			}
 			ecuo.mutation = mutation
 			node, err = ecuo.sqlSave(ctx)
@@ -195,6 +531,16 @@ func (ecuo *EntCommentUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (ecuo *EntCommentUpdateOne) check() error {
+	if v, ok := ecuo.mutation.Share(); ok {
+		if err := entcomment.ShareValidator(v); err != nil {
+			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntComment.share": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (ecuo *EntCommentUpdateOne) sqlSave(ctx context.Context) (_node *EntComment, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -229,6 +575,109 @@ func (ecuo *EntCommentUpdateOne) sqlSave(ctx context.Context) (_node *EntComment
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecuo.mutation.Timestamp(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldTimestamp,
+		})
+	}
+	if value, ok := ecuo.mutation.Content(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entcomment.FieldContent,
+		})
+	}
+	if ecuo.mutation.ContentCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: entcomment.FieldContent,
+		})
+	}
+	if value, ok := ecuo.mutation.Share(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: entcomment.FieldShare,
+		})
+	}
+	if ecuo.mutation.ShareCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Column: entcomment.FieldShare,
+		})
+	}
+	if ecuo.mutation.BelongsToCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.BelongsToTable,
+			Columns: []string{entcomment.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.BelongsToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.BelongsToTable,
+			Columns: []string{entcomment.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if ecuo.mutation.OwnedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.OwnedByTable,
+			Columns: []string{entcomment.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := ecuo.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.OwnedByTable,
+			Columns: []string{entcomment.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &EntComment{config: ecuo.config}
 	_spec.Assign = _node.assignValues

@@ -3,11 +3,14 @@
 package ent
 
 import (
+	"backend/ent/entcourse"
 	"backend/ent/enttodo"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -27,9 +30,179 @@ func (etu *EntTodoUpdate) Where(ps ...predicate.EntTodo) *EntTodoUpdate {
 	return etu
 }
 
+// SetDate sets the "date" field.
+func (etu *EntTodoUpdate) SetDate(t time.Time) *EntTodoUpdate {
+	etu.mutation.SetDate(t)
+	return etu
+}
+
+// SetStartTime sets the "startTime" field.
+func (etu *EntTodoUpdate) SetStartTime(t time.Time) *EntTodoUpdate {
+	etu.mutation.SetStartTime(t)
+	return etu
+}
+
+// SetNillableStartTime sets the "startTime" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableStartTime(t *time.Time) *EntTodoUpdate {
+	if t != nil {
+		etu.SetStartTime(*t)
+	}
+	return etu
+}
+
+// ClearStartTime clears the value of the "startTime" field.
+func (etu *EntTodoUpdate) ClearStartTime() *EntTodoUpdate {
+	etu.mutation.ClearStartTime()
+	return etu
+}
+
+// SetEndTime sets the "endTime" field.
+func (etu *EntTodoUpdate) SetEndTime(t time.Time) *EntTodoUpdate {
+	etu.mutation.SetEndTime(t)
+	return etu
+}
+
+// SetNillableEndTime sets the "endTime" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableEndTime(t *time.Time) *EntTodoUpdate {
+	if t != nil {
+		etu.SetEndTime(*t)
+	}
+	return etu
+}
+
+// ClearEndTime clears the value of the "endTime" field.
+func (etu *EntTodoUpdate) ClearEndTime() *EntTodoUpdate {
+	etu.mutation.ClearEndTime()
+	return etu
+}
+
+// SetDay sets the "day" field.
+func (etu *EntTodoUpdate) SetDay(t time.Time) *EntTodoUpdate {
+	etu.mutation.SetDay(t)
+	return etu
+}
+
+// SetNillableDay sets the "day" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableDay(t *time.Time) *EntTodoUpdate {
+	if t != nil {
+		etu.SetDay(*t)
+	}
+	return etu
+}
+
+// ClearDay clears the value of the "day" field.
+func (etu *EntTodoUpdate) ClearDay() *EntTodoUpdate {
+	etu.mutation.ClearDay()
+	return etu
+}
+
+// SetLesson sets the "lesson" field.
+func (etu *EntTodoUpdate) SetLesson(s string) *EntTodoUpdate {
+	etu.mutation.SetLesson(s)
+	return etu
+}
+
+// SetNillableLesson sets the "lesson" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableLesson(s *string) *EntTodoUpdate {
+	if s != nil {
+		etu.SetLesson(*s)
+	}
+	return etu
+}
+
+// ClearLesson clears the value of the "lesson" field.
+func (etu *EntTodoUpdate) ClearLesson() *EntTodoUpdate {
+	etu.mutation.ClearLesson()
+	return etu
+}
+
+// SetHomework sets the "homework" field.
+func (etu *EntTodoUpdate) SetHomework(s string) *EntTodoUpdate {
+	etu.mutation.SetHomework(s)
+	return etu
+}
+
+// SetNillableHomework sets the "homework" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableHomework(s *string) *EntTodoUpdate {
+	if s != nil {
+		etu.SetHomework(*s)
+	}
+	return etu
+}
+
+// ClearHomework clears the value of the "homework" field.
+func (etu *EntTodoUpdate) ClearHomework() *EntTodoUpdate {
+	etu.mutation.ClearHomework()
+	return etu
+}
+
+// SetStatus sets the "status" field.
+func (etu *EntTodoUpdate) SetStatus(e enttodo.Status) *EntTodoUpdate {
+	etu.mutation.SetStatus(e)
+	return etu
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableStatus(e *enttodo.Status) *EntTodoUpdate {
+	if e != nil {
+		etu.SetStatus(*e)
+	}
+	return etu
+}
+
+// SetTodoForID sets the "todoFor" edge to the EntCourse entity by ID.
+func (etu *EntTodoUpdate) SetTodoForID(id int) *EntTodoUpdate {
+	etu.mutation.SetTodoForID(id)
+	return etu
+}
+
+// SetNillableTodoForID sets the "todoFor" edge to the EntCourse entity by ID if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableTodoForID(id *int) *EntTodoUpdate {
+	if id != nil {
+		etu = etu.SetTodoForID(*id)
+	}
+	return etu
+}
+
+// SetTodoFor sets the "todoFor" edge to the EntCourse entity.
+func (etu *EntTodoUpdate) SetTodoFor(e *EntCourse) *EntTodoUpdate {
+	return etu.SetTodoForID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (etu *EntTodoUpdate) SetOwnedByID(id int) *EntTodoUpdate {
+	etu.mutation.SetOwnedByID(id)
+	return etu
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (etu *EntTodoUpdate) SetNillableOwnedByID(id *int) *EntTodoUpdate {
+	if id != nil {
+		etu = etu.SetOwnedByID(*id)
+	}
+	return etu
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (etu *EntTodoUpdate) SetOwnedBy(e *EntUser) *EntTodoUpdate {
+	return etu.SetOwnedByID(e.ID)
+}
+
 // Mutation returns the EntTodoMutation object of the builder.
 func (etu *EntTodoUpdate) Mutation() *EntTodoMutation {
 	return etu.mutation
+}
+
+// ClearTodoFor clears the "todoFor" edge to the EntCourse entity.
+func (etu *EntTodoUpdate) ClearTodoFor() *EntTodoUpdate {
+	etu.mutation.ClearTodoFor()
+	return etu
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (etu *EntTodoUpdate) ClearOwnedBy() *EntTodoUpdate {
+	etu.mutation.ClearOwnedBy()
+	return etu
 }
 
 // Save executes the query and returns the number of nodes affected by the update operation.
@@ -39,12 +212,18 @@ func (etu *EntTodoUpdate) Save(ctx context.Context) (int, error) {
 		affected int
 	)
 	if len(etu.hooks) == 0 {
+		if err = etu.check(); err != nil {
+			return 0, err
+		}
 		affected, err = etu.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntTodoMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = etu.check(); err != nil {
+				return 0, err
 			}
 			etu.mutation = mutation
 			affected, err = etu.sqlSave(ctx)
@@ -86,6 +265,16 @@ func (etu *EntTodoUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (etu *EntTodoUpdate) check() error {
+	if v, ok := etu.mutation.Status(); ok {
+		if err := enttodo.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "EntTodo.status": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (etu *EntTodoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -103,6 +292,155 @@ func (etu *EntTodoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := etu.mutation.Date(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDate,
+		})
+	}
+	if value, ok := etu.mutation.StartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldStartTime,
+		})
+	}
+	if etu.mutation.StartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldStartTime,
+		})
+	}
+	if value, ok := etu.mutation.EndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldEndTime,
+		})
+	}
+	if etu.mutation.EndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldEndTime,
+		})
+	}
+	if value, ok := etu.mutation.Day(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDay,
+		})
+	}
+	if etu.mutation.DayCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldDay,
+		})
+	}
+	if value, ok := etu.mutation.Lesson(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldLesson,
+		})
+	}
+	if etu.mutation.LessonCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: enttodo.FieldLesson,
+		})
+	}
+	if value, ok := etu.mutation.Homework(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldHomework,
+		})
+	}
+	if etu.mutation.HomeworkCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: enttodo.FieldHomework,
+		})
+	}
+	if value, ok := etu.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: enttodo.FieldStatus,
+		})
+	}
+	if etu.mutation.TodoForCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.TodoForTable,
+			Columns: []string{enttodo.TodoForColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := etu.mutation.TodoForIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.TodoForTable,
+			Columns: []string{enttodo.TodoForColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if etu.mutation.OwnedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.OwnedByTable,
+			Columns: []string{enttodo.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := etu.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.OwnedByTable,
+			Columns: []string{enttodo.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	if n, err = sqlgraph.UpdateNodes(ctx, etu.driver, _spec); err != nil {
 		if _, ok := err.(*sqlgraph.NotFoundError); ok {
@@ -123,9 +461,179 @@ type EntTodoUpdateOne struct {
 	mutation *EntTodoMutation
 }
 
+// SetDate sets the "date" field.
+func (etuo *EntTodoUpdateOne) SetDate(t time.Time) *EntTodoUpdateOne {
+	etuo.mutation.SetDate(t)
+	return etuo
+}
+
+// SetStartTime sets the "startTime" field.
+func (etuo *EntTodoUpdateOne) SetStartTime(t time.Time) *EntTodoUpdateOne {
+	etuo.mutation.SetStartTime(t)
+	return etuo
+}
+
+// SetNillableStartTime sets the "startTime" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableStartTime(t *time.Time) *EntTodoUpdateOne {
+	if t != nil {
+		etuo.SetStartTime(*t)
+	}
+	return etuo
+}
+
+// ClearStartTime clears the value of the "startTime" field.
+func (etuo *EntTodoUpdateOne) ClearStartTime() *EntTodoUpdateOne {
+	etuo.mutation.ClearStartTime()
+	return etuo
+}
+
+// SetEndTime sets the "endTime" field.
+func (etuo *EntTodoUpdateOne) SetEndTime(t time.Time) *EntTodoUpdateOne {
+	etuo.mutation.SetEndTime(t)
+	return etuo
+}
+
+// SetNillableEndTime sets the "endTime" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableEndTime(t *time.Time) *EntTodoUpdateOne {
+	if t != nil {
+		etuo.SetEndTime(*t)
+	}
+	return etuo
+}
+
+// ClearEndTime clears the value of the "endTime" field.
+func (etuo *EntTodoUpdateOne) ClearEndTime() *EntTodoUpdateOne {
+	etuo.mutation.ClearEndTime()
+	return etuo
+}
+
+// SetDay sets the "day" field.
+func (etuo *EntTodoUpdateOne) SetDay(t time.Time) *EntTodoUpdateOne {
+	etuo.mutation.SetDay(t)
+	return etuo
+}
+
+// SetNillableDay sets the "day" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableDay(t *time.Time) *EntTodoUpdateOne {
+	if t != nil {
+		etuo.SetDay(*t)
+	}
+	return etuo
+}
+
+// ClearDay clears the value of the "day" field.
+func (etuo *EntTodoUpdateOne) ClearDay() *EntTodoUpdateOne {
+	etuo.mutation.ClearDay()
+	return etuo
+}
+
+// SetLesson sets the "lesson" field.
+func (etuo *EntTodoUpdateOne) SetLesson(s string) *EntTodoUpdateOne {
+	etuo.mutation.SetLesson(s)
+	return etuo
+}
+
+// SetNillableLesson sets the "lesson" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableLesson(s *string) *EntTodoUpdateOne {
+	if s != nil {
+		etuo.SetLesson(*s)
+	}
+	return etuo
+}
+
+// ClearLesson clears the value of the "lesson" field.
+func (etuo *EntTodoUpdateOne) ClearLesson() *EntTodoUpdateOne {
+	etuo.mutation.ClearLesson()
+	return etuo
+}
+
+// SetHomework sets the "homework" field.
+func (etuo *EntTodoUpdateOne) SetHomework(s string) *EntTodoUpdateOne {
+	etuo.mutation.SetHomework(s)
+	return etuo
+}
+
+// SetNillableHomework sets the "homework" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableHomework(s *string) *EntTodoUpdateOne {
+	if s != nil {
+		etuo.SetHomework(*s)
+	}
+	return etuo
+}
+
+// ClearHomework clears the value of the "homework" field.
+func (etuo *EntTodoUpdateOne) ClearHomework() *EntTodoUpdateOne {
+	etuo.mutation.ClearHomework()
+	return etuo
+}
+
+// SetStatus sets the "status" field.
+func (etuo *EntTodoUpdateOne) SetStatus(e enttodo.Status) *EntTodoUpdateOne {
+	etuo.mutation.SetStatus(e)
+	return etuo
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableStatus(e *enttodo.Status) *EntTodoUpdateOne {
+	if e != nil {
+		etuo.SetStatus(*e)
+	}
+	return etuo
+}
+
+// SetTodoForID sets the "todoFor" edge to the EntCourse entity by ID.
+func (etuo *EntTodoUpdateOne) SetTodoForID(id int) *EntTodoUpdateOne {
+	etuo.mutation.SetTodoForID(id)
+	return etuo
+}
+
+// SetNillableTodoForID sets the "todoFor" edge to the EntCourse entity by ID if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableTodoForID(id *int) *EntTodoUpdateOne {
+	if id != nil {
+		etuo = etuo.SetTodoForID(*id)
+	}
+	return etuo
+}
+
+// SetTodoFor sets the "todoFor" edge to the EntCourse entity.
+func (etuo *EntTodoUpdateOne) SetTodoFor(e *EntCourse) *EntTodoUpdateOne {
+	return etuo.SetTodoForID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (etuo *EntTodoUpdateOne) SetOwnedByID(id int) *EntTodoUpdateOne {
+	etuo.mutation.SetOwnedByID(id)
+	return etuo
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (etuo *EntTodoUpdateOne) SetNillableOwnedByID(id *int) *EntTodoUpdateOne {
+	if id != nil {
+		etuo = etuo.SetOwnedByID(*id)
+	}
+	return etuo
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (etuo *EntTodoUpdateOne) SetOwnedBy(e *EntUser) *EntTodoUpdateOne {
+	return etuo.SetOwnedByID(e.ID)
+}
+
 // Mutation returns the EntTodoMutation object of the builder.
 func (etuo *EntTodoUpdateOne) Mutation() *EntTodoMutation {
 	return etuo.mutation
+}
+
+// ClearTodoFor clears the "todoFor" edge to the EntCourse entity.
+func (etuo *EntTodoUpdateOne) ClearTodoFor() *EntTodoUpdateOne {
+	etuo.mutation.ClearTodoFor()
+	return etuo
+}
+
+// ClearOwnedBy clears the "ownedBy" edge to the EntUser entity.
+func (etuo *EntTodoUpdateOne) ClearOwnedBy() *EntTodoUpdateOne {
+	etuo.mutation.ClearOwnedBy()
+	return etuo
 }
 
 // Select allows selecting one or more fields (columns) of the returned entity.
@@ -142,12 +650,18 @@ func (etuo *EntTodoUpdateOne) Save(ctx context.Context) (*EntTodo, error) {
 		node *EntTodo
 	)
 	if len(etuo.hooks) == 0 {
+		if err = etuo.check(); err != nil {
+			return nil, err
+		}
 		node, err = etuo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntTodoMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = etuo.check(); err != nil {
+				return nil, err
 			}
 			etuo.mutation = mutation
 			node, err = etuo.sqlSave(ctx)
@@ -195,6 +709,16 @@ func (etuo *EntTodoUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (etuo *EntTodoUpdateOne) check() error {
+	if v, ok := etuo.mutation.Status(); ok {
+		if err := enttodo.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "EntTodo.status": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (etuo *EntTodoUpdateOne) sqlSave(ctx context.Context) (_node *EntTodo, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -229,6 +753,155 @@ func (etuo *EntTodoUpdateOne) sqlSave(ctx context.Context) (_node *EntTodo, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := etuo.mutation.Date(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDate,
+		})
+	}
+	if value, ok := etuo.mutation.StartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldStartTime,
+		})
+	}
+	if etuo.mutation.StartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldStartTime,
+		})
+	}
+	if value, ok := etuo.mutation.EndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldEndTime,
+		})
+	}
+	if etuo.mutation.EndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldEndTime,
+		})
+	}
+	if value, ok := etuo.mutation.Day(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDay,
+		})
+	}
+	if etuo.mutation.DayCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: enttodo.FieldDay,
+		})
+	}
+	if value, ok := etuo.mutation.Lesson(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldLesson,
+		})
+	}
+	if etuo.mutation.LessonCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: enttodo.FieldLesson,
+		})
+	}
+	if value, ok := etuo.mutation.Homework(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldHomework,
+		})
+	}
+	if etuo.mutation.HomeworkCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: enttodo.FieldHomework,
+		})
+	}
+	if value, ok := etuo.mutation.Status(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: enttodo.FieldStatus,
+		})
+	}
+	if etuo.mutation.TodoForCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.TodoForTable,
+			Columns: []string{enttodo.TodoForColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := etuo.mutation.TodoForIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.TodoForTable,
+			Columns: []string{enttodo.TodoForColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if etuo.mutation.OwnedByCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.OwnedByTable,
+			Columns: []string{enttodo.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := etuo.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.OwnedByTable,
+			Columns: []string{enttodo.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
 	}
 	_node = &EntTodo{config: etuo.config}
 	_spec.Assign = _node.assignValues

@@ -3,9 +3,13 @@
 package ent
 
 import (
+	"backend/ent/entcourse"
 	"backend/ent/enttodo"
+	"backend/ent/entuser"
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +20,134 @@ type EntTodoCreate struct {
 	config
 	mutation *EntTodoMutation
 	hooks    []Hook
+}
+
+// SetDate sets the "date" field.
+func (etc *EntTodoCreate) SetDate(t time.Time) *EntTodoCreate {
+	etc.mutation.SetDate(t)
+	return etc
+}
+
+// SetStartTime sets the "startTime" field.
+func (etc *EntTodoCreate) SetStartTime(t time.Time) *EntTodoCreate {
+	etc.mutation.SetStartTime(t)
+	return etc
+}
+
+// SetNillableStartTime sets the "startTime" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableStartTime(t *time.Time) *EntTodoCreate {
+	if t != nil {
+		etc.SetStartTime(*t)
+	}
+	return etc
+}
+
+// SetEndTime sets the "endTime" field.
+func (etc *EntTodoCreate) SetEndTime(t time.Time) *EntTodoCreate {
+	etc.mutation.SetEndTime(t)
+	return etc
+}
+
+// SetNillableEndTime sets the "endTime" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableEndTime(t *time.Time) *EntTodoCreate {
+	if t != nil {
+		etc.SetEndTime(*t)
+	}
+	return etc
+}
+
+// SetDay sets the "day" field.
+func (etc *EntTodoCreate) SetDay(t time.Time) *EntTodoCreate {
+	etc.mutation.SetDay(t)
+	return etc
+}
+
+// SetNillableDay sets the "day" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableDay(t *time.Time) *EntTodoCreate {
+	if t != nil {
+		etc.SetDay(*t)
+	}
+	return etc
+}
+
+// SetLesson sets the "lesson" field.
+func (etc *EntTodoCreate) SetLesson(s string) *EntTodoCreate {
+	etc.mutation.SetLesson(s)
+	return etc
+}
+
+// SetNillableLesson sets the "lesson" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableLesson(s *string) *EntTodoCreate {
+	if s != nil {
+		etc.SetLesson(*s)
+	}
+	return etc
+}
+
+// SetHomework sets the "homework" field.
+func (etc *EntTodoCreate) SetHomework(s string) *EntTodoCreate {
+	etc.mutation.SetHomework(s)
+	return etc
+}
+
+// SetNillableHomework sets the "homework" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableHomework(s *string) *EntTodoCreate {
+	if s != nil {
+		etc.SetHomework(*s)
+	}
+	return etc
+}
+
+// SetStatus sets the "status" field.
+func (etc *EntTodoCreate) SetStatus(e enttodo.Status) *EntTodoCreate {
+	etc.mutation.SetStatus(e)
+	return etc
+}
+
+// SetNillableStatus sets the "status" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableStatus(e *enttodo.Status) *EntTodoCreate {
+	if e != nil {
+		etc.SetStatus(*e)
+	}
+	return etc
+}
+
+// SetTodoForID sets the "todoFor" edge to the EntCourse entity by ID.
+func (etc *EntTodoCreate) SetTodoForID(id int) *EntTodoCreate {
+	etc.mutation.SetTodoForID(id)
+	return etc
+}
+
+// SetNillableTodoForID sets the "todoFor" edge to the EntCourse entity by ID if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableTodoForID(id *int) *EntTodoCreate {
+	if id != nil {
+		etc = etc.SetTodoForID(*id)
+	}
+	return etc
+}
+
+// SetTodoFor sets the "todoFor" edge to the EntCourse entity.
+func (etc *EntTodoCreate) SetTodoFor(e *EntCourse) *EntTodoCreate {
+	return etc.SetTodoForID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (etc *EntTodoCreate) SetOwnedByID(id int) *EntTodoCreate {
+	etc.mutation.SetOwnedByID(id)
+	return etc
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableOwnedByID(id *int) *EntTodoCreate {
+	if id != nil {
+		etc = etc.SetOwnedByID(*id)
+	}
+	return etc
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (etc *EntTodoCreate) SetOwnedBy(e *EntUser) *EntTodoCreate {
+	return etc.SetOwnedByID(e.ID)
 }
 
 // Mutation returns the EntTodoMutation object of the builder.
@@ -29,6 +161,7 @@ func (etc *EntTodoCreate) Save(ctx context.Context) (*EntTodo, error) {
 		err  error
 		node *EntTodo
 	)
+	etc.defaults()
 	if len(etc.hooks) == 0 {
 		if err = etc.check(); err != nil {
 			return nil, err
@@ -92,8 +225,27 @@ func (etc *EntTodoCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (etc *EntTodoCreate) defaults() {
+	if _, ok := etc.mutation.Status(); !ok {
+		v := enttodo.DefaultStatus
+		etc.mutation.SetStatus(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (etc *EntTodoCreate) check() error {
+	if _, ok := etc.mutation.Date(); !ok {
+		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "EntTodo.date"`)}
+	}
+	if _, ok := etc.mutation.Status(); !ok {
+		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "EntTodo.status"`)}
+	}
+	if v, ok := etc.mutation.Status(); ok {
+		if err := enttodo.StatusValidator(v); err != nil {
+			return &ValidationError{Name: "status", err: fmt.Errorf(`ent: validator failed for field "EntTodo.status": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -121,6 +273,102 @@ func (etc *EntTodoCreate) createSpec() (*EntTodo, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := etc.mutation.Date(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDate,
+		})
+		_node.Date = value
+	}
+	if value, ok := etc.mutation.StartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldStartTime,
+		})
+		_node.StartTime = value
+	}
+	if value, ok := etc.mutation.EndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldEndTime,
+		})
+		_node.EndTime = value
+	}
+	if value, ok := etc.mutation.Day(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldDay,
+		})
+		_node.Day = value
+	}
+	if value, ok := etc.mutation.Lesson(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldLesson,
+		})
+		_node.Lesson = value
+	}
+	if value, ok := etc.mutation.Homework(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: enttodo.FieldHomework,
+		})
+		_node.Homework = value
+	}
+	if value, ok := etc.mutation.Status(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: enttodo.FieldStatus,
+		})
+		_node.Status = value
+	}
+	if nodes := etc.mutation.TodoForIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.TodoForTable,
+			Columns: []string{enttodo.TodoForColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_course_todo = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := etc.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   enttodo.OwnedByTable,
+			Columns: []string{enttodo.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_user_todo = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -138,6 +386,7 @@ func (etcb *EntTodoCreateBulk) Save(ctx context.Context) ([]*EntTodo, error) {
 	for i := range etcb.builders {
 		func(i int, root context.Context) {
 			builder := etcb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*EntTodoMutation)
 				if !ok {

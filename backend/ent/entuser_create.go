@@ -3,7 +3,11 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
+	"backend/ent/entcomment"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"context"
 	"errors"
@@ -97,6 +101,66 @@ func (euc *EntUserCreate) AddCourse(e ...*EntCourse) *EntUserCreate {
 		ids[i] = e[i].ID
 	}
 	return euc.AddCourseIDs(ids...)
+}
+
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (euc *EntUserCreate) AddTodoIDs(ids ...int) *EntUserCreate {
+	euc.mutation.AddTodoIDs(ids...)
+	return euc
+}
+
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (euc *EntUserCreate) AddTodo(e ...*EntTodo) *EntUserCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euc.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (euc *EntUserCreate) AddAttendanceIDs(ids ...int) *EntUserCreate {
+	euc.mutation.AddAttendanceIDs(ids...)
+	return euc
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (euc *EntUserCreate) AddAttendance(e ...*EntAttendance) *EntUserCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euc.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (euc *EntUserCreate) AddPostIDs(ids ...int) *EntUserCreate {
+	euc.mutation.AddPostIDs(ids...)
+	return euc
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (euc *EntUserCreate) AddPost(e ...*EntPost) *EntUserCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euc.AddPostIDs(ids...)
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by IDs.
+func (euc *EntUserCreate) AddCommentIDs(ids ...int) *EntUserCreate {
+	euc.mutation.AddCommentIDs(ids...)
+	return euc
+}
+
+// AddComment adds the "comment" edges to the EntComment entity.
+func (euc *EntUserCreate) AddComment(e ...*EntComment) *EntUserCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euc.AddCommentIDs(ids...)
 }
 
 // AddChildIDs adds the "children" edge to the EntUser entity by IDs.
@@ -400,6 +464,82 @@ func (euc *EntUserCreate) createSpec() (*EntUser, *sqlgraph.CreateSpec) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := euc.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := euc.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := euc.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := euc.mutation.CommentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
 				},
 			},
 		}

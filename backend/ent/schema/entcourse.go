@@ -33,8 +33,15 @@ func (EntCourse) Fields() []ent.Field {
 // Edges of the EntCourse.
 func (EntCourse) Edges() []ent.Edge {
 	return []ent.Edge{
-		// Create an inverse-edge called "parent/children" between EntUser
-		edge.From("courseOwner", EntUser.Type).
+		// Create an edge called "todo" between EntCourse and EntTodo (1 to M)
+		edge.To("todo", EntTodo.Type),
+		// Create an edge called "attendance" between EntCourse and EntAttendance (1 to M)
+		edge.To("attendance", EntAttendance.Type),
+		// Create an edge called "post" between EntCourse and EntPost (1 to M)
+		edge.To("post", EntPost.Type),
+
+		// Create an inverse-edge called "courseOwner" between EntUser
+		edge.From("ownedBy", EntUser.Type).
 			Ref("course"),
 	}
 }

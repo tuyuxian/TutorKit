@@ -3,7 +3,11 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
+	"backend/ent/entcomment"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
@@ -117,6 +121,66 @@ func (euu *EntUserUpdate) AddCourse(e ...*EntCourse) *EntUserUpdate {
 		ids[i] = e[i].ID
 	}
 	return euu.AddCourseIDs(ids...)
+}
+
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (euu *EntUserUpdate) AddTodoIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.AddTodoIDs(ids...)
+	return euu
+}
+
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (euu *EntUserUpdate) AddTodo(e ...*EntTodo) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (euu *EntUserUpdate) AddAttendanceIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.AddAttendanceIDs(ids...)
+	return euu
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (euu *EntUserUpdate) AddAttendance(e ...*EntAttendance) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (euu *EntUserUpdate) AddPostIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.AddPostIDs(ids...)
+	return euu
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (euu *EntUserUpdate) AddPost(e ...*EntPost) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.AddPostIDs(ids...)
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by IDs.
+func (euu *EntUserUpdate) AddCommentIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.AddCommentIDs(ids...)
+	return euu
+}
+
+// AddComment adds the "comment" edges to the EntComment entity.
+func (euu *EntUserUpdate) AddComment(e ...*EntComment) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.AddCommentIDs(ids...)
 }
 
 // AddChildIDs adds the "children" edge to the EntUser entity by IDs.
@@ -233,6 +297,90 @@ func (euu *EntUserUpdate) RemoveCourse(e ...*EntCourse) *EntUserUpdate {
 		ids[i] = e[i].ID
 	}
 	return euu.RemoveCourseIDs(ids...)
+}
+
+// ClearTodo clears all "todo" edges to the EntTodo entity.
+func (euu *EntUserUpdate) ClearTodo() *EntUserUpdate {
+	euu.mutation.ClearTodo()
+	return euu
+}
+
+// RemoveTodoIDs removes the "todo" edge to EntTodo entities by IDs.
+func (euu *EntUserUpdate) RemoveTodoIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.RemoveTodoIDs(ids...)
+	return euu
+}
+
+// RemoveTodo removes "todo" edges to EntTodo entities.
+func (euu *EntUserUpdate) RemoveTodo(e ...*EntTodo) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.RemoveTodoIDs(ids...)
+}
+
+// ClearAttendance clears all "attendance" edges to the EntAttendance entity.
+func (euu *EntUserUpdate) ClearAttendance() *EntUserUpdate {
+	euu.mutation.ClearAttendance()
+	return euu
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to EntAttendance entities by IDs.
+func (euu *EntUserUpdate) RemoveAttendanceIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.RemoveAttendanceIDs(ids...)
+	return euu
+}
+
+// RemoveAttendance removes "attendance" edges to EntAttendance entities.
+func (euu *EntUserUpdate) RemoveAttendance(e ...*EntAttendance) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.RemoveAttendanceIDs(ids...)
+}
+
+// ClearPost clears all "post" edges to the EntPost entity.
+func (euu *EntUserUpdate) ClearPost() *EntUserUpdate {
+	euu.mutation.ClearPost()
+	return euu
+}
+
+// RemovePostIDs removes the "post" edge to EntPost entities by IDs.
+func (euu *EntUserUpdate) RemovePostIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.RemovePostIDs(ids...)
+	return euu
+}
+
+// RemovePost removes "post" edges to EntPost entities.
+func (euu *EntUserUpdate) RemovePost(e ...*EntPost) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.RemovePostIDs(ids...)
+}
+
+// ClearComment clears all "comment" edges to the EntComment entity.
+func (euu *EntUserUpdate) ClearComment() *EntUserUpdate {
+	euu.mutation.ClearComment()
+	return euu
+}
+
+// RemoveCommentIDs removes the "comment" edge to EntComment entities by IDs.
+func (euu *EntUserUpdate) RemoveCommentIDs(ids ...int) *EntUserUpdate {
+	euu.mutation.RemoveCommentIDs(ids...)
+	return euu
+}
+
+// RemoveComment removes "comment" edges to EntComment entities.
+func (euu *EntUserUpdate) RemoveComment(e ...*EntComment) *EntUserUpdate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euu.RemoveCommentIDs(ids...)
 }
 
 // ClearChildren clears all "children" edges to the EntUser entity.
@@ -573,6 +721,222 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euu.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.RemovedTodoIDs(); len(nodes) > 0 && !euu.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euu.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.RemovedAttendanceIDs(); len(nodes) > 0 && !euu.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euu.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.RemovedPostIDs(); len(nodes) > 0 && !euu.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euu.mutation.CommentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.RemovedCommentIDs(); len(nodes) > 0 && !euu.mutation.CommentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euu.mutation.CommentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
 				},
 			},
 		}
@@ -1015,6 +1379,66 @@ func (euuo *EntUserUpdateOne) AddCourse(e ...*EntCourse) *EntUserUpdateOne {
 	return euuo.AddCourseIDs(ids...)
 }
 
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (euuo *EntUserUpdateOne) AddTodoIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.AddTodoIDs(ids...)
+	return euuo
+}
+
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (euuo *EntUserUpdateOne) AddTodo(e ...*EntTodo) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (euuo *EntUserUpdateOne) AddAttendanceIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.AddAttendanceIDs(ids...)
+	return euuo
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (euuo *EntUserUpdateOne) AddAttendance(e ...*EntAttendance) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (euuo *EntUserUpdateOne) AddPostIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.AddPostIDs(ids...)
+	return euuo
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (euuo *EntUserUpdateOne) AddPost(e ...*EntPost) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.AddPostIDs(ids...)
+}
+
+// AddCommentIDs adds the "comment" edge to the EntComment entity by IDs.
+func (euuo *EntUserUpdateOne) AddCommentIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.AddCommentIDs(ids...)
+	return euuo
+}
+
+// AddComment adds the "comment" edges to the EntComment entity.
+func (euuo *EntUserUpdateOne) AddComment(e ...*EntComment) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.AddCommentIDs(ids...)
+}
+
 // AddChildIDs adds the "children" edge to the EntUser entity by IDs.
 func (euuo *EntUserUpdateOne) AddChildIDs(ids ...int) *EntUserUpdateOne {
 	euuo.mutation.AddChildIDs(ids...)
@@ -1129,6 +1553,90 @@ func (euuo *EntUserUpdateOne) RemoveCourse(e ...*EntCourse) *EntUserUpdateOne {
 		ids[i] = e[i].ID
 	}
 	return euuo.RemoveCourseIDs(ids...)
+}
+
+// ClearTodo clears all "todo" edges to the EntTodo entity.
+func (euuo *EntUserUpdateOne) ClearTodo() *EntUserUpdateOne {
+	euuo.mutation.ClearTodo()
+	return euuo
+}
+
+// RemoveTodoIDs removes the "todo" edge to EntTodo entities by IDs.
+func (euuo *EntUserUpdateOne) RemoveTodoIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.RemoveTodoIDs(ids...)
+	return euuo
+}
+
+// RemoveTodo removes "todo" edges to EntTodo entities.
+func (euuo *EntUserUpdateOne) RemoveTodo(e ...*EntTodo) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.RemoveTodoIDs(ids...)
+}
+
+// ClearAttendance clears all "attendance" edges to the EntAttendance entity.
+func (euuo *EntUserUpdateOne) ClearAttendance() *EntUserUpdateOne {
+	euuo.mutation.ClearAttendance()
+	return euuo
+}
+
+// RemoveAttendanceIDs removes the "attendance" edge to EntAttendance entities by IDs.
+func (euuo *EntUserUpdateOne) RemoveAttendanceIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.RemoveAttendanceIDs(ids...)
+	return euuo
+}
+
+// RemoveAttendance removes "attendance" edges to EntAttendance entities.
+func (euuo *EntUserUpdateOne) RemoveAttendance(e ...*EntAttendance) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.RemoveAttendanceIDs(ids...)
+}
+
+// ClearPost clears all "post" edges to the EntPost entity.
+func (euuo *EntUserUpdateOne) ClearPost() *EntUserUpdateOne {
+	euuo.mutation.ClearPost()
+	return euuo
+}
+
+// RemovePostIDs removes the "post" edge to EntPost entities by IDs.
+func (euuo *EntUserUpdateOne) RemovePostIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.RemovePostIDs(ids...)
+	return euuo
+}
+
+// RemovePost removes "post" edges to EntPost entities.
+func (euuo *EntUserUpdateOne) RemovePost(e ...*EntPost) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.RemovePostIDs(ids...)
+}
+
+// ClearComment clears all "comment" edges to the EntComment entity.
+func (euuo *EntUserUpdateOne) ClearComment() *EntUserUpdateOne {
+	euuo.mutation.ClearComment()
+	return euuo
+}
+
+// RemoveCommentIDs removes the "comment" edge to EntComment entities by IDs.
+func (euuo *EntUserUpdateOne) RemoveCommentIDs(ids ...int) *EntUserUpdateOne {
+	euuo.mutation.RemoveCommentIDs(ids...)
+	return euuo
+}
+
+// RemoveComment removes "comment" edges to EntComment entities.
+func (euuo *EntUserUpdateOne) RemoveComment(e ...*EntComment) *EntUserUpdateOne {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return euuo.RemoveCommentIDs(ids...)
 }
 
 // ClearChildren clears all "children" edges to the EntUser entity.
@@ -1499,6 +2007,222 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 				IDSpec: &sqlgraph.FieldSpec{
 					Type:   field.TypeInt,
 					Column: entcourse.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euuo.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.RemovedTodoIDs(); len(nodes) > 0 && !euuo.mutation.TodoCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.TodoTable,
+			Columns: []string{entuser.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euuo.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.RemovedAttendanceIDs(); len(nodes) > 0 && !euuo.mutation.AttendanceCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.AttendanceTable,
+			Columns: []string{entuser.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euuo.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.RemovedPostIDs(); len(nodes) > 0 && !euuo.mutation.PostCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.PostTable,
+			Columns: []string{entuser.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Add = append(_spec.Edges.Add, edge)
+	}
+	if euuo.mutation.CommentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
+				},
+			},
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.RemovedCommentIDs(); len(nodes) > 0 && !euuo.mutation.CommentCleared() {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges.Clear = append(_spec.Edges.Clear, edge)
+	}
+	if nodes := euuo.mutation.CommentIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entuser.CommentTable,
+			Columns: []string{entuser.CommentColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entcomment.FieldID,
 				},
 			},
 		}

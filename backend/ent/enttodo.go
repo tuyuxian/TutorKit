@@ -3,18 +3,77 @@
 package ent
 
 import (
+	"backend/ent/entcourse"
 	"backend/ent/enttodo"
+	"backend/ent/entuser"
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
 
 // EntTodo is the model entity for the EntTodo schema.
 type EntTodo struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Date holds the value of the "date" field.
+	Date time.Time `json:"date,omitempty"`
+	// StartTime holds the value of the "startTime" field.
+	StartTime time.Time `json:"startTime,omitempty"`
+	// EndTime holds the value of the "endTime" field.
+	EndTime time.Time `json:"endTime,omitempty"`
+	// Day holds the value of the "day" field.
+	Day time.Time `json:"day,omitempty"`
+	// Lesson holds the value of the "lesson" field.
+	Lesson string `json:"lesson,omitempty"`
+	// Homework holds the value of the "homework" field.
+	Homework string `json:"homework,omitempty"`
+	// Status holds the value of the "status" field.
+	Status enttodo.Status `json:"status,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the EntTodoQuery when eager-loading is set.
+	Edges           EntTodoEdges `json:"edges"`
+	ent_course_todo *int
+	ent_user_todo   *int
+}
+
+// EntTodoEdges holds the relations/edges for other nodes in the graph.
+type EntTodoEdges struct {
+	// TodoFor holds the value of the todoFor edge.
+	TodoFor *EntCourse `json:"todoFor,omitempty"`
+	// OwnedBy holds the value of the ownedBy edge.
+	OwnedBy *EntUser `json:"ownedBy,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// TodoForOrErr returns the TodoFor value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e EntTodoEdges) TodoForOrErr() (*EntCourse, error) {
+	if e.loadedTypes[0] {
+		if e.TodoFor == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: entcourse.Label}
+		}
+		return e.TodoFor, nil
+	}
+	return nil, &NotLoadedError{edge: "todoFor"}
+}
+
+// OwnedByOrErr returns the OwnedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e EntTodoEdges) OwnedByOrErr() (*EntUser, error) {
+	if e.loadedTypes[1] {
+		if e.OwnedBy == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: entuser.Label}
+		}
+		return e.OwnedBy, nil
+	}
+	return nil, &NotLoadedError{edge: "ownedBy"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -23,6 +82,14 @@ func (*EntTodo) scanValues(columns []string) ([]interface{}, error) {
 	for i := range columns {
 		switch columns[i] {
 		case enttodo.FieldID:
+			values[i] = new(sql.NullInt64)
+		case enttodo.FieldLesson, enttodo.FieldHomework, enttodo.FieldStatus:
+			values[i] = new(sql.NullString)
+		case enttodo.FieldDate, enttodo.FieldStartTime, enttodo.FieldEndTime, enttodo.FieldDay:
+			values[i] = new(sql.NullTime)
+		case enttodo.ForeignKeys[0]: // ent_course_todo
+			values[i] = new(sql.NullInt64)
+		case enttodo.ForeignKeys[1]: // ent_user_todo
 			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntTodo", columns[i])
@@ -45,9 +112,75 @@ func (et *EntTodo) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			et.ID = int(value.Int64)
+		case enttodo.FieldDate:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field date", values[i])
+			} else if value.Valid {
+				et.Date = value.Time
+			}
+		case enttodo.FieldStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field startTime", values[i])
+			} else if value.Valid {
+				et.StartTime = value.Time
+			}
+		case enttodo.FieldEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field endTime", values[i])
+			} else if value.Valid {
+				et.EndTime = value.Time
+			}
+		case enttodo.FieldDay:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field day", values[i])
+			} else if value.Valid {
+				et.Day = value.Time
+			}
+		case enttodo.FieldLesson:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field lesson", values[i])
+			} else if value.Valid {
+				et.Lesson = value.String
+			}
+		case enttodo.FieldHomework:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field homework", values[i])
+			} else if value.Valid {
+				et.Homework = value.String
+			}
+		case enttodo.FieldStatus:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field status", values[i])
+			} else if value.Valid {
+				et.Status = enttodo.Status(value.String)
+			}
+		case enttodo.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field ent_course_todo", value)
+			} else if value.Valid {
+				et.ent_course_todo = new(int)
+				*et.ent_course_todo = int(value.Int64)
+			}
+		case enttodo.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field ent_user_todo", value)
+			} else if value.Valid {
+				et.ent_user_todo = new(int)
+				*et.ent_user_todo = int(value.Int64)
+			}
 		}
 	}
 	return nil
+}
+
+// QueryTodoFor queries the "todoFor" edge of the EntTodo entity.
+func (et *EntTodo) QueryTodoFor() *EntCourseQuery {
+	return (&EntTodoClient{config: et.config}).QueryTodoFor(et)
+}
+
+// QueryOwnedBy queries the "ownedBy" edge of the EntTodo entity.
+func (et *EntTodo) QueryOwnedBy() *EntUserQuery {
+	return (&EntTodoClient{config: et.config}).QueryOwnedBy(et)
 }
 
 // Update returns a builder for updating this EntTodo.
@@ -72,7 +205,27 @@ func (et *EntTodo) Unwrap() *EntTodo {
 func (et *EntTodo) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntTodo(")
-	builder.WriteString(fmt.Sprintf("id=%v", et.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", et.ID))
+	builder.WriteString("date=")
+	builder.WriteString(et.Date.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("startTime=")
+	builder.WriteString(et.StartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("endTime=")
+	builder.WriteString(et.EndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("day=")
+	builder.WriteString(et.Day.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("lesson=")
+	builder.WriteString(et.Lesson)
+	builder.WriteString(", ")
+	builder.WriteString("homework=")
+	builder.WriteString(et.Homework)
+	builder.WriteString(", ")
+	builder.WriteString("status=")
+	builder.WriteString(fmt.Sprintf("%v", et.Status))
 	builder.WriteByte(')')
 	return builder.String()
 }

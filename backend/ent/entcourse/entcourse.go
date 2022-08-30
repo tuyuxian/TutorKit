@@ -37,15 +37,42 @@ const (
 	FieldSaturday = "saturday"
 	// FieldSunday holds the string denoting the sunday field in the database.
 	FieldSunday = "sunday"
-	// EdgeCourseOwner holds the string denoting the courseowner edge name in mutations.
-	EdgeCourseOwner = "courseOwner"
+	// EdgeTodo holds the string denoting the todo edge name in mutations.
+	EdgeTodo = "todo"
+	// EdgeAttendance holds the string denoting the attendance edge name in mutations.
+	EdgeAttendance = "attendance"
+	// EdgePost holds the string denoting the post edge name in mutations.
+	EdgePost = "post"
+	// EdgeOwnedBy holds the string denoting the ownedby edge name in mutations.
+	EdgeOwnedBy = "ownedBy"
 	// Table holds the table name of the entcourse in the database.
 	Table = "ent_courses"
-	// CourseOwnerTable is the table that holds the courseOwner relation/edge. The primary key declared below.
-	CourseOwnerTable = "ent_user_course"
-	// CourseOwnerInverseTable is the table name for the EntUser entity.
+	// TodoTable is the table that holds the todo relation/edge.
+	TodoTable = "ent_todos"
+	// TodoInverseTable is the table name for the EntTodo entity.
+	// It exists in this package in order to avoid circular dependency with the "enttodo" package.
+	TodoInverseTable = "ent_todos"
+	// TodoColumn is the table column denoting the todo relation/edge.
+	TodoColumn = "ent_course_todo"
+	// AttendanceTable is the table that holds the attendance relation/edge.
+	AttendanceTable = "ent_attendances"
+	// AttendanceInverseTable is the table name for the EntAttendance entity.
+	// It exists in this package in order to avoid circular dependency with the "entattendance" package.
+	AttendanceInverseTable = "ent_attendances"
+	// AttendanceColumn is the table column denoting the attendance relation/edge.
+	AttendanceColumn = "ent_course_attendance"
+	// PostTable is the table that holds the post relation/edge.
+	PostTable = "ent_posts"
+	// PostInverseTable is the table name for the EntPost entity.
+	// It exists in this package in order to avoid circular dependency with the "entpost" package.
+	PostInverseTable = "ent_posts"
+	// PostColumn is the table column denoting the post relation/edge.
+	PostColumn = "ent_course_post"
+	// OwnedByTable is the table that holds the ownedBy relation/edge. The primary key declared below.
+	OwnedByTable = "ent_user_course"
+	// OwnedByInverseTable is the table name for the EntUser entity.
 	// It exists in this package in order to avoid circular dependency with the "entuser" package.
-	CourseOwnerInverseTable = "ent_users"
+	OwnedByInverseTable = "ent_users"
 )
 
 // Columns holds all SQL columns for entcourse fields.
@@ -67,9 +94,9 @@ var Columns = []string{
 }
 
 var (
-	// CourseOwnerPrimaryKey and CourseOwnerColumn2 are the table columns denoting the
-	// primary key for the courseOwner relation (M2M).
-	CourseOwnerPrimaryKey = []string{"ent_user_id", "ent_course_id"}
+	// OwnedByPrimaryKey and OwnedByColumn2 are the table columns denoting the
+	// primary key for the ownedBy relation (M2M).
+	OwnedByPrimaryKey = []string{"ent_user_id", "ent_course_id"}
 )
 
 // ValidColumn reports if the column name is valid (part of the table columns).

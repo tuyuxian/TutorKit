@@ -1,6 +1,12 @@
 package schema
 
-import "entgo.io/ent"
+import (
+	"time"
+
+	"entgo.io/ent"
+	"entgo.io/ent/schema/edge"
+	"entgo.io/ent/schema/field"
+)
 
 // EntComment holds the schema definition for the EntComment entity.
 type EntComment struct {
@@ -9,10 +15,24 @@ type EntComment struct {
 
 // Fields of the EntComment.
 func (EntComment) Fields() []ent.Field {
-	return nil
+	return []ent.Field{
+		field.Time("timestamp").Default(time.Now()),
+		field.String("content").Optional(),
+		field.Enum("share").Values("public", "private").Optional(),
+	}
 }
 
 // Edges of the EntComment.
 func (EntComment) Edges() []ent.Edge {
-	return nil
+	return []ent.Edge{
+		// Create an inverse-edge called "commentFor" between EntComment and EntPost (M to 1)
+		edge.From("belongsTo", EntPost.Type).
+			Ref("comment").
+			Unique(),
+
+		// Create an inverse-edge called "ownedBy" between EntComment and EntUser (M to 1)
+		edge.From("ownedBy", EntUser.Type).
+			Ref("comment").
+			Unique(),
+	}
 }

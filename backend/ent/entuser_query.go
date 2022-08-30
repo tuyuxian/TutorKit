@@ -3,7 +3,11 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
+	"backend/ent/entcomment"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
@@ -19,19 +23,23 @@ import (
 // EntUserQuery is the builder for querying EntUser entities.
 type EntUserQuery struct {
 	config
-	limit        *int
-	offset       *int
-	unique       *bool
-	order        []OrderFunc
-	fields       []string
-	predicates   []predicate.EntUser
-	withCourse   *EntCourseQuery
-	withChildren *EntUserQuery
-	withParent   *EntUserQuery
-	withStudent  *EntUserQuery
-	withTutor    *EntUserQuery
-	withSParent  *EntUserQuery
-	withSTutor   *EntUserQuery
+	limit          *int
+	offset         *int
+	unique         *bool
+	order          []OrderFunc
+	fields         []string
+	predicates     []predicate.EntUser
+	withCourse     *EntCourseQuery
+	withTodo       *EntTodoQuery
+	withAttendance *EntAttendanceQuery
+	withPost       *EntPostQuery
+	withComment    *EntCommentQuery
+	withChildren   *EntUserQuery
+	withParent     *EntUserQuery
+	withStudent    *EntUserQuery
+	withTutor      *EntUserQuery
+	withSParent    *EntUserQuery
+	withSTutor     *EntUserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -83,6 +91,94 @@ func (euq *EntUserQuery) QueryCourse() *EntCourseQuery {
 			sqlgraph.From(entuser.Table, entuser.FieldID, selector),
 			sqlgraph.To(entcourse.Table, entcourse.FieldID),
 			sqlgraph.Edge(sqlgraph.M2M, false, entuser.CourseTable, entuser.CoursePrimaryKey...),
+		)
+		fromU = sqlgraph.SetNeighbors(euq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryTodo chains the current query on the "todo" edge.
+func (euq *EntUserQuery) QueryTodo() *EntTodoQuery {
+	query := &EntTodoQuery{config: euq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := euq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := euq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, selector),
+			sqlgraph.To(enttodo.Table, enttodo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.TodoTable, entuser.TodoColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(euq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAttendance chains the current query on the "attendance" edge.
+func (euq *EntUserQuery) QueryAttendance() *EntAttendanceQuery {
+	query := &EntAttendanceQuery{config: euq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := euq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := euq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, selector),
+			sqlgraph.To(entattendance.Table, entattendance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.AttendanceTable, entuser.AttendanceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(euq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPost chains the current query on the "post" edge.
+func (euq *EntUserQuery) QueryPost() *EntPostQuery {
+	query := &EntPostQuery{config: euq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := euq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := euq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, selector),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.PostTable, entuser.PostColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(euq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryComment chains the current query on the "comment" edge.
+func (euq *EntUserQuery) QueryComment() *EntCommentQuery {
+	query := &EntCommentQuery{config: euq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := euq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := euq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entuser.Table, entuser.FieldID, selector),
+			sqlgraph.To(entcomment.Table, entcomment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entuser.CommentTable, entuser.CommentColumn),
 		)
 		fromU = sqlgraph.SetNeighbors(euq.driver.Dialect(), step)
 		return fromU, nil
@@ -398,18 +494,22 @@ func (euq *EntUserQuery) Clone() *EntUserQuery {
 		return nil
 	}
 	return &EntUserQuery{
-		config:       euq.config,
-		limit:        euq.limit,
-		offset:       euq.offset,
-		order:        append([]OrderFunc{}, euq.order...),
-		predicates:   append([]predicate.EntUser{}, euq.predicates...),
-		withCourse:   euq.withCourse.Clone(),
-		withChildren: euq.withChildren.Clone(),
-		withParent:   euq.withParent.Clone(),
-		withStudent:  euq.withStudent.Clone(),
-		withTutor:    euq.withTutor.Clone(),
-		withSParent:  euq.withSParent.Clone(),
-		withSTutor:   euq.withSTutor.Clone(),
+		config:         euq.config,
+		limit:          euq.limit,
+		offset:         euq.offset,
+		order:          append([]OrderFunc{}, euq.order...),
+		predicates:     append([]predicate.EntUser{}, euq.predicates...),
+		withCourse:     euq.withCourse.Clone(),
+		withTodo:       euq.withTodo.Clone(),
+		withAttendance: euq.withAttendance.Clone(),
+		withPost:       euq.withPost.Clone(),
+		withComment:    euq.withComment.Clone(),
+		withChildren:   euq.withChildren.Clone(),
+		withParent:     euq.withParent.Clone(),
+		withStudent:    euq.withStudent.Clone(),
+		withTutor:      euq.withTutor.Clone(),
+		withSParent:    euq.withSParent.Clone(),
+		withSTutor:     euq.withSTutor.Clone(),
 		// clone intermediate query.
 		sql:    euq.sql.Clone(),
 		path:   euq.path,
@@ -425,6 +525,50 @@ func (euq *EntUserQuery) WithCourse(opts ...func(*EntCourseQuery)) *EntUserQuery
 		opt(query)
 	}
 	euq.withCourse = query
+	return euq
+}
+
+// WithTodo tells the query-builder to eager-load the nodes that are connected to
+// the "todo" edge. The optional arguments are used to configure the query builder of the edge.
+func (euq *EntUserQuery) WithTodo(opts ...func(*EntTodoQuery)) *EntUserQuery {
+	query := &EntTodoQuery{config: euq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	euq.withTodo = query
+	return euq
+}
+
+// WithAttendance tells the query-builder to eager-load the nodes that are connected to
+// the "attendance" edge. The optional arguments are used to configure the query builder of the edge.
+func (euq *EntUserQuery) WithAttendance(opts ...func(*EntAttendanceQuery)) *EntUserQuery {
+	query := &EntAttendanceQuery{config: euq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	euq.withAttendance = query
+	return euq
+}
+
+// WithPost tells the query-builder to eager-load the nodes that are connected to
+// the "post" edge. The optional arguments are used to configure the query builder of the edge.
+func (euq *EntUserQuery) WithPost(opts ...func(*EntPostQuery)) *EntUserQuery {
+	query := &EntPostQuery{config: euq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	euq.withPost = query
+	return euq
+}
+
+// WithComment tells the query-builder to eager-load the nodes that are connected to
+// the "comment" edge. The optional arguments are used to configure the query builder of the edge.
+func (euq *EntUserQuery) WithComment(opts ...func(*EntCommentQuery)) *EntUserQuery {
+	query := &EntCommentQuery{config: euq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	euq.withComment = query
 	return euq
 }
 
@@ -562,8 +706,12 @@ func (euq *EntUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ent
 	var (
 		nodes       = []*EntUser{}
 		_spec       = euq.querySpec()
-		loadedTypes = [7]bool{
+		loadedTypes = [11]bool{
 			euq.withCourse != nil,
+			euq.withTodo != nil,
+			euq.withAttendance != nil,
+			euq.withPost != nil,
+			euq.withComment != nil,
 			euq.withChildren != nil,
 			euq.withParent != nil,
 			euq.withStudent != nil,
@@ -594,6 +742,34 @@ func (euq *EntUserQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ent
 		if err := euq.loadCourse(ctx, query, nodes,
 			func(n *EntUser) { n.Edges.Course = []*EntCourse{} },
 			func(n *EntUser, e *EntCourse) { n.Edges.Course = append(n.Edges.Course, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := euq.withTodo; query != nil {
+		if err := euq.loadTodo(ctx, query, nodes,
+			func(n *EntUser) { n.Edges.Todo = []*EntTodo{} },
+			func(n *EntUser, e *EntTodo) { n.Edges.Todo = append(n.Edges.Todo, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := euq.withAttendance; query != nil {
+		if err := euq.loadAttendance(ctx, query, nodes,
+			func(n *EntUser) { n.Edges.Attendance = []*EntAttendance{} },
+			func(n *EntUser, e *EntAttendance) { n.Edges.Attendance = append(n.Edges.Attendance, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := euq.withPost; query != nil {
+		if err := euq.loadPost(ctx, query, nodes,
+			func(n *EntUser) { n.Edges.Post = []*EntPost{} },
+			func(n *EntUser, e *EntPost) { n.Edges.Post = append(n.Edges.Post, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := euq.withComment; query != nil {
+		if err := euq.loadComment(ctx, query, nodes,
+			func(n *EntUser) { n.Edges.Comment = []*EntComment{} },
+			func(n *EntUser, e *EntComment) { n.Edges.Comment = append(n.Edges.Comment, e) }); err != nil {
 			return nil, err
 		}
 	}
@@ -697,6 +873,130 @@ func (euq *EntUserQuery) loadCourse(ctx context.Context, query *EntCourseQuery, 
 		for kn := range nodes {
 			assign(kn, n)
 		}
+	}
+	return nil
+}
+func (euq *EntUserQuery) loadTodo(ctx context.Context, query *EntTodoQuery, nodes []*EntUser, init func(*EntUser), assign func(*EntUser, *EntTodo)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntUser)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntTodo(func(s *sql.Selector) {
+		s.Where(sql.InValues(entuser.TodoColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_user_todo
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_user_todo" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_todo" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (euq *EntUserQuery) loadAttendance(ctx context.Context, query *EntAttendanceQuery, nodes []*EntUser, init func(*EntUser), assign func(*EntUser, *EntAttendance)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntUser)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntAttendance(func(s *sql.Selector) {
+		s.Where(sql.InValues(entuser.AttendanceColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_user_attendance
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_user_attendance" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_attendance" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (euq *EntUserQuery) loadPost(ctx context.Context, query *EntPostQuery, nodes []*EntUser, init func(*EntUser), assign func(*EntUser, *EntPost)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntUser)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntPost(func(s *sql.Selector) {
+		s.Where(sql.InValues(entuser.PostColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_user_post
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_user_post" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_post" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (euq *EntUserQuery) loadComment(ctx context.Context, query *EntCommentQuery, nodes []*EntUser, init func(*EntUser), assign func(*EntUser, *EntComment)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntUser)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntComment(func(s *sql.Selector) {
+		s.Where(sql.InValues(entuser.CommentColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_user_comment
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_user_comment" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_comment" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
 	}
 	return nil
 }

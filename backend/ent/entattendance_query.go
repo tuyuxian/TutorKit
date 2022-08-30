@@ -4,6 +4,8 @@ package ent
 
 import (
 	"backend/ent/entattendance"
+	"backend/ent/entcourse"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
 	"fmt"
@@ -17,12 +19,15 @@ import (
 // EntAttendanceQuery is the builder for querying EntAttendance entities.
 type EntAttendanceQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
-	order      []OrderFunc
-	fields     []string
-	predicates []predicate.EntAttendance
+	limit             *int
+	offset            *int
+	unique            *bool
+	order             []OrderFunc
+	fields            []string
+	predicates        []predicate.EntAttendance
+	withAttendanceFor *EntCourseQuery
+	withOwnedBy       *EntUserQuery
+	withFKs           bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +62,50 @@ func (eaq *EntAttendanceQuery) Unique(unique bool) *EntAttendanceQuery {
 func (eaq *EntAttendanceQuery) Order(o ...OrderFunc) *EntAttendanceQuery {
 	eaq.order = append(eaq.order, o...)
 	return eaq
+}
+
+// QueryAttendanceFor chains the current query on the "attendanceFor" edge.
+func (eaq *EntAttendanceQuery) QueryAttendanceFor() *EntCourseQuery {
+	query := &EntCourseQuery{config: eaq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := eaq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := eaq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entattendance.Table, entattendance.FieldID, selector),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entattendance.AttendanceForTable, entattendance.AttendanceForColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(eaq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOwnedBy chains the current query on the "ownedBy" edge.
+func (eaq *EntAttendanceQuery) QueryOwnedBy() *EntUserQuery {
+	query := &EntUserQuery{config: eaq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := eaq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := eaq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entattendance.Table, entattendance.FieldID, selector),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entattendance.OwnedByTable, entattendance.OwnedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(eaq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first EntAttendance entity from the query.
@@ -235,11 +284,13 @@ func (eaq *EntAttendanceQuery) Clone() *EntAttendanceQuery {
 		return nil
 	}
 	return &EntAttendanceQuery{
-		config:     eaq.config,
-		limit:      eaq.limit,
-		offset:     eaq.offset,
-		order:      append([]OrderFunc{}, eaq.order...),
-		predicates: append([]predicate.EntAttendance{}, eaq.predicates...),
+		config:            eaq.config,
+		limit:             eaq.limit,
+		offset:            eaq.offset,
+		order:             append([]OrderFunc{}, eaq.order...),
+		predicates:        append([]predicate.EntAttendance{}, eaq.predicates...),
+		withAttendanceFor: eaq.withAttendanceFor.Clone(),
+		withOwnedBy:       eaq.withOwnedBy.Clone(),
 		// clone intermediate query.
 		sql:    eaq.sql.Clone(),
 		path:   eaq.path,
@@ -247,8 +298,42 @@ func (eaq *EntAttendanceQuery) Clone() *EntAttendanceQuery {
 	}
 }
 
+// WithAttendanceFor tells the query-builder to eager-load the nodes that are connected to
+// the "attendanceFor" edge. The optional arguments are used to configure the query builder of the edge.
+func (eaq *EntAttendanceQuery) WithAttendanceFor(opts ...func(*EntCourseQuery)) *EntAttendanceQuery {
+	query := &EntCourseQuery{config: eaq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	eaq.withAttendanceFor = query
+	return eaq
+}
+
+// WithOwnedBy tells the query-builder to eager-load the nodes that are connected to
+// the "ownedBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (eaq *EntAttendanceQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntAttendanceQuery {
+	query := &EntUserQuery{config: eaq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	eaq.withOwnedBy = query
+	return eaq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EntAttendance.Query().
+//		GroupBy(entattendance.FieldDate).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (eaq *EntAttendanceQuery) GroupBy(field string, fields ...string) *EntAttendanceGroupBy {
 	grbuild := &EntAttendanceGroupBy{config: eaq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -265,6 +350,16 @@ func (eaq *EntAttendanceQuery) GroupBy(field string, fields ...string) *EntAtten
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//	}
+//
+//	client.EntAttendance.Query().
+//		Select(entattendance.FieldDate).
+//		Scan(ctx, &v)
 func (eaq *EntAttendanceQuery) Select(fields ...string) *EntAttendanceSelect {
 	eaq.fields = append(eaq.fields, fields...)
 	selbuild := &EntAttendanceSelect{EntAttendanceQuery: eaq}
@@ -291,15 +386,27 @@ func (eaq *EntAttendanceQuery) prepareQuery(ctx context.Context) error {
 
 func (eaq *EntAttendanceQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*EntAttendance, error) {
 	var (
-		nodes = []*EntAttendance{}
-		_spec = eaq.querySpec()
+		nodes       = []*EntAttendance{}
+		withFKs     = eaq.withFKs
+		_spec       = eaq.querySpec()
+		loadedTypes = [2]bool{
+			eaq.withAttendanceFor != nil,
+			eaq.withOwnedBy != nil,
+		}
 	)
+	if eaq.withAttendanceFor != nil || eaq.withOwnedBy != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, entattendance.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		return (*EntAttendance).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []interface{}) error {
 		node := &EntAttendance{config: eaq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -311,7 +418,78 @@ func (eaq *EntAttendanceQuery) sqlAll(ctx context.Context, hooks ...queryHook) (
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := eaq.withAttendanceFor; query != nil {
+		if err := eaq.loadAttendanceFor(ctx, query, nodes, nil,
+			func(n *EntAttendance, e *EntCourse) { n.Edges.AttendanceFor = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := eaq.withOwnedBy; query != nil {
+		if err := eaq.loadOwnedBy(ctx, query, nodes, nil,
+			func(n *EntAttendance, e *EntUser) { n.Edges.OwnedBy = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (eaq *EntAttendanceQuery) loadAttendanceFor(ctx context.Context, query *EntCourseQuery, nodes []*EntAttendance, init func(*EntAttendance), assign func(*EntAttendance, *EntCourse)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntAttendance)
+	for i := range nodes {
+		if nodes[i].ent_course_attendance == nil {
+			continue
+		}
+		fk := *nodes[i].ent_course_attendance
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entcourse.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_attendance" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (eaq *EntAttendanceQuery) loadOwnedBy(ctx context.Context, query *EntUserQuery, nodes []*EntAttendance, init func(*EntAttendance), assign func(*EntAttendance, *EntUser)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntAttendance)
+	for i := range nodes {
+		if nodes[i].ent_user_attendance == nil {
+			continue
+		}
+		fk := *nodes[i].ent_user_attendance
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entuser.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_attendance" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (eaq *EntAttendanceQuery) sqlCount(ctx context.Context) (int, error) {

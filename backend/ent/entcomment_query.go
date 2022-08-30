@@ -4,6 +4,8 @@ package ent
 
 import (
 	"backend/ent/entcomment"
+	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
 	"fmt"
@@ -17,12 +19,15 @@ import (
 // EntCommentQuery is the builder for querying EntComment entities.
 type EntCommentQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
-	order      []OrderFunc
-	fields     []string
-	predicates []predicate.EntComment
+	limit         *int
+	offset        *int
+	unique        *bool
+	order         []OrderFunc
+	fields        []string
+	predicates    []predicate.EntComment
+	withBelongsTo *EntPostQuery
+	withOwnedBy   *EntUserQuery
+	withFKs       bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +62,50 @@ func (ecq *EntCommentQuery) Unique(unique bool) *EntCommentQuery {
 func (ecq *EntCommentQuery) Order(o ...OrderFunc) *EntCommentQuery {
 	ecq.order = append(ecq.order, o...)
 	return ecq
+}
+
+// QueryBelongsTo chains the current query on the "belongsTo" edge.
+func (ecq *EntCommentQuery) QueryBelongsTo() *EntPostQuery {
+	query := &EntPostQuery{config: ecq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ecq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ecq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcomment.Table, entcomment.FieldID, selector),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entcomment.BelongsToTable, entcomment.BelongsToColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOwnedBy chains the current query on the "ownedBy" edge.
+func (ecq *EntCommentQuery) QueryOwnedBy() *EntUserQuery {
+	query := &EntUserQuery{config: ecq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ecq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ecq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcomment.Table, entcomment.FieldID, selector),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entcomment.OwnedByTable, entcomment.OwnedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first EntComment entity from the query.
@@ -235,11 +284,13 @@ func (ecq *EntCommentQuery) Clone() *EntCommentQuery {
 		return nil
 	}
 	return &EntCommentQuery{
-		config:     ecq.config,
-		limit:      ecq.limit,
-		offset:     ecq.offset,
-		order:      append([]OrderFunc{}, ecq.order...),
-		predicates: append([]predicate.EntComment{}, ecq.predicates...),
+		config:        ecq.config,
+		limit:         ecq.limit,
+		offset:        ecq.offset,
+		order:         append([]OrderFunc{}, ecq.order...),
+		predicates:    append([]predicate.EntComment{}, ecq.predicates...),
+		withBelongsTo: ecq.withBelongsTo.Clone(),
+		withOwnedBy:   ecq.withOwnedBy.Clone(),
 		// clone intermediate query.
 		sql:    ecq.sql.Clone(),
 		path:   ecq.path,
@@ -247,8 +298,42 @@ func (ecq *EntCommentQuery) Clone() *EntCommentQuery {
 	}
 }
 
+// WithBelongsTo tells the query-builder to eager-load the nodes that are connected to
+// the "belongsTo" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCommentQuery) WithBelongsTo(opts ...func(*EntPostQuery)) *EntCommentQuery {
+	query := &EntPostQuery{config: ecq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ecq.withBelongsTo = query
+	return ecq
+}
+
+// WithOwnedBy tells the query-builder to eager-load the nodes that are connected to
+// the "ownedBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCommentQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntCommentQuery {
+	query := &EntUserQuery{config: ecq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ecq.withOwnedBy = query
+	return ecq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EntComment.Query().
+//		GroupBy(entcomment.FieldTimestamp).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (ecq *EntCommentQuery) GroupBy(field string, fields ...string) *EntCommentGroupBy {
 	grbuild := &EntCommentGroupBy{config: ecq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -265,6 +350,16 @@ func (ecq *EntCommentQuery) GroupBy(field string, fields ...string) *EntCommentG
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Timestamp time.Time `json:"timestamp,omitempty"`
+//	}
+//
+//	client.EntComment.Query().
+//		Select(entcomment.FieldTimestamp).
+//		Scan(ctx, &v)
 func (ecq *EntCommentQuery) Select(fields ...string) *EntCommentSelect {
 	ecq.fields = append(ecq.fields, fields...)
 	selbuild := &EntCommentSelect{EntCommentQuery: ecq}
@@ -291,15 +386,27 @@ func (ecq *EntCommentQuery) prepareQuery(ctx context.Context) error {
 
 func (ecq *EntCommentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*EntComment, error) {
 	var (
-		nodes = []*EntComment{}
-		_spec = ecq.querySpec()
+		nodes       = []*EntComment{}
+		withFKs     = ecq.withFKs
+		_spec       = ecq.querySpec()
+		loadedTypes = [2]bool{
+			ecq.withBelongsTo != nil,
+			ecq.withOwnedBy != nil,
+		}
 	)
+	if ecq.withBelongsTo != nil || ecq.withOwnedBy != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, entcomment.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		return (*EntComment).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []interface{}) error {
 		node := &EntComment{config: ecq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -311,7 +418,78 @@ func (ecq *EntCommentQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := ecq.withBelongsTo; query != nil {
+		if err := ecq.loadBelongsTo(ctx, query, nodes, nil,
+			func(n *EntComment, e *EntPost) { n.Edges.BelongsTo = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := ecq.withOwnedBy; query != nil {
+		if err := ecq.loadOwnedBy(ctx, query, nodes, nil,
+			func(n *EntComment, e *EntUser) { n.Edges.OwnedBy = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (ecq *EntCommentQuery) loadBelongsTo(ctx context.Context, query *EntPostQuery, nodes []*EntComment, init func(*EntComment), assign func(*EntComment, *EntPost)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntComment)
+	for i := range nodes {
+		if nodes[i].ent_post_comment == nil {
+			continue
+		}
+		fk := *nodes[i].ent_post_comment
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entpost.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_post_comment" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (ecq *EntCommentQuery) loadOwnedBy(ctx context.Context, query *EntUserQuery, nodes []*EntComment, init func(*EntComment), assign func(*EntComment, *EntUser)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntComment)
+	for i := range nodes {
+		if nodes[i].ent_user_comment == nil {
+			continue
+		}
+		fk := *nodes[i].ent_user_comment
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entuser.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_comment" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (ecq *EntCommentQuery) sqlCount(ctx context.Context) (int, error) {

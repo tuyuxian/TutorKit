@@ -3,7 +3,10 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
@@ -19,13 +22,16 @@ import (
 // EntCourseQuery is the builder for querying EntCourse entities.
 type EntCourseQuery struct {
 	config
-	limit           *int
-	offset          *int
-	unique          *bool
-	order           []OrderFunc
-	fields          []string
-	predicates      []predicate.EntCourse
-	withCourseOwner *EntUserQuery
+	limit          *int
+	offset         *int
+	unique         *bool
+	order          []OrderFunc
+	fields         []string
+	predicates     []predicate.EntCourse
+	withTodo       *EntTodoQuery
+	withAttendance *EntAttendanceQuery
+	withPost       *EntPostQuery
+	withOwnedBy    *EntUserQuery
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -62,8 +68,74 @@ func (ecq *EntCourseQuery) Order(o ...OrderFunc) *EntCourseQuery {
 	return ecq
 }
 
-// QueryCourseOwner chains the current query on the "courseOwner" edge.
-func (ecq *EntCourseQuery) QueryCourseOwner() *EntUserQuery {
+// QueryTodo chains the current query on the "todo" edge.
+func (ecq *EntCourseQuery) QueryTodo() *EntTodoQuery {
+	query := &EntTodoQuery{config: ecq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ecq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ecq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, selector),
+			sqlgraph.To(enttodo.Table, enttodo.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.TodoTable, entcourse.TodoColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryAttendance chains the current query on the "attendance" edge.
+func (ecq *EntCourseQuery) QueryAttendance() *EntAttendanceQuery {
+	query := &EntAttendanceQuery{config: ecq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ecq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ecq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, selector),
+			sqlgraph.To(entattendance.Table, entattendance.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.AttendanceTable, entcourse.AttendanceColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryPost chains the current query on the "post" edge.
+func (ecq *EntCourseQuery) QueryPost() *EntPostQuery {
+	query := &EntPostQuery{config: ecq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := ecq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := ecq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entcourse.Table, entcourse.FieldID, selector),
+			sqlgraph.To(entpost.Table, entpost.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entcourse.PostTable, entcourse.PostColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOwnedBy chains the current query on the "ownedBy" edge.
+func (ecq *EntCourseQuery) QueryOwnedBy() *EntUserQuery {
 	query := &EntUserQuery{config: ecq.config}
 	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
 		if err := ecq.prepareQuery(ctx); err != nil {
@@ -76,7 +148,7 @@ func (ecq *EntCourseQuery) QueryCourseOwner() *EntUserQuery {
 		step := sqlgraph.NewStep(
 			sqlgraph.From(entcourse.Table, entcourse.FieldID, selector),
 			sqlgraph.To(entuser.Table, entuser.FieldID),
-			sqlgraph.Edge(sqlgraph.M2M, true, entcourse.CourseOwnerTable, entcourse.CourseOwnerPrimaryKey...),
+			sqlgraph.Edge(sqlgraph.M2M, true, entcourse.OwnedByTable, entcourse.OwnedByPrimaryKey...),
 		)
 		fromU = sqlgraph.SetNeighbors(ecq.driver.Dialect(), step)
 		return fromU, nil
@@ -260,12 +332,15 @@ func (ecq *EntCourseQuery) Clone() *EntCourseQuery {
 		return nil
 	}
 	return &EntCourseQuery{
-		config:          ecq.config,
-		limit:           ecq.limit,
-		offset:          ecq.offset,
-		order:           append([]OrderFunc{}, ecq.order...),
-		predicates:      append([]predicate.EntCourse{}, ecq.predicates...),
-		withCourseOwner: ecq.withCourseOwner.Clone(),
+		config:         ecq.config,
+		limit:          ecq.limit,
+		offset:         ecq.offset,
+		order:          append([]OrderFunc{}, ecq.order...),
+		predicates:     append([]predicate.EntCourse{}, ecq.predicates...),
+		withTodo:       ecq.withTodo.Clone(),
+		withAttendance: ecq.withAttendance.Clone(),
+		withPost:       ecq.withPost.Clone(),
+		withOwnedBy:    ecq.withOwnedBy.Clone(),
 		// clone intermediate query.
 		sql:    ecq.sql.Clone(),
 		path:   ecq.path,
@@ -273,14 +348,47 @@ func (ecq *EntCourseQuery) Clone() *EntCourseQuery {
 	}
 }
 
-// WithCourseOwner tells the query-builder to eager-load the nodes that are connected to
-// the "courseOwner" edge. The optional arguments are used to configure the query builder of the edge.
-func (ecq *EntCourseQuery) WithCourseOwner(opts ...func(*EntUserQuery)) *EntCourseQuery {
+// WithTodo tells the query-builder to eager-load the nodes that are connected to
+// the "todo" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCourseQuery) WithTodo(opts ...func(*EntTodoQuery)) *EntCourseQuery {
+	query := &EntTodoQuery{config: ecq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ecq.withTodo = query
+	return ecq
+}
+
+// WithAttendance tells the query-builder to eager-load the nodes that are connected to
+// the "attendance" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCourseQuery) WithAttendance(opts ...func(*EntAttendanceQuery)) *EntCourseQuery {
+	query := &EntAttendanceQuery{config: ecq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ecq.withAttendance = query
+	return ecq
+}
+
+// WithPost tells the query-builder to eager-load the nodes that are connected to
+// the "post" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCourseQuery) WithPost(opts ...func(*EntPostQuery)) *EntCourseQuery {
+	query := &EntPostQuery{config: ecq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	ecq.withPost = query
+	return ecq
+}
+
+// WithOwnedBy tells the query-builder to eager-load the nodes that are connected to
+// the "ownedBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (ecq *EntCourseQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntCourseQuery {
 	query := &EntUserQuery{config: ecq.config}
 	for _, opt := range opts {
 		opt(query)
 	}
-	ecq.withCourseOwner = query
+	ecq.withOwnedBy = query
 	return ecq
 }
 
@@ -352,8 +460,11 @@ func (ecq *EntCourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*E
 	var (
 		nodes       = []*EntCourse{}
 		_spec       = ecq.querySpec()
-		loadedTypes = [1]bool{
-			ecq.withCourseOwner != nil,
+		loadedTypes = [4]bool{
+			ecq.withTodo != nil,
+			ecq.withAttendance != nil,
+			ecq.withPost != nil,
+			ecq.withOwnedBy != nil,
 		}
 	)
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
@@ -374,17 +485,131 @@ func (ecq *EntCourseQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*E
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
-	if query := ecq.withCourseOwner; query != nil {
-		if err := ecq.loadCourseOwner(ctx, query, nodes,
-			func(n *EntCourse) { n.Edges.CourseOwner = []*EntUser{} },
-			func(n *EntCourse, e *EntUser) { n.Edges.CourseOwner = append(n.Edges.CourseOwner, e) }); err != nil {
+	if query := ecq.withTodo; query != nil {
+		if err := ecq.loadTodo(ctx, query, nodes,
+			func(n *EntCourse) { n.Edges.Todo = []*EntTodo{} },
+			func(n *EntCourse, e *EntTodo) { n.Edges.Todo = append(n.Edges.Todo, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := ecq.withAttendance; query != nil {
+		if err := ecq.loadAttendance(ctx, query, nodes,
+			func(n *EntCourse) { n.Edges.Attendance = []*EntAttendance{} },
+			func(n *EntCourse, e *EntAttendance) { n.Edges.Attendance = append(n.Edges.Attendance, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := ecq.withPost; query != nil {
+		if err := ecq.loadPost(ctx, query, nodes,
+			func(n *EntCourse) { n.Edges.Post = []*EntPost{} },
+			func(n *EntCourse, e *EntPost) { n.Edges.Post = append(n.Edges.Post, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := ecq.withOwnedBy; query != nil {
+		if err := ecq.loadOwnedBy(ctx, query, nodes,
+			func(n *EntCourse) { n.Edges.OwnedBy = []*EntUser{} },
+			func(n *EntCourse, e *EntUser) { n.Edges.OwnedBy = append(n.Edges.OwnedBy, e) }); err != nil {
 			return nil, err
 		}
 	}
 	return nodes, nil
 }
 
-func (ecq *EntCourseQuery) loadCourseOwner(ctx context.Context, query *EntUserQuery, nodes []*EntCourse, init func(*EntCourse), assign func(*EntCourse, *EntUser)) error {
+func (ecq *EntCourseQuery) loadTodo(ctx context.Context, query *EntTodoQuery, nodes []*EntCourse, init func(*EntCourse), assign func(*EntCourse, *EntTodo)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntCourse)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntTodo(func(s *sql.Selector) {
+		s.Where(sql.InValues(entcourse.TodoColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_course_todo
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_course_todo" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_todo" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (ecq *EntCourseQuery) loadAttendance(ctx context.Context, query *EntAttendanceQuery, nodes []*EntCourse, init func(*EntCourse), assign func(*EntCourse, *EntAttendance)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntCourse)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntAttendance(func(s *sql.Selector) {
+		s.Where(sql.InValues(entcourse.AttendanceColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_course_attendance
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_course_attendance" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_attendance" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (ecq *EntCourseQuery) loadPost(ctx context.Context, query *EntPostQuery, nodes []*EntCourse, init func(*EntCourse), assign func(*EntCourse, *EntPost)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntCourse)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntPost(func(s *sql.Selector) {
+		s.Where(sql.InValues(entcourse.PostColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_course_post
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_course_post" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_post" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (ecq *EntCourseQuery) loadOwnedBy(ctx context.Context, query *EntUserQuery, nodes []*EntCourse, init func(*EntCourse), assign func(*EntCourse, *EntUser)) error {
 	edgeIDs := make([]driver.Value, len(nodes))
 	byID := make(map[int]*EntCourse)
 	nids := make(map[int]map[*EntCourse]struct{})
@@ -396,11 +621,11 @@ func (ecq *EntCourseQuery) loadCourseOwner(ctx context.Context, query *EntUserQu
 		}
 	}
 	query.Where(func(s *sql.Selector) {
-		joinT := sql.Table(entcourse.CourseOwnerTable)
-		s.Join(joinT).On(s.C(entuser.FieldID), joinT.C(entcourse.CourseOwnerPrimaryKey[0]))
-		s.Where(sql.InValues(joinT.C(entcourse.CourseOwnerPrimaryKey[1]), edgeIDs...))
+		joinT := sql.Table(entcourse.OwnedByTable)
+		s.Join(joinT).On(s.C(entuser.FieldID), joinT.C(entcourse.OwnedByPrimaryKey[0]))
+		s.Where(sql.InValues(joinT.C(entcourse.OwnedByPrimaryKey[1]), edgeIDs...))
 		columns := s.SelectedColumns()
-		s.Select(joinT.C(entcourse.CourseOwnerPrimaryKey[1]))
+		s.Select(joinT.C(entcourse.OwnedByPrimaryKey[1]))
 		s.AppendSelect(columns...)
 		s.SetDistinct(false)
 	})
@@ -434,7 +659,7 @@ func (ecq *EntCourseQuery) loadCourseOwner(ctx context.Context, query *EntUserQu
 	for _, n := range neighbors {
 		nodes, ok := nids[n.ID]
 		if !ok {
-			return fmt.Errorf(`unexpected "courseOwner" node returned %v`, n.ID)
+			return fmt.Errorf(`unexpected "ownedBy" node returned %v`, n.ID)
 		}
 		for kn := range nodes {
 			assign(kn, n)

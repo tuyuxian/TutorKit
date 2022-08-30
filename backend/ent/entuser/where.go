@@ -729,6 +729,118 @@ func HasCourseWith(preds ...predicate.EntCourse) predicate.EntUser {
 	})
 }
 
+// HasTodo applies the HasEdge predicate on the "todo" edge.
+func HasTodo() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(TodoTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TodoTable, TodoColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasTodoWith applies the HasEdge predicate on the "todo" edge with a given conditions (other predicates).
+func HasTodoWith(preds ...predicate.EntTodo) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(TodoInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, TodoTable, TodoColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasAttendance applies the HasEdge predicate on the "attendance" edge.
+func HasAttendance() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AttendanceTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AttendanceTable, AttendanceColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasAttendanceWith applies the HasEdge predicate on the "attendance" edge with a given conditions (other predicates).
+func HasAttendanceWith(preds ...predicate.EntAttendance) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(AttendanceInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, AttendanceTable, AttendanceColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasPost applies the HasEdge predicate on the "post" edge.
+func HasPost() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PostTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PostTable, PostColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasPostWith applies the HasEdge predicate on the "post" edge with a given conditions (other predicates).
+func HasPostWith(preds ...predicate.EntPost) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(PostInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, PostTable, PostColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
+// HasComment applies the HasEdge predicate on the "comment" edge.
+func HasComment() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CommentTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, CommentTable, CommentColumn),
+		)
+		sqlgraph.HasNeighbors(s, step)
+	})
+}
+
+// HasCommentWith applies the HasEdge predicate on the "comment" edge with a given conditions (other predicates).
+func HasCommentWith(preds ...predicate.EntComment) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		step := sqlgraph.NewStep(
+			sqlgraph.From(Table, FieldID),
+			sqlgraph.To(CommentInverseTable, FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, CommentTable, CommentColumn),
+		)
+		sqlgraph.HasNeighborsWith(s, step, func(s *sql.Selector) {
+			for _, p := range preds {
+				p(s)
+			}
+		})
+	})
+}
+
 // HasChildren applies the HasEdge predicate on the "children" edge.
 func HasChildren() predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {

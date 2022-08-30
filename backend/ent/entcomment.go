@@ -4,17 +4,68 @@ package ent
 
 import (
 	"backend/ent/entcomment"
+	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
 
 // EntComment is the model entity for the EntComment schema.
 type EntComment struct {
-	config
+	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// Timestamp holds the value of the "timestamp" field.
+	Timestamp time.Time `json:"timestamp,omitempty"`
+	// Content holds the value of the "content" field.
+	Content string `json:"content,omitempty"`
+	// Share holds the value of the "share" field.
+	Share entcomment.Share `json:"share,omitempty"`
+	// Edges holds the relations/edges for other nodes in the graph.
+	// The values are being populated by the EntCommentQuery when eager-loading is set.
+	Edges            EntCommentEdges `json:"edges"`
+	ent_post_comment *int
+	ent_user_comment *int
+}
+
+// EntCommentEdges holds the relations/edges for other nodes in the graph.
+type EntCommentEdges struct {
+	// BelongsTo holds the value of the belongsTo edge.
+	BelongsTo *EntPost `json:"belongsTo,omitempty"`
+	// OwnedBy holds the value of the ownedBy edge.
+	OwnedBy *EntUser `json:"ownedBy,omitempty"`
+	// loadedTypes holds the information for reporting if a
+	// type was loaded (or requested) in eager-loading or not.
+	loadedTypes [2]bool
+}
+
+// BelongsToOrErr returns the BelongsTo value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e EntCommentEdges) BelongsToOrErr() (*EntPost, error) {
+	if e.loadedTypes[0] {
+		if e.BelongsTo == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: entpost.Label}
+		}
+		return e.BelongsTo, nil
+	}
+	return nil, &NotLoadedError{edge: "belongsTo"}
+}
+
+// OwnedByOrErr returns the OwnedBy value or an error if the edge
+// was not loaded in eager-loading, or loaded but was not found.
+func (e EntCommentEdges) OwnedByOrErr() (*EntUser, error) {
+	if e.loadedTypes[1] {
+		if e.OwnedBy == nil {
+			// Edge was loaded but was not found.
+			return nil, &NotFoundError{label: entuser.Label}
+		}
+		return e.OwnedBy, nil
+	}
+	return nil, &NotLoadedError{edge: "ownedBy"}
 }
 
 // scanValues returns the types for scanning values from sql.Rows.
@@ -23,6 +74,14 @@ func (*EntComment) scanValues(columns []string) ([]interface{}, error) {
 	for i := range columns {
 		switch columns[i] {
 		case entcomment.FieldID:
+			values[i] = new(sql.NullInt64)
+		case entcomment.FieldContent, entcomment.FieldShare:
+			values[i] = new(sql.NullString)
+		case entcomment.FieldTimestamp:
+			values[i] = new(sql.NullTime)
+		case entcomment.ForeignKeys[0]: // ent_post_comment
+			values[i] = new(sql.NullInt64)
+		case entcomment.ForeignKeys[1]: // ent_user_comment
 			values[i] = new(sql.NullInt64)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntComment", columns[i])
@@ -45,9 +104,51 @@ func (ec *EntComment) assignValues(columns []string, values []interface{}) error
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ec.ID = int(value.Int64)
+		case entcomment.FieldTimestamp:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field timestamp", values[i])
+			} else if value.Valid {
+				ec.Timestamp = value.Time
+			}
+		case entcomment.FieldContent:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field content", values[i])
+			} else if value.Valid {
+				ec.Content = value.String
+			}
+		case entcomment.FieldShare:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field share", values[i])
+			} else if value.Valid {
+				ec.Share = entcomment.Share(value.String)
+			}
+		case entcomment.ForeignKeys[0]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field ent_post_comment", value)
+			} else if value.Valid {
+				ec.ent_post_comment = new(int)
+				*ec.ent_post_comment = int(value.Int64)
+			}
+		case entcomment.ForeignKeys[1]:
+			if value, ok := values[i].(*sql.NullInt64); !ok {
+				return fmt.Errorf("unexpected type %T for edge-field ent_user_comment", value)
+			} else if value.Valid {
+				ec.ent_user_comment = new(int)
+				*ec.ent_user_comment = int(value.Int64)
+			}
 		}
 	}
 	return nil
+}
+
+// QueryBelongsTo queries the "belongsTo" edge of the EntComment entity.
+func (ec *EntComment) QueryBelongsTo() *EntPostQuery {
+	return (&EntCommentClient{config: ec.config}).QueryBelongsTo(ec)
+}
+
+// QueryOwnedBy queries the "ownedBy" edge of the EntComment entity.
+func (ec *EntComment) QueryOwnedBy() *EntUserQuery {
+	return (&EntCommentClient{config: ec.config}).QueryOwnedBy(ec)
 }
 
 // Update returns a builder for updating this EntComment.
@@ -72,7 +173,15 @@ func (ec *EntComment) Unwrap() *EntComment {
 func (ec *EntComment) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntComment(")
-	builder.WriteString(fmt.Sprintf("id=%v", ec.ID))
+	builder.WriteString(fmt.Sprintf("id=%v, ", ec.ID))
+	builder.WriteString("timestamp=")
+	builder.WriteString(ec.Timestamp.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("content=")
+	builder.WriteString(ec.Content)
+	builder.WriteString(", ")
+	builder.WriteString("share=")
+	builder.WriteString(fmt.Sprintf("%v", ec.Share))
 	builder.WriteByte(')')
 	return builder.String()
 }

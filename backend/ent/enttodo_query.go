@@ -3,7 +3,9 @@
 package ent
 
 import (
+	"backend/ent/entcourse"
 	"backend/ent/enttodo"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
 	"fmt"
@@ -17,12 +19,15 @@ import (
 // EntTodoQuery is the builder for querying EntTodo entities.
 type EntTodoQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
-	order      []OrderFunc
-	fields     []string
-	predicates []predicate.EntTodo
+	limit       *int
+	offset      *int
+	unique      *bool
+	order       []OrderFunc
+	fields      []string
+	predicates  []predicate.EntTodo
+	withTodoFor *EntCourseQuery
+	withOwnedBy *EntUserQuery
+	withFKs     bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +62,50 @@ func (etq *EntTodoQuery) Unique(unique bool) *EntTodoQuery {
 func (etq *EntTodoQuery) Order(o ...OrderFunc) *EntTodoQuery {
 	etq.order = append(etq.order, o...)
 	return etq
+}
+
+// QueryTodoFor chains the current query on the "todoFor" edge.
+func (etq *EntTodoQuery) QueryTodoFor() *EntCourseQuery {
+	query := &EntCourseQuery{config: etq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := etq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := etq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(enttodo.Table, enttodo.FieldID, selector),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, enttodo.TodoForTable, enttodo.TodoForColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(etq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOwnedBy chains the current query on the "ownedBy" edge.
+func (etq *EntTodoQuery) QueryOwnedBy() *EntUserQuery {
+	query := &EntUserQuery{config: etq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := etq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := etq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(enttodo.Table, enttodo.FieldID, selector),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, enttodo.OwnedByTable, enttodo.OwnedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(etq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first EntTodo entity from the query.
@@ -235,11 +284,13 @@ func (etq *EntTodoQuery) Clone() *EntTodoQuery {
 		return nil
 	}
 	return &EntTodoQuery{
-		config:     etq.config,
-		limit:      etq.limit,
-		offset:     etq.offset,
-		order:      append([]OrderFunc{}, etq.order...),
-		predicates: append([]predicate.EntTodo{}, etq.predicates...),
+		config:      etq.config,
+		limit:       etq.limit,
+		offset:      etq.offset,
+		order:       append([]OrderFunc{}, etq.order...),
+		predicates:  append([]predicate.EntTodo{}, etq.predicates...),
+		withTodoFor: etq.withTodoFor.Clone(),
+		withOwnedBy: etq.withOwnedBy.Clone(),
 		// clone intermediate query.
 		sql:    etq.sql.Clone(),
 		path:   etq.path,
@@ -247,8 +298,42 @@ func (etq *EntTodoQuery) Clone() *EntTodoQuery {
 	}
 }
 
+// WithTodoFor tells the query-builder to eager-load the nodes that are connected to
+// the "todoFor" edge. The optional arguments are used to configure the query builder of the edge.
+func (etq *EntTodoQuery) WithTodoFor(opts ...func(*EntCourseQuery)) *EntTodoQuery {
+	query := &EntCourseQuery{config: etq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	etq.withTodoFor = query
+	return etq
+}
+
+// WithOwnedBy tells the query-builder to eager-load the nodes that are connected to
+// the "ownedBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (etq *EntTodoQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntTodoQuery {
+	query := &EntUserQuery{config: etq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	etq.withOwnedBy = query
+	return etq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EntTodo.Query().
+//		GroupBy(enttodo.FieldDate).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (etq *EntTodoQuery) GroupBy(field string, fields ...string) *EntTodoGroupBy {
 	grbuild := &EntTodoGroupBy{config: etq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -265,6 +350,16 @@ func (etq *EntTodoQuery) GroupBy(field string, fields ...string) *EntTodoGroupBy
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Date time.Time `json:"date,omitempty"`
+//	}
+//
+//	client.EntTodo.Query().
+//		Select(enttodo.FieldDate).
+//		Scan(ctx, &v)
 func (etq *EntTodoQuery) Select(fields ...string) *EntTodoSelect {
 	etq.fields = append(etq.fields, fields...)
 	selbuild := &EntTodoSelect{EntTodoQuery: etq}
@@ -291,15 +386,27 @@ func (etq *EntTodoQuery) prepareQuery(ctx context.Context) error {
 
 func (etq *EntTodoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*EntTodo, error) {
 	var (
-		nodes = []*EntTodo{}
-		_spec = etq.querySpec()
+		nodes       = []*EntTodo{}
+		withFKs     = etq.withFKs
+		_spec       = etq.querySpec()
+		loadedTypes = [2]bool{
+			etq.withTodoFor != nil,
+			etq.withOwnedBy != nil,
+		}
 	)
+	if etq.withTodoFor != nil || etq.withOwnedBy != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, enttodo.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		return (*EntTodo).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []interface{}) error {
 		node := &EntTodo{config: etq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -311,7 +418,78 @@ func (etq *EntTodoQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ent
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := etq.withTodoFor; query != nil {
+		if err := etq.loadTodoFor(ctx, query, nodes, nil,
+			func(n *EntTodo, e *EntCourse) { n.Edges.TodoFor = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := etq.withOwnedBy; query != nil {
+		if err := etq.loadOwnedBy(ctx, query, nodes, nil,
+			func(n *EntTodo, e *EntUser) { n.Edges.OwnedBy = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (etq *EntTodoQuery) loadTodoFor(ctx context.Context, query *EntCourseQuery, nodes []*EntTodo, init func(*EntTodo), assign func(*EntTodo, *EntCourse)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntTodo)
+	for i := range nodes {
+		if nodes[i].ent_course_todo == nil {
+			continue
+		}
+		fk := *nodes[i].ent_course_todo
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entcourse.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_todo" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (etq *EntTodoQuery) loadOwnedBy(ctx context.Context, query *EntUserQuery, nodes []*EntTodo, init func(*EntTodo), assign func(*EntTodo, *EntUser)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntTodo)
+	for i := range nodes {
+		if nodes[i].ent_user_todo == nil {
+			continue
+		}
+		fk := *nodes[i].ent_user_todo
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entuser.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_todo" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (etq *EntTodoQuery) sqlCount(ctx context.Context) (int, error) {

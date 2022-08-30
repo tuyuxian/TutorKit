@@ -3,7 +3,10 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
+	"backend/ent/enttodo"
 	"backend/ent/entuser"
 	"context"
 	"errors"
@@ -195,19 +198,64 @@ func (ecc *EntCourseCreate) SetNillableSunday(b *bool) *EntCourseCreate {
 	return ecc
 }
 
-// AddCourseOwnerIDs adds the "courseOwner" edge to the EntUser entity by IDs.
-func (ecc *EntCourseCreate) AddCourseOwnerIDs(ids ...int) *EntCourseCreate {
-	ecc.mutation.AddCourseOwnerIDs(ids...)
+// AddTodoIDs adds the "todo" edge to the EntTodo entity by IDs.
+func (ecc *EntCourseCreate) AddTodoIDs(ids ...int) *EntCourseCreate {
+	ecc.mutation.AddTodoIDs(ids...)
 	return ecc
 }
 
-// AddCourseOwner adds the "courseOwner" edges to the EntUser entity.
-func (ecc *EntCourseCreate) AddCourseOwner(e ...*EntUser) *EntCourseCreate {
+// AddTodo adds the "todo" edges to the EntTodo entity.
+func (ecc *EntCourseCreate) AddTodo(e ...*EntTodo) *EntCourseCreate {
 	ids := make([]int, len(e))
 	for i := range e {
 		ids[i] = e[i].ID
 	}
-	return ecc.AddCourseOwnerIDs(ids...)
+	return ecc.AddTodoIDs(ids...)
+}
+
+// AddAttendanceIDs adds the "attendance" edge to the EntAttendance entity by IDs.
+func (ecc *EntCourseCreate) AddAttendanceIDs(ids ...int) *EntCourseCreate {
+	ecc.mutation.AddAttendanceIDs(ids...)
+	return ecc
+}
+
+// AddAttendance adds the "attendance" edges to the EntAttendance entity.
+func (ecc *EntCourseCreate) AddAttendance(e ...*EntAttendance) *EntCourseCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecc.AddAttendanceIDs(ids...)
+}
+
+// AddPostIDs adds the "post" edge to the EntPost entity by IDs.
+func (ecc *EntCourseCreate) AddPostIDs(ids ...int) *EntCourseCreate {
+	ecc.mutation.AddPostIDs(ids...)
+	return ecc
+}
+
+// AddPost adds the "post" edges to the EntPost entity.
+func (ecc *EntCourseCreate) AddPost(e ...*EntPost) *EntCourseCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecc.AddPostIDs(ids...)
+}
+
+// AddOwnedByIDs adds the "ownedBy" edge to the EntUser entity by IDs.
+func (ecc *EntCourseCreate) AddOwnedByIDs(ids ...int) *EntCourseCreate {
+	ecc.mutation.AddOwnedByIDs(ids...)
+	return ecc
+}
+
+// AddOwnedBy adds the "ownedBy" edges to the EntUser entity.
+func (ecc *EntCourseCreate) AddOwnedBy(e ...*EntUser) *EntCourseCreate {
+	ids := make([]int, len(e))
+	for i := range e {
+		ids[i] = e[i].ID
+	}
+	return ecc.AddOwnedByIDs(ids...)
 }
 
 // Mutation returns the EntCourseMutation object of the builder.
@@ -430,12 +478,69 @@ func (ecc *EntCourseCreate) createSpec() (*EntCourse, *sqlgraph.CreateSpec) {
 		})
 		_node.Sunday = value
 	}
-	if nodes := ecc.mutation.CourseOwnerIDs(); len(nodes) > 0 {
+	if nodes := ecc.mutation.TodoIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.TodoTable,
+			Columns: []string{entcourse.TodoColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: enttodo.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ecc.mutation.AttendanceIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.AttendanceTable,
+			Columns: []string{entcourse.AttendanceColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entattendance.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ecc.mutation.PostIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.O2M,
+			Inverse: false,
+			Table:   entcourse.PostTable,
+			Columns: []string{entcourse.PostColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ecc.mutation.OwnedByIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{
 			Rel:     sqlgraph.M2M,
 			Inverse: true,
-			Table:   entcourse.CourseOwnerTable,
-			Columns: entcourse.CourseOwnerPrimaryKey,
+			Table:   entcourse.OwnedByTable,
+			Columns: entcourse.OwnedByPrimaryKey,
 			Bidi:    false,
 			Target: &sqlgraph.EdgeTarget{
 				IDSpec: &sqlgraph.FieldSpec{

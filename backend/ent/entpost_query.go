@@ -3,9 +3,13 @@
 package ent
 
 import (
+	"backend/ent/entcomment"
+	"backend/ent/entcourse"
 	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"backend/ent/predicate"
 	"context"
+	"database/sql/driver"
 	"fmt"
 	"math"
 
@@ -17,12 +21,16 @@ import (
 // EntPostQuery is the builder for querying EntPost entities.
 type EntPostQuery struct {
 	config
-	limit      *int
-	offset     *int
-	unique     *bool
-	order      []OrderFunc
-	fields     []string
-	predicates []predicate.EntPost
+	limit         *int
+	offset        *int
+	unique        *bool
+	order         []OrderFunc
+	fields        []string
+	predicates    []predicate.EntPost
+	withComment   *EntCommentQuery
+	withBelongsTo *EntCourseQuery
+	withOwnedBy   *EntUserQuery
+	withFKs       bool
 	// intermediate query (i.e. traversal path).
 	sql  *sql.Selector
 	path func(context.Context) (*sql.Selector, error)
@@ -57,6 +65,72 @@ func (epq *EntPostQuery) Unique(unique bool) *EntPostQuery {
 func (epq *EntPostQuery) Order(o ...OrderFunc) *EntPostQuery {
 	epq.order = append(epq.order, o...)
 	return epq
+}
+
+// QueryComment chains the current query on the "comment" edge.
+func (epq *EntPostQuery) QueryComment() *EntCommentQuery {
+	query := &EntCommentQuery{config: epq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := epq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := epq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, selector),
+			sqlgraph.To(entcomment.Table, entcomment.FieldID),
+			sqlgraph.Edge(sqlgraph.O2M, false, entpost.CommentTable, entpost.CommentColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(epq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryBelongsTo chains the current query on the "belongsTo" edge.
+func (epq *EntPostQuery) QueryBelongsTo() *EntCourseQuery {
+	query := &EntCourseQuery{config: epq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := epq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := epq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, selector),
+			sqlgraph.To(entcourse.Table, entcourse.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entpost.BelongsToTable, entpost.BelongsToColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(epq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
+}
+
+// QueryOwnedBy chains the current query on the "ownedBy" edge.
+func (epq *EntPostQuery) QueryOwnedBy() *EntUserQuery {
+	query := &EntUserQuery{config: epq.config}
+	query.path = func(ctx context.Context) (fromU *sql.Selector, err error) {
+		if err := epq.prepareQuery(ctx); err != nil {
+			return nil, err
+		}
+		selector := epq.sqlQuery(ctx)
+		if err := selector.Err(); err != nil {
+			return nil, err
+		}
+		step := sqlgraph.NewStep(
+			sqlgraph.From(entpost.Table, entpost.FieldID, selector),
+			sqlgraph.To(entuser.Table, entuser.FieldID),
+			sqlgraph.Edge(sqlgraph.M2O, true, entpost.OwnedByTable, entpost.OwnedByColumn),
+		)
+		fromU = sqlgraph.SetNeighbors(epq.driver.Dialect(), step)
+		return fromU, nil
+	}
+	return query
 }
 
 // First returns the first EntPost entity from the query.
@@ -235,11 +309,14 @@ func (epq *EntPostQuery) Clone() *EntPostQuery {
 		return nil
 	}
 	return &EntPostQuery{
-		config:     epq.config,
-		limit:      epq.limit,
-		offset:     epq.offset,
-		order:      append([]OrderFunc{}, epq.order...),
-		predicates: append([]predicate.EntPost{}, epq.predicates...),
+		config:        epq.config,
+		limit:         epq.limit,
+		offset:        epq.offset,
+		order:         append([]OrderFunc{}, epq.order...),
+		predicates:    append([]predicate.EntPost{}, epq.predicates...),
+		withComment:   epq.withComment.Clone(),
+		withBelongsTo: epq.withBelongsTo.Clone(),
+		withOwnedBy:   epq.withOwnedBy.Clone(),
 		// clone intermediate query.
 		sql:    epq.sql.Clone(),
 		path:   epq.path,
@@ -247,8 +324,53 @@ func (epq *EntPostQuery) Clone() *EntPostQuery {
 	}
 }
 
+// WithComment tells the query-builder to eager-load the nodes that are connected to
+// the "comment" edge. The optional arguments are used to configure the query builder of the edge.
+func (epq *EntPostQuery) WithComment(opts ...func(*EntCommentQuery)) *EntPostQuery {
+	query := &EntCommentQuery{config: epq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	epq.withComment = query
+	return epq
+}
+
+// WithBelongsTo tells the query-builder to eager-load the nodes that are connected to
+// the "belongsTo" edge. The optional arguments are used to configure the query builder of the edge.
+func (epq *EntPostQuery) WithBelongsTo(opts ...func(*EntCourseQuery)) *EntPostQuery {
+	query := &EntCourseQuery{config: epq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	epq.withBelongsTo = query
+	return epq
+}
+
+// WithOwnedBy tells the query-builder to eager-load the nodes that are connected to
+// the "ownedBy" edge. The optional arguments are used to configure the query builder of the edge.
+func (epq *EntPostQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntPostQuery {
+	query := &EntUserQuery{config: epq.config}
+	for _, opt := range opts {
+		opt(query)
+	}
+	epq.withOwnedBy = query
+	return epq
+}
+
 // GroupBy is used to group vertices by one or more fields/columns.
 // It is often used with aggregate functions, like: count, max, mean, min, sum.
+//
+// Example:
+//
+//	var v []struct {
+//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		Count int `json:"count,omitempty"`
+//	}
+//
+//	client.EntPost.Query().
+//		GroupBy(entpost.FieldTimestamp).
+//		Aggregate(ent.Count()).
+//		Scan(ctx, &v)
 func (epq *EntPostQuery) GroupBy(field string, fields ...string) *EntPostGroupBy {
 	grbuild := &EntPostGroupBy{config: epq.config}
 	grbuild.fields = append([]string{field}, fields...)
@@ -265,6 +387,16 @@ func (epq *EntPostQuery) GroupBy(field string, fields ...string) *EntPostGroupBy
 
 // Select allows the selection one or more fields/columns for the given query,
 // instead of selecting all fields in the entity.
+//
+// Example:
+//
+//	var v []struct {
+//		Timestamp time.Time `json:"timestamp,omitempty"`
+//	}
+//
+//	client.EntPost.Query().
+//		Select(entpost.FieldTimestamp).
+//		Scan(ctx, &v)
 func (epq *EntPostQuery) Select(fields ...string) *EntPostSelect {
 	epq.fields = append(epq.fields, fields...)
 	selbuild := &EntPostSelect{EntPostQuery: epq}
@@ -291,15 +423,28 @@ func (epq *EntPostQuery) prepareQuery(ctx context.Context) error {
 
 func (epq *EntPostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*EntPost, error) {
 	var (
-		nodes = []*EntPost{}
-		_spec = epq.querySpec()
+		nodes       = []*EntPost{}
+		withFKs     = epq.withFKs
+		_spec       = epq.querySpec()
+		loadedTypes = [3]bool{
+			epq.withComment != nil,
+			epq.withBelongsTo != nil,
+			epq.withOwnedBy != nil,
+		}
 	)
+	if epq.withBelongsTo != nil || epq.withOwnedBy != nil {
+		withFKs = true
+	}
+	if withFKs {
+		_spec.Node.Columns = append(_spec.Node.Columns, entpost.ForeignKeys...)
+	}
 	_spec.ScanValues = func(columns []string) ([]interface{}, error) {
 		return (*EntPost).scanValues(nil, columns)
 	}
 	_spec.Assign = func(columns []string, values []interface{}) error {
 		node := &EntPost{config: epq.config}
 		nodes = append(nodes, node)
+		node.Edges.loadedTypes = loadedTypes
 		return node.assignValues(columns, values)
 	}
 	for i := range hooks {
@@ -311,7 +456,116 @@ func (epq *EntPostQuery) sqlAll(ctx context.Context, hooks ...queryHook) ([]*Ent
 	if len(nodes) == 0 {
 		return nodes, nil
 	}
+	if query := epq.withComment; query != nil {
+		if err := epq.loadComment(ctx, query, nodes,
+			func(n *EntPost) { n.Edges.Comment = []*EntComment{} },
+			func(n *EntPost, e *EntComment) { n.Edges.Comment = append(n.Edges.Comment, e) }); err != nil {
+			return nil, err
+		}
+	}
+	if query := epq.withBelongsTo; query != nil {
+		if err := epq.loadBelongsTo(ctx, query, nodes, nil,
+			func(n *EntPost, e *EntCourse) { n.Edges.BelongsTo = e }); err != nil {
+			return nil, err
+		}
+	}
+	if query := epq.withOwnedBy; query != nil {
+		if err := epq.loadOwnedBy(ctx, query, nodes, nil,
+			func(n *EntPost, e *EntUser) { n.Edges.OwnedBy = e }); err != nil {
+			return nil, err
+		}
+	}
 	return nodes, nil
+}
+
+func (epq *EntPostQuery) loadComment(ctx context.Context, query *EntCommentQuery, nodes []*EntPost, init func(*EntPost), assign func(*EntPost, *EntComment)) error {
+	fks := make([]driver.Value, 0, len(nodes))
+	nodeids := make(map[int]*EntPost)
+	for i := range nodes {
+		fks = append(fks, nodes[i].ID)
+		nodeids[nodes[i].ID] = nodes[i]
+		if init != nil {
+			init(nodes[i])
+		}
+	}
+	query.withFKs = true
+	query.Where(predicate.EntComment(func(s *sql.Selector) {
+		s.Where(sql.InValues(entpost.CommentColumn, fks...))
+	}))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		fk := n.ent_post_comment
+		if fk == nil {
+			return fmt.Errorf(`foreign-key "ent_post_comment" is nil for node %v`, n.ID)
+		}
+		node, ok := nodeids[*fk]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_post_comment" returned %v for node %v`, *fk, n.ID)
+		}
+		assign(node, n)
+	}
+	return nil
+}
+func (epq *EntPostQuery) loadBelongsTo(ctx context.Context, query *EntCourseQuery, nodes []*EntPost, init func(*EntPost), assign func(*EntPost, *EntCourse)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntPost)
+	for i := range nodes {
+		if nodes[i].ent_course_post == nil {
+			continue
+		}
+		fk := *nodes[i].ent_course_post
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entcourse.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_course_post" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
+}
+func (epq *EntPostQuery) loadOwnedBy(ctx context.Context, query *EntUserQuery, nodes []*EntPost, init func(*EntPost), assign func(*EntPost, *EntUser)) error {
+	ids := make([]int, 0, len(nodes))
+	nodeids := make(map[int][]*EntPost)
+	for i := range nodes {
+		if nodes[i].ent_user_post == nil {
+			continue
+		}
+		fk := *nodes[i].ent_user_post
+		if _, ok := nodeids[fk]; !ok {
+			ids = append(ids, fk)
+		}
+		nodeids[fk] = append(nodeids[fk], nodes[i])
+	}
+	query.Where(entuser.IDIn(ids...))
+	neighbors, err := query.All(ctx)
+	if err != nil {
+		return err
+	}
+	for _, n := range neighbors {
+		nodes, ok := nodeids[n.ID]
+		if !ok {
+			return fmt.Errorf(`unexpected foreign-key "ent_user_post" returned %v`, n.ID)
+		}
+		for i := range nodes {
+			assign(nodes[i], n)
+		}
+	}
+	return nil
 }
 
 func (epq *EntPostQuery) sqlCount(ctx context.Context) (int, error) {

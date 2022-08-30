@@ -2,18 +2,68 @@
 
 package enttodo
 
+import (
+	"fmt"
+)
+
 const (
 	// Label holds the string label denoting the enttodo type in the database.
 	Label = "ent_todo"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldDate holds the string denoting the date field in the database.
+	FieldDate = "date"
+	// FieldStartTime holds the string denoting the starttime field in the database.
+	FieldStartTime = "start_time"
+	// FieldEndTime holds the string denoting the endtime field in the database.
+	FieldEndTime = "end_time"
+	// FieldDay holds the string denoting the day field in the database.
+	FieldDay = "day"
+	// FieldLesson holds the string denoting the lesson field in the database.
+	FieldLesson = "lesson"
+	// FieldHomework holds the string denoting the homework field in the database.
+	FieldHomework = "homework"
+	// FieldStatus holds the string denoting the status field in the database.
+	FieldStatus = "status"
+	// EdgeTodoFor holds the string denoting the todofor edge name in mutations.
+	EdgeTodoFor = "todoFor"
+	// EdgeOwnedBy holds the string denoting the ownedby edge name in mutations.
+	EdgeOwnedBy = "ownedBy"
 	// Table holds the table name of the enttodo in the database.
 	Table = "ent_todos"
+	// TodoForTable is the table that holds the todoFor relation/edge.
+	TodoForTable = "ent_todos"
+	// TodoForInverseTable is the table name for the EntCourse entity.
+	// It exists in this package in order to avoid circular dependency with the "entcourse" package.
+	TodoForInverseTable = "ent_courses"
+	// TodoForColumn is the table column denoting the todoFor relation/edge.
+	TodoForColumn = "ent_course_todo"
+	// OwnedByTable is the table that holds the ownedBy relation/edge.
+	OwnedByTable = "ent_todos"
+	// OwnedByInverseTable is the table name for the EntUser entity.
+	// It exists in this package in order to avoid circular dependency with the "entuser" package.
+	OwnedByInverseTable = "ent_users"
+	// OwnedByColumn is the table column denoting the ownedBy relation/edge.
+	OwnedByColumn = "ent_user_todo"
 )
 
 // Columns holds all SQL columns for enttodo fields.
 var Columns = []string{
 	FieldID,
+	FieldDate,
+	FieldStartTime,
+	FieldEndTime,
+	FieldDay,
+	FieldLesson,
+	FieldHomework,
+	FieldStatus,
+}
+
+// ForeignKeys holds the SQL foreign-keys that are owned by the "ent_todos"
+// table and are not defined as standalone fields in the schema.
+var ForeignKeys = []string{
+	"ent_course_todo",
+	"ent_user_todo",
 }
 
 // ValidColumn reports if the column name is valid (part of the table columns).
@@ -23,5 +73,36 @@ func ValidColumn(column string) bool {
 			return true
 		}
 	}
+	for i := range ForeignKeys {
+		if column == ForeignKeys[i] {
+			return true
+		}
+	}
 	return false
+}
+
+// Status defines the type for the "status" enum field.
+type Status string
+
+// StatusInProgress is the default value of the Status enum.
+const DefaultStatus = StatusInProgress
+
+// Status values.
+const (
+	StatusInProgress Status = "IN_PROGRESS"
+	StatusCompleted  Status = "COMPLETED"
+)
+
+func (s Status) String() string {
+	return string(s)
+}
+
+// StatusValidator is a validator for the "status" field enum values. It is called by the builders before save.
+func StatusValidator(s Status) error {
+	switch s {
+	case StatusInProgress, StatusCompleted:
+		return nil
+	default:
+		return fmt.Errorf("enttodo: invalid enum value for status field: %q", s)
+	}
 }

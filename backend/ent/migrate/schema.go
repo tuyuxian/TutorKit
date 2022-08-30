@@ -11,22 +11,66 @@ var (
 	// EntAttendancesColumns holds the columns for the "ent_attendances" table.
 	EntAttendancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "date", Type: field.TypeTime},
+		{Name: "start_time", Type: field.TypeTime, Nullable: true},
+		{Name: "end_time", Type: field.TypeTime, Nullable: true},
+		{Name: "day", Type: field.TypeTime, Nullable: true},
+		{Name: "note", Type: field.TypeString, Nullable: true},
+		{Name: "hours", Type: field.TypeFloat64, Nullable: true},
+		{Name: "checked_by_tutor", Type: field.TypeBool, Default: false},
+		{Name: "checked_by_student", Type: field.TypeBool, Default: false},
+		{Name: "checked_by_parent", Type: field.TypeBool, Default: false},
+		{Name: "ent_course_attendance", Type: field.TypeInt, Nullable: true},
+		{Name: "ent_user_attendance", Type: field.TypeInt, Nullable: true},
 	}
 	// EntAttendancesTable holds the schema information for the "ent_attendances" table.
 	EntAttendancesTable = &schema.Table{
 		Name:       "ent_attendances",
 		Columns:    EntAttendancesColumns,
 		PrimaryKey: []*schema.Column{EntAttendancesColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "ent_attendances_ent_courses_attendance",
+				Columns:    []*schema.Column{EntAttendancesColumns[10]},
+				RefColumns: []*schema.Column{EntCoursesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "ent_attendances_ent_users_attendance",
+				Columns:    []*schema.Column{EntAttendancesColumns[11]},
+				RefColumns: []*schema.Column{EntUsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// EntCommentsColumns holds the columns for the "ent_comments" table.
 	EntCommentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "timestamp", Type: field.TypeTime},
+		{Name: "content", Type: field.TypeString, Nullable: true},
+		{Name: "share", Type: field.TypeEnum, Nullable: true, Enums: []string{"public", "private"}},
+		{Name: "ent_post_comment", Type: field.TypeInt, Nullable: true},
+		{Name: "ent_user_comment", Type: field.TypeInt, Nullable: true},
 	}
 	// EntCommentsTable holds the schema information for the "ent_comments" table.
 	EntCommentsTable = &schema.Table{
 		Name:       "ent_comments",
 		Columns:    EntCommentsColumns,
 		PrimaryKey: []*schema.Column{EntCommentsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "ent_comments_ent_posts_comment",
+				Columns:    []*schema.Column{EntCommentsColumns[4]},
+				RefColumns: []*schema.Column{EntPostsColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "ent_comments_ent_users_comment",
+				Columns:    []*schema.Column{EntCommentsColumns[5]},
+				RefColumns: []*schema.Column{EntUsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// EntCoursesColumns holds the columns for the "ent_courses" table.
 	EntCoursesColumns = []*schema.Column{
@@ -54,22 +98,64 @@ var (
 	// EntPostsColumns holds the columns for the "ent_posts" table.
 	EntPostsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "timestamp", Type: field.TypeTime},
+		{Name: "content", Type: field.TypeString, Nullable: true},
+		{Name: "share", Type: field.TypeEnum, Nullable: true, Enums: []string{"public", "private"}},
+		{Name: "ent_course_post", Type: field.TypeInt, Nullable: true},
+		{Name: "ent_user_post", Type: field.TypeInt, Nullable: true},
 	}
 	// EntPostsTable holds the schema information for the "ent_posts" table.
 	EntPostsTable = &schema.Table{
 		Name:       "ent_posts",
 		Columns:    EntPostsColumns,
 		PrimaryKey: []*schema.Column{EntPostsColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "ent_posts_ent_courses_post",
+				Columns:    []*schema.Column{EntPostsColumns[4]},
+				RefColumns: []*schema.Column{EntCoursesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "ent_posts_ent_users_post",
+				Columns:    []*schema.Column{EntPostsColumns[5]},
+				RefColumns: []*schema.Column{EntUsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// EntTodosColumns holds the columns for the "ent_todos" table.
 	EntTodosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "date", Type: field.TypeTime},
+		{Name: "start_time", Type: field.TypeTime, Nullable: true},
+		{Name: "end_time", Type: field.TypeTime, Nullable: true},
+		{Name: "day", Type: field.TypeTime, Nullable: true},
+		{Name: "lesson", Type: field.TypeString, Nullable: true},
+		{Name: "homework", Type: field.TypeString, Nullable: true},
+		{Name: "status", Type: field.TypeEnum, Enums: []string{"IN_PROGRESS", "COMPLETED"}, Default: "IN_PROGRESS"},
+		{Name: "ent_course_todo", Type: field.TypeInt, Nullable: true},
+		{Name: "ent_user_todo", Type: field.TypeInt, Nullable: true},
 	}
 	// EntTodosTable holds the schema information for the "ent_todos" table.
 	EntTodosTable = &schema.Table{
 		Name:       "ent_todos",
 		Columns:    EntTodosColumns,
 		PrimaryKey: []*schema.Column{EntTodosColumns[0]},
+		ForeignKeys: []*schema.ForeignKey{
+			{
+				Symbol:     "ent_todos_ent_courses_todo",
+				Columns:    []*schema.Column{EntTodosColumns[8]},
+				RefColumns: []*schema.Column{EntCoursesColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+			{
+				Symbol:     "ent_todos_ent_users_todo",
+				Columns:    []*schema.Column{EntTodosColumns[9]},
+				RefColumns: []*schema.Column{EntUsersColumns[0]},
+				OnDelete:   schema.SetNull,
+			},
+		},
 	}
 	// EntUsersColumns holds the columns for the "ent_users" table.
 	EntUsersColumns = []*schema.Column{
@@ -205,6 +291,14 @@ var (
 )
 
 func init() {
+	EntAttendancesTable.ForeignKeys[0].RefTable = EntCoursesTable
+	EntAttendancesTable.ForeignKeys[1].RefTable = EntUsersTable
+	EntCommentsTable.ForeignKeys[0].RefTable = EntPostsTable
+	EntCommentsTable.ForeignKeys[1].RefTable = EntUsersTable
+	EntPostsTable.ForeignKeys[0].RefTable = EntCoursesTable
+	EntPostsTable.ForeignKeys[1].RefTable = EntUsersTable
+	EntTodosTable.ForeignKeys[0].RefTable = EntCoursesTable
+	EntTodosTable.ForeignKeys[1].RefTable = EntUsersTable
 	EntUserCourseTable.ForeignKeys[0].RefTable = EntUsersTable
 	EntUserCourseTable.ForeignKeys[1].RefTable = EntCoursesTable
 	EntUserParentTable.ForeignKeys[0].RefTable = EntUsersTable

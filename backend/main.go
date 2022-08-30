@@ -4,17 +4,34 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"os"
 	"time"
 
 	"backend/ent"
 	"backend/ent/entuser"
 	"backend/ent/migrate"
 
-	_ "github.com/go-sql-driver/mysql"
+	"github.com/go-sql-driver/mysql"
+	"github.com/joho/godotenv"
 )
 
 func main() {
-	client, err := ent.Open("mysql", "root:root@tcp(0.0.0.0:3307)/tutorkit?parseTime=True")
+	// load env config
+	err := godotenv.Load()
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	mc := mysql.Config{
+		User:                 os.Getenv("DB_USER"),
+		Passwd:               os.Getenv("DB_PASSWORD"),
+		Net:                  "tcp",
+		Addr:                 "0.0.0.0" + ":" + os.Getenv("DB_PORT"),
+		DBName:               os.Getenv("DB_NAME"),
+		AllowNativePasswords: true,
+		ParseTime:            true,
+	}
+	client, err := ent.Open("mysql", mc.FormatDSN())
 	if err != nil {
 		log.Fatalf("failed opening connection to mysql: %v", err)
 	}

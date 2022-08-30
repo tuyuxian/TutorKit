@@ -4,8 +4,12 @@ package ent
 
 import (
 	"backend/ent/entcomment"
+	"backend/ent/entpost"
+	"backend/ent/entuser"
 	"context"
+	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -16,6 +20,86 @@ type EntCommentCreate struct {
 	config
 	mutation *EntCommentMutation
 	hooks    []Hook
+}
+
+// SetTimestamp sets the "timestamp" field.
+func (ecc *EntCommentCreate) SetTimestamp(t time.Time) *EntCommentCreate {
+	ecc.mutation.SetTimestamp(t)
+	return ecc
+}
+
+// SetNillableTimestamp sets the "timestamp" field if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableTimestamp(t *time.Time) *EntCommentCreate {
+	if t != nil {
+		ecc.SetTimestamp(*t)
+	}
+	return ecc
+}
+
+// SetContent sets the "content" field.
+func (ecc *EntCommentCreate) SetContent(s string) *EntCommentCreate {
+	ecc.mutation.SetContent(s)
+	return ecc
+}
+
+// SetNillableContent sets the "content" field if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableContent(s *string) *EntCommentCreate {
+	if s != nil {
+		ecc.SetContent(*s)
+	}
+	return ecc
+}
+
+// SetShare sets the "share" field.
+func (ecc *EntCommentCreate) SetShare(e entcomment.Share) *EntCommentCreate {
+	ecc.mutation.SetShare(e)
+	return ecc
+}
+
+// SetNillableShare sets the "share" field if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableShare(e *entcomment.Share) *EntCommentCreate {
+	if e != nil {
+		ecc.SetShare(*e)
+	}
+	return ecc
+}
+
+// SetBelongsToID sets the "belongsTo" edge to the EntPost entity by ID.
+func (ecc *EntCommentCreate) SetBelongsToID(id int) *EntCommentCreate {
+	ecc.mutation.SetBelongsToID(id)
+	return ecc
+}
+
+// SetNillableBelongsToID sets the "belongsTo" edge to the EntPost entity by ID if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableBelongsToID(id *int) *EntCommentCreate {
+	if id != nil {
+		ecc = ecc.SetBelongsToID(*id)
+	}
+	return ecc
+}
+
+// SetBelongsTo sets the "belongsTo" edge to the EntPost entity.
+func (ecc *EntCommentCreate) SetBelongsTo(e *EntPost) *EntCommentCreate {
+	return ecc.SetBelongsToID(e.ID)
+}
+
+// SetOwnedByID sets the "ownedBy" edge to the EntUser entity by ID.
+func (ecc *EntCommentCreate) SetOwnedByID(id int) *EntCommentCreate {
+	ecc.mutation.SetOwnedByID(id)
+	return ecc
+}
+
+// SetNillableOwnedByID sets the "ownedBy" edge to the EntUser entity by ID if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableOwnedByID(id *int) *EntCommentCreate {
+	if id != nil {
+		ecc = ecc.SetOwnedByID(*id)
+	}
+	return ecc
+}
+
+// SetOwnedBy sets the "ownedBy" edge to the EntUser entity.
+func (ecc *EntCommentCreate) SetOwnedBy(e *EntUser) *EntCommentCreate {
+	return ecc.SetOwnedByID(e.ID)
 }
 
 // Mutation returns the EntCommentMutation object of the builder.
@@ -29,6 +113,7 @@ func (ecc *EntCommentCreate) Save(ctx context.Context) (*EntComment, error) {
 		err  error
 		node *EntComment
 	)
+	ecc.defaults()
 	if len(ecc.hooks) == 0 {
 		if err = ecc.check(); err != nil {
 			return nil, err
@@ -92,8 +177,24 @@ func (ecc *EntCommentCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecc *EntCommentCreate) defaults() {
+	if _, ok := ecc.mutation.Timestamp(); !ok {
+		v := entcomment.DefaultTimestamp
+		ecc.mutation.SetTimestamp(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecc *EntCommentCreate) check() error {
+	if _, ok := ecc.mutation.Timestamp(); !ok {
+		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntComment.timestamp"`)}
+	}
+	if v, ok := ecc.mutation.Share(); ok {
+		if err := entcomment.ShareValidator(v); err != nil {
+			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntComment.share": %w`, err)}
+		}
+	}
 	return nil
 }
 
@@ -121,6 +222,70 @@ func (ecc *EntCommentCreate) createSpec() (*EntComment, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := ecc.mutation.Timestamp(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldTimestamp,
+		})
+		_node.Timestamp = value
+	}
+	if value, ok := ecc.mutation.Content(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entcomment.FieldContent,
+		})
+		_node.Content = value
+	}
+	if value, ok := ecc.mutation.Share(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeEnum,
+			Value:  value,
+			Column: entcomment.FieldShare,
+		})
+		_node.Share = value
+	}
+	if nodes := ecc.mutation.BelongsToIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.BelongsToTable,
+			Columns: []string{entcomment.BelongsToColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entpost.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_post_comment = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
+	if nodes := ecc.mutation.OwnedByIDs(); len(nodes) > 0 {
+		edge := &sqlgraph.EdgeSpec{
+			Rel:     sqlgraph.M2O,
+			Inverse: true,
+			Table:   entcomment.OwnedByTable,
+			Columns: []string{entcomment.OwnedByColumn},
+			Bidi:    false,
+			Target: &sqlgraph.EdgeTarget{
+				IDSpec: &sqlgraph.FieldSpec{
+					Type:   field.TypeInt,
+					Column: entuser.FieldID,
+				},
+			},
+		}
+		for _, k := range nodes {
+			edge.Target.Nodes = append(edge.Target.Nodes, k)
+		}
+		_node.ent_user_comment = &nodes[0]
+		_spec.Edges = append(_spec.Edges, edge)
+	}
 	return _node, _spec
 }
 
@@ -138,6 +303,7 @@ func (eccb *EntCommentCreateBulk) Save(ctx context.Context) ([]*EntComment, erro
 	for i := range eccb.builders {
 		func(i int, root context.Context) {
 			builder := eccb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*EntCommentMutation)
 				if !ok {

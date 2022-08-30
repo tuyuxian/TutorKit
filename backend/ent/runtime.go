@@ -3,21 +3,53 @@
 package ent
 
 import (
+	"backend/ent/entattendance"
+	"backend/ent/entcomment"
 	"backend/ent/entcourse"
+	"backend/ent/entpost"
 	"backend/ent/entuser"
 	"backend/ent/schema"
+	"time"
 )
 
 // The init function reads all schema descriptors with runtime code
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	entattendanceFields := schema.EntAttendance{}.Fields()
+	_ = entattendanceFields
+	// entattendanceDescCheckedByTutor is the schema descriptor for checkedByTutor field.
+	entattendanceDescCheckedByTutor := entattendanceFields[6].Descriptor()
+	// entattendance.DefaultCheckedByTutor holds the default value on creation for the checkedByTutor field.
+	entattendance.DefaultCheckedByTutor = entattendanceDescCheckedByTutor.Default.(bool)
+	// entattendanceDescCheckedByStudent is the schema descriptor for checkedByStudent field.
+	entattendanceDescCheckedByStudent := entattendanceFields[7].Descriptor()
+	// entattendance.DefaultCheckedByStudent holds the default value on creation for the checkedByStudent field.
+	entattendance.DefaultCheckedByStudent = entattendanceDescCheckedByStudent.Default.(bool)
+	// entattendanceDescCheckedByParent is the schema descriptor for checkedByParent field.
+	entattendanceDescCheckedByParent := entattendanceFields[8].Descriptor()
+	// entattendance.DefaultCheckedByParent holds the default value on creation for the checkedByParent field.
+	entattendance.DefaultCheckedByParent = entattendanceDescCheckedByParent.Default.(bool)
+	entcommentFields := schema.EntComment{}.Fields()
+	_ = entcommentFields
+	// entcommentDescTimestamp is the schema descriptor for timestamp field.
+	entcommentDescTimestamp := entcommentFields[0].Descriptor()
+	// entcomment.DefaultTimestamp holds the default value on creation for the timestamp field.
+	entcomment.DefaultTimestamp = entcommentDescTimestamp.Default.(time.Time)
 	entcourseFields := schema.EntCourse{}.Fields()
 	_ = entcourseFields
 	// entcourseDescName is the schema descriptor for name field.
 	entcourseDescName := entcourseFields[0].Descriptor()
 	// entcourse.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	entcourse.NameValidator = entcourseDescName.Validators[0].(func(string) error)
+	entpostFields := schema.EntPost{}.Fields()
+	_ = entpostFields
+	// entpostDescTimestamp is the schema descriptor for timestamp field.
+	entpostDescTimestamp := entpostFields[0].Descriptor()
+	// entpost.DefaultTimestamp holds the default value on creation for the timestamp field.
+	entpost.DefaultTimestamp = entpostDescTimestamp.Default.(time.Time)
+	enttodoFields := schema.EntTodo{}.Fields()
+	_ = enttodoFields
 	entuserFields := schema.EntUser{}.Fields()
 	_ = entuserFields
 	// entuserDescName is the schema descriptor for name field.
