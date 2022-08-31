@@ -25,10 +25,13 @@ func (EntPost) Fields() []ent.Field {
 // Edges of the EntPost.
 func (EntPost) Edges() []ent.Edge {
 	return []ent.Edge{
-		// Create an edge called "course" between EntPost and EntComment (1 to M)
+		// Create an edge called "comment" between EntPost and EntComment (1 to M)
 		edge.To("comment", EntComment.Type),
 
-		// Create an inverse-edge called "commentFor" between EntPost and EntCourse (M to 1)
+		// Create an edge called "shareWith" between EntPost and EntUser (M to M)
+		edge.To("shareWith", EntUser.Type),
+
+		// Create an inverse-edge called "belongsTo" between EntPost and EntCourse (M to 1)
 		edge.From("belongsTo", EntCourse.Type).
 			Ref("post").
 			Unique(),

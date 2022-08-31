@@ -36,7 +36,7 @@ func (EntTodo) Edges() []ent.Edge {
 			Ref("todo").
 			Unique(),
 
-		// Create an inverse-edge called "todoOwnedBy" between EntTodo and EntUser (M to 1)
+		// Create an inverse-edge called "ownedBy" between EntTodo and EntUser (M to 1)
 		edge.From("ownedBy", EntUser.Type).
 			Ref("todo").
 			Unique(),

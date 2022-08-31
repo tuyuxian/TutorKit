@@ -37,7 +37,7 @@ func (EntAttendance) Edges() []ent.Edge {
 			Ref("attendance").
 			Unique(),
 
-		// Create an inverse-edge called "attendanceOwnedBy" between EntAttendance and EntUser (M to 1)
+		// Create an inverse-edge called "ownedBy" between EntAttendance and EntUser (M to 1)
 		edge.From("ownedBy", EntUser.Type).
 			Ref("attendance").
 			Unique(),

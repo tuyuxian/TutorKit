@@ -35,13 +35,19 @@ func (EntCourse) Edges() []ent.Edge {
 	return []ent.Edge{
 		// Create an edge called "todo" between EntCourse and EntTodo (1 to M)
 		edge.To("todo", EntTodo.Type),
+
 		// Create an edge called "attendance" between EntCourse and EntAttendance (1 to M)
 		edge.To("attendance", EntAttendance.Type),
+
 		// Create an edge called "post" between EntCourse and EntPost (1 to M)
 		edge.To("post", EntPost.Type),
 
-		// Create an inverse-edge called "courseOwner" between EntUser
+		// Create an inverse-edge called "ownedBy" between EntCourse and EntUser (M to M)
 		edge.From("ownedBy", EntUser.Type).
 			Ref("course"),
+
+		// Create an inverse-edge called "joinedBy" between EntCourse and EntUser (M to M)
+		edge.From("joinedBy", EntUser.Type).
+			Ref("join"),
 	}
 }

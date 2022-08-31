@@ -36,24 +36,37 @@ func (EntUser) Edges() []ent.Edge {
 	return []ent.Edge{
 		// Create an edge called "course" between EntUser and EntCourse (M to M)
 		edge.To("course", EntCourse.Type),
+
 		// Create an edge called "todo" between EntUser and EntTodo (M to M)
 		edge.To("todo", EntTodo.Type),
+
 		// Create an edge called "attendance" between EntUser and EntAttendance (M to M)
 		edge.To("attendance", EntAttendance.Type),
+
 		// Create an edge called "post" between EntUser and EntPost (1 to M)
 		edge.To("post", EntPost.Type),
+
 		// Create an edge called "comment" between EntUser and EntPost (1 to M)
 		edge.To("comment", EntComment.Type),
 
+		// Create an edge called "join" between EntUser and EntCourse (M to M)
+		edge.To("join", EntCourse.Type),
+
 		// Below are the edge between EntUser
-		// Create an bidirectional edge called "parent/children"
+		// Create an bidirectional edge called "parent/children" (M to M)
 		edge.To("parent", EntUser.Type).
 			From("children"),
-		// Create an bidirectional edge called "tutor/student"
+
+		// Create an bidirectional edge called "tutor/student" (M to M)
 		edge.To("tutor", EntUser.Type).
 			From("student"),
-		// Create an bidirectional edge called "STutor/SParent"
+
+		// Create an bidirectional edge called "STutor/SParent" (M to M)
 		edge.To("STutor", EntUser.Type).
 			From("SParent"),
+
+		// Create an inverse-edge called "canSee" between EntUser and EntPost (M to M)
+		edge.From("canSee", EntPost.Type).
+			Ref("shareWith"),
 	}
 }

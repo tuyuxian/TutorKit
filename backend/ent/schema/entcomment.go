@@ -25,7 +25,7 @@ func (EntComment) Fields() []ent.Field {
 // Edges of the EntComment.
 func (EntComment) Edges() []ent.Edge {
 	return []ent.Edge{
-		// Create an inverse-edge called "commentFor" between EntComment and EntPost (M to 1)
+		// Create an inverse-edge called "belongsTo" between EntComment and EntPost (M to 1)
 		edge.From("belongsTo", EntPost.Type).
 			Ref("comment").
 			Unique(),
