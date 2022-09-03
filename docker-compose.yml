@@ -9,7 +9,7 @@ services:
     environment:
       MYSQL_DATABASE: tutorkit
       MYSQL_ROOT_PASSWORD: root
-      MYSQL_USER: root
-      MYSQL_PASSWORD: root
+      MYSQL_USER: tutorkit
+      MYSQL_PASSWORD: tutorkit
     ports:
       - "3307:3306"
