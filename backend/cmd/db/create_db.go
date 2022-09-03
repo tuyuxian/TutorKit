@@ -1,4 +1,4 @@
-package db
+package main
 
 import (
 	"context"
@@ -12,7 +12,7 @@ import (
 	"github.com/joho/godotenv"
 )
 
-func createDB() {
+func main() {
 	// Load env config
 	err := godotenv.Load()
 	if err != nil {
