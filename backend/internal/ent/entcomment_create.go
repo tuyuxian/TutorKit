@@ -22,6 +22,34 @@ type EntCommentCreate struct {
 	hooks    []Hook
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (ecc *EntCommentCreate) SetCreatedAt(t time.Time) *EntCommentCreate {
+	ecc.mutation.SetCreatedAt(t)
+	return ecc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableCreatedAt(t *time.Time) *EntCommentCreate {
+	if t != nil {
+		ecc.SetCreatedAt(*t)
+	}
+	return ecc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecc *EntCommentCreate) SetUpdatedAt(t time.Time) *EntCommentCreate {
+	ecc.mutation.SetUpdatedAt(t)
+	return ecc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (ecc *EntCommentCreate) SetNillableUpdatedAt(t *time.Time) *EntCommentCreate {
+	if t != nil {
+		ecc.SetUpdatedAt(*t)
+	}
+	return ecc
+}
+
 // SetTimestamp sets the "timestamp" field.
 func (ecc *EntCommentCreate) SetTimestamp(t time.Time) *EntCommentCreate {
 	ecc.mutation.SetTimestamp(t)
@@ -179,6 +207,14 @@ func (ecc *EntCommentCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (ecc *EntCommentCreate) defaults() {
+	if _, ok := ecc.mutation.CreatedAt(); !ok {
+		v := entcomment.DefaultCreatedAt()
+		ecc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := ecc.mutation.UpdatedAt(); !ok {
+		v := entcomment.DefaultUpdatedAt()
+		ecc.mutation.SetUpdatedAt(v)
+	}
 	if _, ok := ecc.mutation.Timestamp(); !ok {
 		v := entcomment.DefaultTimestamp
 		ecc.mutation.SetTimestamp(v)
@@ -187,6 +223,12 @@ func (ecc *EntCommentCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ecc *EntCommentCreate) check() error {
+	if _, ok := ecc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntComment.createdAt"`)}
+	}
+	if _, ok := ecc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntComment.updatedAt"`)}
+	}
 	if _, ok := ecc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntComment.timestamp"`)}
 	}
@@ -222,6 +264,22 @@ func (ecc *EntCommentCreate) createSpec() (*EntComment, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := ecc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := ecc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := ecc.mutation.Timestamp(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

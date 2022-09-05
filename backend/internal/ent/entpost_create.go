@@ -23,6 +23,34 @@ type EntPostCreate struct {
 	hooks    []Hook
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (epc *EntPostCreate) SetCreatedAt(t time.Time) *EntPostCreate {
+	epc.mutation.SetCreatedAt(t)
+	return epc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (epc *EntPostCreate) SetNillableCreatedAt(t *time.Time) *EntPostCreate {
+	if t != nil {
+		epc.SetCreatedAt(*t)
+	}
+	return epc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (epc *EntPostCreate) SetUpdatedAt(t time.Time) *EntPostCreate {
+	epc.mutation.SetUpdatedAt(t)
+	return epc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (epc *EntPostCreate) SetNillableUpdatedAt(t *time.Time) *EntPostCreate {
+	if t != nil {
+		epc.SetUpdatedAt(*t)
+	}
+	return epc
+}
+
 // SetTimestamp sets the "timestamp" field.
 func (epc *EntPostCreate) SetTimestamp(t time.Time) *EntPostCreate {
 	epc.mutation.SetTimestamp(t)
@@ -210,6 +238,14 @@ func (epc *EntPostCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (epc *EntPostCreate) defaults() {
+	if _, ok := epc.mutation.CreatedAt(); !ok {
+		v := entpost.DefaultCreatedAt()
+		epc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := epc.mutation.UpdatedAt(); !ok {
+		v := entpost.DefaultUpdatedAt()
+		epc.mutation.SetUpdatedAt(v)
+	}
 	if _, ok := epc.mutation.Timestamp(); !ok {
 		v := entpost.DefaultTimestamp
 		epc.mutation.SetTimestamp(v)
@@ -218,6 +254,12 @@ func (epc *EntPostCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (epc *EntPostCreate) check() error {
+	if _, ok := epc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntPost.createdAt"`)}
+	}
+	if _, ok := epc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntPost.updatedAt"`)}
+	}
 	if _, ok := epc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntPost.timestamp"`)}
 	}
@@ -253,6 +295,22 @@ func (epc *EntPostCreate) createSpec() (*EntPost, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := epc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entpost.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := epc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entpost.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := epc.mutation.Timestamp(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

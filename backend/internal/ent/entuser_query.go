@@ -714,12 +714,12 @@ func (euq *EntUserQuery) WithCanSee(opts ...func(*EntPostQuery)) *EntUserQuery {
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntUser.Query().
-//		GroupBy(entuser.FieldName).
+//		GroupBy(entuser.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (euq *EntUserQuery) GroupBy(field string, fields ...string) *EntUserGroupBy {
@@ -742,11 +742,11 @@ func (euq *EntUserQuery) GroupBy(field string, fields ...string) *EntUserGroupBy
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntUser.Query().
-//		Select(entuser.FieldName).
+//		Select(entuser.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (euq *EntUserQuery) Select(fields ...string) *EntUserSelect {
 	euq.fields = append(euq.fields, fields...)

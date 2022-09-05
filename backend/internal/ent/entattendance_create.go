@@ -22,6 +22,34 @@ type EntAttendanceCreate struct {
 	hooks    []Hook
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (eac *EntAttendanceCreate) SetCreatedAt(t time.Time) *EntAttendanceCreate {
+	eac.mutation.SetCreatedAt(t)
+	return eac
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (eac *EntAttendanceCreate) SetNillableCreatedAt(t *time.Time) *EntAttendanceCreate {
+	if t != nil {
+		eac.SetCreatedAt(*t)
+	}
+	return eac
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (eac *EntAttendanceCreate) SetUpdatedAt(t time.Time) *EntAttendanceCreate {
+	eac.mutation.SetUpdatedAt(t)
+	return eac
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (eac *EntAttendanceCreate) SetNillableUpdatedAt(t *time.Time) *EntAttendanceCreate {
+	if t != nil {
+		eac.SetUpdatedAt(*t)
+	}
+	return eac
+}
+
 // SetDate sets the "date" field.
 func (eac *EntAttendanceCreate) SetDate(t time.Time) *EntAttendanceCreate {
 	eac.mutation.SetDate(t)
@@ -255,6 +283,14 @@ func (eac *EntAttendanceCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (eac *EntAttendanceCreate) defaults() {
+	if _, ok := eac.mutation.CreatedAt(); !ok {
+		v := entattendance.DefaultCreatedAt()
+		eac.mutation.SetCreatedAt(v)
+	}
+	if _, ok := eac.mutation.UpdatedAt(); !ok {
+		v := entattendance.DefaultUpdatedAt()
+		eac.mutation.SetUpdatedAt(v)
+	}
 	if _, ok := eac.mutation.CheckedByTutor(); !ok {
 		v := entattendance.DefaultCheckedByTutor
 		eac.mutation.SetCheckedByTutor(v)
@@ -271,6 +307,12 @@ func (eac *EntAttendanceCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (eac *EntAttendanceCreate) check() error {
+	if _, ok := eac.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntAttendance.createdAt"`)}
+	}
+	if _, ok := eac.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntAttendance.updatedAt"`)}
+	}
 	if _, ok := eac.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "EntAttendance.date"`)}
 	}
@@ -310,6 +352,22 @@ func (eac *EntAttendanceCreate) createSpec() (*EntAttendance, *sqlgraph.CreateSp
 			},
 		}
 	)
+	if value, ok := eac.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entattendance.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := eac.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entattendance.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := eac.mutation.Date(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

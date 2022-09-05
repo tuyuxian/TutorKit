@@ -18,6 +18,10 @@ type EntTodo struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
 	// StartTime holds the value of the "startTime" field.
@@ -85,7 +89,7 @@ func (*EntTodo) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case enttodo.FieldLesson, enttodo.FieldHomework, enttodo.FieldStatus:
 			values[i] = new(sql.NullString)
-		case enttodo.FieldDate, enttodo.FieldStartTime, enttodo.FieldEndTime, enttodo.FieldDay:
+		case enttodo.FieldCreatedAt, enttodo.FieldUpdatedAt, enttodo.FieldDate, enttodo.FieldStartTime, enttodo.FieldEndTime, enttodo.FieldDay:
 			values[i] = new(sql.NullTime)
 		case enttodo.ForeignKeys[0]: // ent_course_todo
 			values[i] = new(sql.NullInt64)
@@ -112,6 +116,18 @@ func (et *EntTodo) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			et.ID = int(value.Int64)
+		case enttodo.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				et.CreatedAt = value.Time
+			}
+		case enttodo.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				et.UpdatedAt = value.Time
+			}
 		case enttodo.FieldDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field date", values[i])
@@ -206,6 +222,12 @@ func (et *EntTodo) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntTodo(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", et.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(et.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(et.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("date=")
 	builder.WriteString(et.Date.Format(time.ANSIC))
 	builder.WriteString(", ")

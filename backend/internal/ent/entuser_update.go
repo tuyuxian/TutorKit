@@ -13,6 +13,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -32,6 +33,12 @@ func (euu *EntUserUpdate) Where(ps ...predicate.EntUser) *EntUserUpdate {
 	return euu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (euu *EntUserUpdate) SetUpdatedAt(t time.Time) *EntUserUpdate {
+	euu.mutation.SetUpdatedAt(t)
+	return euu
+}
+
 // SetName sets the "name" field.
 func (euu *EntUserUpdate) SetName(s string) *EntUserUpdate {
 	euu.mutation.SetName(s)
@@ -47,6 +54,26 @@ func (euu *EntUserUpdate) SetEmail(s string) *EntUserUpdate {
 // SetPassword sets the "password" field.
 func (euu *EntUserUpdate) SetPassword(s string) *EntUserUpdate {
 	euu.mutation.SetPassword(s)
+	return euu
+}
+
+// SetCountry sets the "country" field.
+func (euu *EntUserUpdate) SetCountry(s string) *EntUserUpdate {
+	euu.mutation.SetCountry(s)
+	return euu
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (euu *EntUserUpdate) SetNillableCountry(s *string) *EntUserUpdate {
+	if s != nil {
+		euu.SetCountry(*s)
+	}
+	return euu
+}
+
+// ClearCountry clears the value of the "country" field.
+func (euu *EntUserUpdate) ClearCountry() *EntUserUpdate {
+	euu.mutation.ClearCountry()
 	return euu
 }
 
@@ -96,15 +123,39 @@ func (euu *EntUserUpdate) SetIsTutor(b bool) *EntUserUpdate {
 	return euu
 }
 
+// SetNillableIsTutor sets the "isTutor" field if the given value is not nil.
+func (euu *EntUserUpdate) SetNillableIsTutor(b *bool) *EntUserUpdate {
+	if b != nil {
+		euu.SetIsTutor(*b)
+	}
+	return euu
+}
+
 // SetIsStudent sets the "isStudent" field.
 func (euu *EntUserUpdate) SetIsStudent(b bool) *EntUserUpdate {
 	euu.mutation.SetIsStudent(b)
 	return euu
 }
 
+// SetNillableIsStudent sets the "isStudent" field if the given value is not nil.
+func (euu *EntUserUpdate) SetNillableIsStudent(b *bool) *EntUserUpdate {
+	if b != nil {
+		euu.SetIsStudent(*b)
+	}
+	return euu
+}
+
 // SetIsParent sets the "isParent" field.
 func (euu *EntUserUpdate) SetIsParent(b bool) *EntUserUpdate {
 	euu.mutation.SetIsParent(b)
+	return euu
+}
+
+// SetNillableIsParent sets the "isParent" field if the given value is not nil.
+func (euu *EntUserUpdate) SetNillableIsParent(b *bool) *EntUserUpdate {
+	if b != nil {
+		euu.SetIsParent(*b)
+	}
 	return euu
 }
 
@@ -587,6 +638,7 @@ func (euu *EntUserUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	euu.defaults()
 	if len(euu.hooks) == 0 {
 		if err = euu.check(); err != nil {
 			return 0, err
@@ -641,6 +693,14 @@ func (euu *EntUserUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (euu *EntUserUpdate) defaults() {
+	if _, ok := euu.mutation.UpdatedAt(); !ok {
+		v := entuser.UpdateDefaultUpdatedAt()
+		euu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (euu *EntUserUpdate) check() error {
 	if v, ok := euu.mutation.Name(); ok {
@@ -656,6 +716,11 @@ func (euu *EntUserUpdate) check() error {
 	if v, ok := euu.mutation.Password(); ok {
 		if err := entuser.PasswordValidator(v); err != nil {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
+		}
+	}
+	if v, ok := euu.mutation.Phone(); ok {
+		if err := entuser.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
 		}
 	}
 	return nil
@@ -679,6 +744,13 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			}
 		}
 	}
+	if value, ok := euu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldUpdatedAt,
+		})
+	}
 	if value, ok := euu.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -698,6 +770,19 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Type:   field.TypeString,
 			Value:  value,
 			Column: entuser.FieldPassword,
+		})
+	}
+	if value, ok := euu.mutation.Country(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldCountry,
+		})
+	}
+	if euu.mutation.CountryCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: entuser.FieldCountry,
 		})
 	}
 	if value, ok := euu.mutation.Phone(); ok {
@@ -1468,6 +1553,12 @@ type EntUserUpdateOne struct {
 	mutation *EntUserMutation
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (euuo *EntUserUpdateOne) SetUpdatedAt(t time.Time) *EntUserUpdateOne {
+	euuo.mutation.SetUpdatedAt(t)
+	return euuo
+}
+
 // SetName sets the "name" field.
 func (euuo *EntUserUpdateOne) SetName(s string) *EntUserUpdateOne {
 	euuo.mutation.SetName(s)
@@ -1483,6 +1574,26 @@ func (euuo *EntUserUpdateOne) SetEmail(s string) *EntUserUpdateOne {
 // SetPassword sets the "password" field.
 func (euuo *EntUserUpdateOne) SetPassword(s string) *EntUserUpdateOne {
 	euuo.mutation.SetPassword(s)
+	return euuo
+}
+
+// SetCountry sets the "country" field.
+func (euuo *EntUserUpdateOne) SetCountry(s string) *EntUserUpdateOne {
+	euuo.mutation.SetCountry(s)
+	return euuo
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (euuo *EntUserUpdateOne) SetNillableCountry(s *string) *EntUserUpdateOne {
+	if s != nil {
+		euuo.SetCountry(*s)
+	}
+	return euuo
+}
+
+// ClearCountry clears the value of the "country" field.
+func (euuo *EntUserUpdateOne) ClearCountry() *EntUserUpdateOne {
+	euuo.mutation.ClearCountry()
 	return euuo
 }
 
@@ -1532,15 +1643,39 @@ func (euuo *EntUserUpdateOne) SetIsTutor(b bool) *EntUserUpdateOne {
 	return euuo
 }
 
+// SetNillableIsTutor sets the "isTutor" field if the given value is not nil.
+func (euuo *EntUserUpdateOne) SetNillableIsTutor(b *bool) *EntUserUpdateOne {
+	if b != nil {
+		euuo.SetIsTutor(*b)
+	}
+	return euuo
+}
+
 // SetIsStudent sets the "isStudent" field.
 func (euuo *EntUserUpdateOne) SetIsStudent(b bool) *EntUserUpdateOne {
 	euuo.mutation.SetIsStudent(b)
 	return euuo
 }
 
+// SetNillableIsStudent sets the "isStudent" field if the given value is not nil.
+func (euuo *EntUserUpdateOne) SetNillableIsStudent(b *bool) *EntUserUpdateOne {
+	if b != nil {
+		euuo.SetIsStudent(*b)
+	}
+	return euuo
+}
+
 // SetIsParent sets the "isParent" field.
 func (euuo *EntUserUpdateOne) SetIsParent(b bool) *EntUserUpdateOne {
 	euuo.mutation.SetIsParent(b)
+	return euuo
+}
+
+// SetNillableIsParent sets the "isParent" field if the given value is not nil.
+func (euuo *EntUserUpdateOne) SetNillableIsParent(b *bool) *EntUserUpdateOne {
+	if b != nil {
+		euuo.SetIsParent(*b)
+	}
 	return euuo
 }
 
@@ -2030,6 +2165,7 @@ func (euuo *EntUserUpdateOne) Save(ctx context.Context) (*EntUser, error) {
 		err  error
 		node *EntUser
 	)
+	euuo.defaults()
 	if len(euuo.hooks) == 0 {
 		if err = euuo.check(); err != nil {
 			return nil, err
@@ -2090,6 +2226,14 @@ func (euuo *EntUserUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (euuo *EntUserUpdateOne) defaults() {
+	if _, ok := euuo.mutation.UpdatedAt(); !ok {
+		v := entuser.UpdateDefaultUpdatedAt()
+		euuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (euuo *EntUserUpdateOne) check() error {
 	if v, ok := euuo.mutation.Name(); ok {
@@ -2105,6 +2249,11 @@ func (euuo *EntUserUpdateOne) check() error {
 	if v, ok := euuo.mutation.Password(); ok {
 		if err := entuser.PasswordValidator(v); err != nil {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
+		}
+	}
+	if v, ok := euuo.mutation.Phone(); ok {
+		if err := entuser.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
 		}
 	}
 	return nil
@@ -2145,6 +2294,13 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 			}
 		}
 	}
+	if value, ok := euuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldUpdatedAt,
+		})
+	}
 	if value, ok := euuo.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -2164,6 +2320,19 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 			Type:   field.TypeString,
 			Value:  value,
 			Column: entuser.FieldPassword,
+		})
+	}
+	if value, ok := euuo.mutation.Country(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldCountry,
+		})
+	}
+	if euuo.mutation.CountryCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Column: entuser.FieldCountry,
 		})
 	}
 	if value, ok := euuo.mutation.Phone(); ok {

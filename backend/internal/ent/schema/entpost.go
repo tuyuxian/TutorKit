@@ -13,6 +13,13 @@ type EntPost struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntPost) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the EntPost.
 func (EntPost) Fields() []ent.Field {
 	return []ent.Field{

@@ -18,6 +18,10 @@ type EntAttendance struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Date holds the value of the "date" field.
 	Date time.Time `json:"date,omitempty"`
 	// StartTime holds the value of the "startTime" field.
@@ -93,7 +97,7 @@ func (*EntAttendance) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entattendance.FieldNote:
 			values[i] = new(sql.NullString)
-		case entattendance.FieldDate, entattendance.FieldStartTime, entattendance.FieldEndTime, entattendance.FieldDay:
+		case entattendance.FieldCreatedAt, entattendance.FieldUpdatedAt, entattendance.FieldDate, entattendance.FieldStartTime, entattendance.FieldEndTime, entattendance.FieldDay:
 			values[i] = new(sql.NullTime)
 		case entattendance.ForeignKeys[0]: // ent_course_attendance
 			values[i] = new(sql.NullInt64)
@@ -120,6 +124,18 @@ func (ea *EntAttendance) assignValues(columns []string, values []interface{}) er
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ea.ID = int(value.Int64)
+		case entattendance.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				ea.CreatedAt = value.Time
+			}
+		case entattendance.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				ea.UpdatedAt = value.Time
+			}
 		case entattendance.FieldDate:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field date", values[i])
@@ -226,6 +242,12 @@ func (ea *EntAttendance) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntAttendance(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ea.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(ea.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(ea.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("date=")
 	builder.WriteString(ea.Date.Format(time.ANSIC))
 	builder.WriteString(", ")

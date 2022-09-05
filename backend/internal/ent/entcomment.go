@@ -18,6 +18,10 @@ type EntComment struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Timestamp holds the value of the "timestamp" field.
 	Timestamp time.Time `json:"timestamp,omitempty"`
 	// Content holds the value of the "content" field.
@@ -77,7 +81,7 @@ func (*EntComment) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entcomment.FieldContent, entcomment.FieldShare:
 			values[i] = new(sql.NullString)
-		case entcomment.FieldTimestamp:
+		case entcomment.FieldCreatedAt, entcomment.FieldUpdatedAt, entcomment.FieldTimestamp:
 			values[i] = new(sql.NullTime)
 		case entcomment.ForeignKeys[0]: // ent_post_comment
 			values[i] = new(sql.NullInt64)
@@ -104,6 +108,18 @@ func (ec *EntComment) assignValues(columns []string, values []interface{}) error
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ec.ID = int(value.Int64)
+		case entcomment.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				ec.CreatedAt = value.Time
+			}
+		case entcomment.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				ec.UpdatedAt = value.Time
+			}
 		case entcomment.FieldTimestamp:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field timestamp", values[i])
@@ -174,6 +190,12 @@ func (ec *EntComment) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntComment(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ec.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(ec.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(ec.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("timestamp=")
 	builder.WriteString(ec.Timestamp.Format(time.ANSIC))
 	builder.WriteString(", ")

@@ -7,6 +7,7 @@ import (
 	"backend/internal/ent/entcomment"
 	"backend/internal/ent/entcourse"
 	"backend/internal/ent/entpost"
+	"backend/internal/ent/enttodo"
 	"backend/internal/ent/entuser"
 	"backend/internal/ent/schema"
 	"time"
@@ -16,8 +17,21 @@ import (
 // (default values, validators, hooks and policies) and stitches it
 // to their package variables.
 func init() {
+	entattendanceMixin := schema.EntAttendance{}.Mixin()
+	entattendanceMixinFields0 := entattendanceMixin[0].Fields()
+	_ = entattendanceMixinFields0
 	entattendanceFields := schema.EntAttendance{}.Fields()
 	_ = entattendanceFields
+	// entattendanceDescCreatedAt is the schema descriptor for createdAt field.
+	entattendanceDescCreatedAt := entattendanceMixinFields0[0].Descriptor()
+	// entattendance.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	entattendance.DefaultCreatedAt = entattendanceDescCreatedAt.Default.(func() time.Time)
+	// entattendanceDescUpdatedAt is the schema descriptor for updatedAt field.
+	entattendanceDescUpdatedAt := entattendanceMixinFields0[1].Descriptor()
+	// entattendance.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	entattendance.DefaultUpdatedAt = entattendanceDescUpdatedAt.Default.(func() time.Time)
+	// entattendance.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	entattendance.UpdateDefaultUpdatedAt = entattendanceDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// entattendanceDescCheckedByTutor is the schema descriptor for checkedByTutor field.
 	entattendanceDescCheckedByTutor := entattendanceFields[6].Descriptor()
 	// entattendance.DefaultCheckedByTutor holds the default value on creation for the checkedByTutor field.
@@ -30,32 +44,111 @@ func init() {
 	entattendanceDescCheckedByParent := entattendanceFields[8].Descriptor()
 	// entattendance.DefaultCheckedByParent holds the default value on creation for the checkedByParent field.
 	entattendance.DefaultCheckedByParent = entattendanceDescCheckedByParent.Default.(bool)
+	entcommentMixin := schema.EntComment{}.Mixin()
+	entcommentMixinFields0 := entcommentMixin[0].Fields()
+	_ = entcommentMixinFields0
 	entcommentFields := schema.EntComment{}.Fields()
 	_ = entcommentFields
+	// entcommentDescCreatedAt is the schema descriptor for createdAt field.
+	entcommentDescCreatedAt := entcommentMixinFields0[0].Descriptor()
+	// entcomment.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	entcomment.DefaultCreatedAt = entcommentDescCreatedAt.Default.(func() time.Time)
+	// entcommentDescUpdatedAt is the schema descriptor for updatedAt field.
+	entcommentDescUpdatedAt := entcommentMixinFields0[1].Descriptor()
+	// entcomment.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	entcomment.DefaultUpdatedAt = entcommentDescUpdatedAt.Default.(func() time.Time)
+	// entcomment.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	entcomment.UpdateDefaultUpdatedAt = entcommentDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// entcommentDescTimestamp is the schema descriptor for timestamp field.
 	entcommentDescTimestamp := entcommentFields[0].Descriptor()
 	// entcomment.DefaultTimestamp holds the default value on creation for the timestamp field.
 	entcomment.DefaultTimestamp = entcommentDescTimestamp.Default.(time.Time)
+	entcourseMixin := schema.EntCourse{}.Mixin()
+	entcourseMixinFields0 := entcourseMixin[0].Fields()
+	_ = entcourseMixinFields0
 	entcourseFields := schema.EntCourse{}.Fields()
 	_ = entcourseFields
+	// entcourseDescCreatedAt is the schema descriptor for createdAt field.
+	entcourseDescCreatedAt := entcourseMixinFields0[0].Descriptor()
+	// entcourse.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	entcourse.DefaultCreatedAt = entcourseDescCreatedAt.Default.(func() time.Time)
+	// entcourseDescUpdatedAt is the schema descriptor for updatedAt field.
+	entcourseDescUpdatedAt := entcourseMixinFields0[1].Descriptor()
+	// entcourse.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	entcourse.DefaultUpdatedAt = entcourseDescUpdatedAt.Default.(func() time.Time)
+	// entcourse.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	entcourse.UpdateDefaultUpdatedAt = entcourseDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// entcourseDescName is the schema descriptor for name field.
 	entcourseDescName := entcourseFields[0].Descriptor()
 	// entcourse.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	entcourse.NameValidator = entcourseDescName.Validators[0].(func(string) error)
+	entpostMixin := schema.EntPost{}.Mixin()
+	entpostMixinFields0 := entpostMixin[0].Fields()
+	_ = entpostMixinFields0
 	entpostFields := schema.EntPost{}.Fields()
 	_ = entpostFields
+	// entpostDescCreatedAt is the schema descriptor for createdAt field.
+	entpostDescCreatedAt := entpostMixinFields0[0].Descriptor()
+	// entpost.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	entpost.DefaultCreatedAt = entpostDescCreatedAt.Default.(func() time.Time)
+	// entpostDescUpdatedAt is the schema descriptor for updatedAt field.
+	entpostDescUpdatedAt := entpostMixinFields0[1].Descriptor()
+	// entpost.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	entpost.DefaultUpdatedAt = entpostDescUpdatedAt.Default.(func() time.Time)
+	// entpost.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	entpost.UpdateDefaultUpdatedAt = entpostDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// entpostDescTimestamp is the schema descriptor for timestamp field.
 	entpostDescTimestamp := entpostFields[0].Descriptor()
 	// entpost.DefaultTimestamp holds the default value on creation for the timestamp field.
 	entpost.DefaultTimestamp = entpostDescTimestamp.Default.(time.Time)
+	enttodoMixin := schema.EntTodo{}.Mixin()
+	enttodoMixinFields0 := enttodoMixin[0].Fields()
+	_ = enttodoMixinFields0
 	enttodoFields := schema.EntTodo{}.Fields()
 	_ = enttodoFields
+	// enttodoDescCreatedAt is the schema descriptor for createdAt field.
+	enttodoDescCreatedAt := enttodoMixinFields0[0].Descriptor()
+	// enttodo.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	enttodo.DefaultCreatedAt = enttodoDescCreatedAt.Default.(func() time.Time)
+	// enttodoDescUpdatedAt is the schema descriptor for updatedAt field.
+	enttodoDescUpdatedAt := enttodoMixinFields0[1].Descriptor()
+	// enttodo.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	enttodo.DefaultUpdatedAt = enttodoDescUpdatedAt.Default.(func() time.Time)
+	// enttodo.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	enttodo.UpdateDefaultUpdatedAt = enttodoDescUpdatedAt.UpdateDefault.(func() time.Time)
+	entuserMixin := schema.EntUser{}.Mixin()
+	entuserMixinFields0 := entuserMixin[0].Fields()
+	_ = entuserMixinFields0
 	entuserFields := schema.EntUser{}.Fields()
 	_ = entuserFields
+	// entuserDescCreatedAt is the schema descriptor for createdAt field.
+	entuserDescCreatedAt := entuserMixinFields0[0].Descriptor()
+	// entuser.DefaultCreatedAt holds the default value on creation for the createdAt field.
+	entuser.DefaultCreatedAt = entuserDescCreatedAt.Default.(func() time.Time)
+	// entuserDescUpdatedAt is the schema descriptor for updatedAt field.
+	entuserDescUpdatedAt := entuserMixinFields0[1].Descriptor()
+	// entuser.DefaultUpdatedAt holds the default value on creation for the updatedAt field.
+	entuser.DefaultUpdatedAt = entuserDescUpdatedAt.Default.(func() time.Time)
+	// entuser.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
+	entuser.UpdateDefaultUpdatedAt = entuserDescUpdatedAt.UpdateDefault.(func() time.Time)
 	// entuserDescName is the schema descriptor for name field.
 	entuserDescName := entuserFields[0].Descriptor()
 	// entuser.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	entuser.NameValidator = entuserDescName.Validators[0].(func(string) error)
+	entuser.NameValidator = func() func(string) error {
+		validators := entuserDescName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(name string) error {
+			for _, fn := range fns {
+				if err := fn(name); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// entuserDescEmail is the schema descriptor for email field.
 	entuserDescEmail := entuserFields[1].Descriptor()
 	// entuser.EmailValidator is a validator for the "email" field. It is called by the builders before save.
@@ -78,4 +171,20 @@ func init() {
 	entuserDescPassword := entuserFields[2].Descriptor()
 	// entuser.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	entuser.PasswordValidator = entuserDescPassword.Validators[0].(func(string) error)
+	// entuserDescPhone is the schema descriptor for phone field.
+	entuserDescPhone := entuserFields[4].Descriptor()
+	// entuser.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	entuser.PhoneValidator = entuserDescPhone.Validators[0].(func(string) error)
+	// entuserDescIsTutor is the schema descriptor for isTutor field.
+	entuserDescIsTutor := entuserFields[6].Descriptor()
+	// entuser.DefaultIsTutor holds the default value on creation for the isTutor field.
+	entuser.DefaultIsTutor = entuserDescIsTutor.Default.(bool)
+	// entuserDescIsStudent is the schema descriptor for isStudent field.
+	entuserDescIsStudent := entuserFields[7].Descriptor()
+	// entuser.DefaultIsStudent holds the default value on creation for the isStudent field.
+	entuser.DefaultIsStudent = entuserDescIsStudent.Default.(bool)
+	// entuserDescIsParent is the schema descriptor for isParent field.
+	entuserDescIsParent := entuserFields[8].Descriptor()
+	// entuser.DefaultIsParent holds the default value on creation for the isParent field.
+	entuser.DefaultIsParent = entuserDescIsParent.Default.(bool)
 }

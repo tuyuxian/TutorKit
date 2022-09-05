@@ -22,6 +22,34 @@ type EntTodoCreate struct {
 	hooks    []Hook
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (etc *EntTodoCreate) SetCreatedAt(t time.Time) *EntTodoCreate {
+	etc.mutation.SetCreatedAt(t)
+	return etc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableCreatedAt(t *time.Time) *EntTodoCreate {
+	if t != nil {
+		etc.SetCreatedAt(*t)
+	}
+	return etc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (etc *EntTodoCreate) SetUpdatedAt(t time.Time) *EntTodoCreate {
+	etc.mutation.SetUpdatedAt(t)
+	return etc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (etc *EntTodoCreate) SetNillableUpdatedAt(t *time.Time) *EntTodoCreate {
+	if t != nil {
+		etc.SetUpdatedAt(*t)
+	}
+	return etc
+}
+
 // SetDate sets the "date" field.
 func (etc *EntTodoCreate) SetDate(t time.Time) *EntTodoCreate {
 	etc.mutation.SetDate(t)
@@ -227,6 +255,14 @@ func (etc *EntTodoCreate) ExecX(ctx context.Context) {
 
 // defaults sets the default values of the builder before save.
 func (etc *EntTodoCreate) defaults() {
+	if _, ok := etc.mutation.CreatedAt(); !ok {
+		v := enttodo.DefaultCreatedAt()
+		etc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := etc.mutation.UpdatedAt(); !ok {
+		v := enttodo.DefaultUpdatedAt()
+		etc.mutation.SetUpdatedAt(v)
+	}
 	if _, ok := etc.mutation.Status(); !ok {
 		v := enttodo.DefaultStatus
 		etc.mutation.SetStatus(v)
@@ -235,6 +271,12 @@ func (etc *EntTodoCreate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (etc *EntTodoCreate) check() error {
+	if _, ok := etc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntTodo.createdAt"`)}
+	}
+	if _, ok := etc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntTodo.updatedAt"`)}
+	}
 	if _, ok := etc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "EntTodo.date"`)}
 	}
@@ -273,6 +315,22 @@ func (etc *EntTodoCreate) createSpec() (*EntTodo, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := etc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := etc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := etc.mutation.Date(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,

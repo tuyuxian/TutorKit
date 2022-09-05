@@ -433,12 +433,12 @@ func (ecq *EntCourseQuery) WithJoinedBy(opts ...func(*EntUserQuery)) *EntCourseQ
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntCourse.Query().
-//		GroupBy(entcourse.FieldName).
+//		GroupBy(entcourse.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (ecq *EntCourseQuery) GroupBy(field string, fields ...string) *EntCourseGroupBy {
@@ -461,11 +461,11 @@ func (ecq *EntCourseQuery) GroupBy(field string, fields ...string) *EntCourseGro
 // Example:
 //
 //	var v []struct {
-//		Name string `json:"name,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntCourse.Query().
-//		Select(entcourse.FieldName).
+//		Select(entcourse.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (ecq *EntCourseQuery) Select(fields ...string) *EntCourseSelect {
 	ecq.fields = append(ecq.fields, fields...)

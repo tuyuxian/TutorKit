@@ -2,17 +2,27 @@
 
 package entuser
 
+import (
+	"time"
+)
+
 const (
 	// Label holds the string label denoting the entuser type in the database.
 	Label = "ent_user"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	FieldUpdatedAt = "updated_at"
 	// FieldName holds the string denoting the name field in the database.
 	FieldName = "name"
 	// FieldEmail holds the string denoting the email field in the database.
 	FieldEmail = "email"
 	// FieldPassword holds the string denoting the password field in the database.
 	FieldPassword = "password"
+	// FieldCountry holds the string denoting the country field in the database.
+	FieldCountry = "country"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
 	// FieldProfilePictureUrl holds the string denoting the profilepictureurl field in the database.
@@ -111,9 +121,12 @@ const (
 // Columns holds all SQL columns for entuser fields.
 var Columns = []string{
 	FieldID,
+	FieldCreatedAt,
+	FieldUpdatedAt,
 	FieldName,
 	FieldEmail,
 	FieldPassword,
+	FieldCountry,
 	FieldPhone,
 	FieldProfilePictureUrl,
 	FieldIsTutor,
@@ -162,10 +175,24 @@ func ValidColumn(column string) bool {
 }
 
 var (
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
 	// EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	EmailValidator func(string) error
 	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	PasswordValidator func(string) error
+	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
+	PhoneValidator func(string) error
+	// DefaultIsTutor holds the default value on creation for the "isTutor" field.
+	DefaultIsTutor bool
+	// DefaultIsStudent holds the default value on creation for the "isStudent" field.
+	DefaultIsStudent bool
+	// DefaultIsParent holds the default value on creation for the "isParent" field.
+	DefaultIsParent bool
 )

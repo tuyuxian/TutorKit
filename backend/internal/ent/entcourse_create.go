@@ -24,6 +24,34 @@ type EntCourseCreate struct {
 	hooks    []Hook
 }
 
+// SetCreatedAt sets the "createdAt" field.
+func (ecc *EntCourseCreate) SetCreatedAt(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetCreatedAt(t)
+	return ecc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableCreatedAt(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetCreatedAt(*t)
+	}
+	return ecc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecc *EntCourseCreate) SetUpdatedAt(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetUpdatedAt(t)
+	return ecc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableUpdatedAt(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetUpdatedAt(*t)
+	}
+	return ecc
+}
+
 // SetName sets the "name" field.
 func (ecc *EntCourseCreate) SetName(s string) *EntCourseCreate {
 	ecc.mutation.SetName(s)
@@ -284,6 +312,7 @@ func (ecc *EntCourseCreate) Save(ctx context.Context) (*EntCourse, error) {
 		err  error
 		node *EntCourse
 	)
+	ecc.defaults()
 	if len(ecc.hooks) == 0 {
 		if err = ecc.check(); err != nil {
 			return nil, err
@@ -347,8 +376,26 @@ func (ecc *EntCourseCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecc *EntCourseCreate) defaults() {
+	if _, ok := ecc.mutation.CreatedAt(); !ok {
+		v := entcourse.DefaultCreatedAt()
+		ecc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := ecc.mutation.UpdatedAt(); !ok {
+		v := entcourse.DefaultUpdatedAt()
+		ecc.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecc *EntCourseCreate) check() error {
+	if _, ok := ecc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntCourse.createdAt"`)}
+	}
+	if _, ok := ecc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntCourse.updatedAt"`)}
+	}
 	if _, ok := ecc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "EntCourse.name"`)}
 	}
@@ -389,6 +436,22 @@ func (ecc *EntCourseCreate) createSpec() (*EntCourse, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := ecc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := ecc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := ecc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -605,6 +668,7 @@ func (eccb *EntCourseCreateBulk) Save(ctx context.Context) ([]*EntCourse, error)
 	for i := range eccb.builders {
 		func(i int, root context.Context) {
 			builder := eccb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*EntCourseMutation)
 				if !ok {

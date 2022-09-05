@@ -9,25 +9,44 @@ import (
 )
 
 const emailRegex string = "^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$"
+const phoneRegex string = "^[\\+]?[(]?[0-9]{3}[)]?[-\\s\\.]?[0-9]{3}[-\\s\\.]?[0-9]{4,6}$"
 
 // EntUser holds the schema definition for the EntUser entity.
 type EntUser struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntUser) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the User.
 func (EntUser) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").NotEmpty(), // TODO: name length limit
+		field.String("name").
+			NotEmpty().
+			MaxLen(20),
 		field.String("email").
 			NotEmpty().
 			Match(regexp.MustCompile(emailRegex)),
-		field.String("password").NotEmpty(),
-		field.String("phone").Optional(), // TODO: phone regex
-		field.String("profilePictureUrl").Optional(),
-		field.Bool("isTutor"),
-		field.Bool("isStudent"),
-		field.Bool("isParent"),
+		field.String("password").
+			NotEmpty(),
+		field.String("country").
+			Optional(),
+		field.String("phone").
+			Optional().
+			Match(regexp.MustCompile(phoneRegex)),
+		field.String("profilePictureUrl").
+			Optional(),
+		field.Bool("isTutor").
+			Default(false),
+		field.Bool("isStudent").
+			Default(false),
+		field.Bool("isParent").
+			Default(false),
 	}
 }
 

@@ -13,6 +13,13 @@ type EntComment struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntComment) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the EntComment.
 func (EntComment) Fields() []ent.Field {
 	return []ent.Field{

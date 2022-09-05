@@ -398,12 +398,12 @@ func (epq *EntPostQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntPostQuery 
 // Example:
 //
 //	var v []struct {
-//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntPost.Query().
-//		GroupBy(entpost.FieldTimestamp).
+//		GroupBy(entpost.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (epq *EntPostQuery) GroupBy(field string, fields ...string) *EntPostGroupBy {
@@ -426,11 +426,11 @@ func (epq *EntPostQuery) GroupBy(field string, fields ...string) *EntPostGroupBy
 // Example:
 //
 //	var v []struct {
-//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntPost.Query().
-//		Select(entpost.FieldTimestamp).
+//		Select(entpost.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (epq *EntPostQuery) Select(fields ...string) *EntPostSelect {
 	epq.fields = append(epq.fields, fields...)

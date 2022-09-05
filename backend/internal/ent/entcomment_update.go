@@ -30,6 +30,12 @@ func (ecu *EntCommentUpdate) Where(ps ...predicate.EntComment) *EntCommentUpdate
 	return ecu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecu *EntCommentUpdate) SetUpdatedAt(t time.Time) *EntCommentUpdate {
+	ecu.mutation.SetUpdatedAt(t)
+	return ecu
+}
+
 // SetTimestamp sets the "timestamp" field.
 func (ecu *EntCommentUpdate) SetTimestamp(t time.Time) *EntCommentUpdate {
 	ecu.mutation.SetTimestamp(t)
@@ -145,6 +151,7 @@ func (ecu *EntCommentUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	ecu.defaults()
 	if len(ecu.hooks) == 0 {
 		if err = ecu.check(); err != nil {
 			return 0, err
@@ -199,6 +206,14 @@ func (ecu *EntCommentUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecu *EntCommentUpdate) defaults() {
+	if _, ok := ecu.mutation.UpdatedAt(); !ok {
+		v := entcomment.UpdateDefaultUpdatedAt()
+		ecu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecu *EntCommentUpdate) check() error {
 	if v, ok := ecu.mutation.Share(); ok {
@@ -226,6 +241,13 @@ func (ecu *EntCommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldUpdatedAt,
+		})
 	}
 	if value, ok := ecu.mutation.Timestamp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -347,6 +369,12 @@ type EntCommentUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *EntCommentMutation
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecuo *EntCommentUpdateOne) SetUpdatedAt(t time.Time) *EntCommentUpdateOne {
+	ecuo.mutation.SetUpdatedAt(t)
+	return ecuo
 }
 
 // SetTimestamp sets the "timestamp" field.
@@ -471,6 +499,7 @@ func (ecuo *EntCommentUpdateOne) Save(ctx context.Context) (*EntComment, error) 
 		err  error
 		node *EntComment
 	)
+	ecuo.defaults()
 	if len(ecuo.hooks) == 0 {
 		if err = ecuo.check(); err != nil {
 			return nil, err
@@ -531,6 +560,14 @@ func (ecuo *EntCommentUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecuo *EntCommentUpdateOne) defaults() {
+	if _, ok := ecuo.mutation.UpdatedAt(); !ok {
+		v := entcomment.UpdateDefaultUpdatedAt()
+		ecuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecuo *EntCommentUpdateOne) check() error {
 	if v, ok := ecuo.mutation.Share(); ok {
@@ -575,6 +612,13 @@ func (ecuo *EntCommentUpdateOne) sqlSave(ctx context.Context) (_node *EntComment
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcomment.FieldUpdatedAt,
+		})
 	}
 	if value, ok := ecuo.mutation.Timestamp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

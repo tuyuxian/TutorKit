@@ -18,6 +18,10 @@ type EntPost struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Timestamp holds the value of the "timestamp" field.
 	Timestamp time.Time `json:"timestamp,omitempty"`
 	// Content holds the value of the "content" field.
@@ -99,7 +103,7 @@ func (*EntPost) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entpost.FieldContent, entpost.FieldShare:
 			values[i] = new(sql.NullString)
-		case entpost.FieldTimestamp:
+		case entpost.FieldCreatedAt, entpost.FieldUpdatedAt, entpost.FieldTimestamp:
 			values[i] = new(sql.NullTime)
 		case entpost.ForeignKeys[0]: // ent_course_post
 			values[i] = new(sql.NullInt64)
@@ -126,6 +130,18 @@ func (ep *EntPost) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ep.ID = int(value.Int64)
+		case entpost.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				ep.CreatedAt = value.Time
+			}
+		case entpost.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				ep.UpdatedAt = value.Time
+			}
 		case entpost.FieldTimestamp:
 			if value, ok := values[i].(*sql.NullTime); !ok {
 				return fmt.Errorf("unexpected type %T for field timestamp", values[i])
@@ -206,6 +222,12 @@ func (ep *EntPost) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntPost(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ep.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(ep.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(ep.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("timestamp=")
 	builder.WriteString(ep.Timestamp.Format(time.ANSIC))
 	builder.WriteString(", ")

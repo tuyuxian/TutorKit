@@ -4,6 +4,7 @@ package entuser
 
 import (
 	"backend/internal/ent/predicate"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 	"entgo.io/ent/dialect/sql/sqlgraph"
@@ -80,6 +81,20 @@ func IDLTE(id int) predicate.EntUser {
 	})
 }
 
+// CreatedAt applies equality check predicate on the "createdAt" field. It's identical to CreatedAtEQ.
+func CreatedAt(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCreatedAt), v))
+	})
+}
+
+// UpdatedAt applies equality check predicate on the "updatedAt" field. It's identical to UpdatedAtEQ.
+func UpdatedAt(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUpdatedAt), v))
+	})
+}
+
 // Name applies equality check predicate on the "name" field. It's identical to NameEQ.
 func Name(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
@@ -98,6 +113,13 @@ func Email(v string) predicate.EntUser {
 func Password(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldPassword), v))
+	})
+}
+
+// Country applies equality check predicate on the "country" field. It's identical to CountryEQ.
+func Country(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCountry), v))
 	})
 }
 
@@ -133,6 +155,134 @@ func IsStudent(v bool) predicate.EntUser {
 func IsParent(v bool) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
 		s.Where(sql.EQ(s.C(FieldIsParent), v))
+	})
+}
+
+// CreatedAtEQ applies the EQ predicate on the "createdAt" field.
+func CreatedAtEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCreatedAt), v))
+	})
+}
+
+// CreatedAtNEQ applies the NEQ predicate on the "createdAt" field.
+func CreatedAtNEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCreatedAt), v))
+	})
+}
+
+// CreatedAtIn applies the In predicate on the "createdAt" field.
+func CreatedAtIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldCreatedAt), v...))
+	})
+}
+
+// CreatedAtNotIn applies the NotIn predicate on the "createdAt" field.
+func CreatedAtNotIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldCreatedAt), v...))
+	})
+}
+
+// CreatedAtGT applies the GT predicate on the "createdAt" field.
+func CreatedAtGT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCreatedAt), v))
+	})
+}
+
+// CreatedAtGTE applies the GTE predicate on the "createdAt" field.
+func CreatedAtGTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCreatedAt), v))
+	})
+}
+
+// CreatedAtLT applies the LT predicate on the "createdAt" field.
+func CreatedAtLT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCreatedAt), v))
+	})
+}
+
+// CreatedAtLTE applies the LTE predicate on the "createdAt" field.
+func CreatedAtLTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCreatedAt), v))
+	})
+}
+
+// UpdatedAtEQ applies the EQ predicate on the "updatedAt" field.
+func UpdatedAtEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldUpdatedAt), v))
+	})
+}
+
+// UpdatedAtNEQ applies the NEQ predicate on the "updatedAt" field.
+func UpdatedAtNEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldUpdatedAt), v))
+	})
+}
+
+// UpdatedAtIn applies the In predicate on the "updatedAt" field.
+func UpdatedAtIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldUpdatedAt), v...))
+	})
+}
+
+// UpdatedAtNotIn applies the NotIn predicate on the "updatedAt" field.
+func UpdatedAtNotIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldUpdatedAt), v...))
+	})
+}
+
+// UpdatedAtGT applies the GT predicate on the "updatedAt" field.
+func UpdatedAtGT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldUpdatedAt), v))
+	})
+}
+
+// UpdatedAtGTE applies the GTE predicate on the "updatedAt" field.
+func UpdatedAtGTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldUpdatedAt), v))
+	})
+}
+
+// UpdatedAtLT applies the LT predicate on the "updatedAt" field.
+func UpdatedAtLT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldUpdatedAt), v))
+	})
+}
+
+// UpdatedAtLTE applies the LTE predicate on the "updatedAt" field.
+func UpdatedAtLTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldUpdatedAt), v))
 	})
 }
 
@@ -430,6 +580,119 @@ func PasswordEqualFold(v string) predicate.EntUser {
 func PasswordContainsFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldPassword), v))
+	})
+}
+
+// CountryEQ applies the EQ predicate on the "country" field.
+func CountryEQ(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldCountry), v))
+	})
+}
+
+// CountryNEQ applies the NEQ predicate on the "country" field.
+func CountryNEQ(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldCountry), v))
+	})
+}
+
+// CountryIn applies the In predicate on the "country" field.
+func CountryIn(vs ...string) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldCountry), v...))
+	})
+}
+
+// CountryNotIn applies the NotIn predicate on the "country" field.
+func CountryNotIn(vs ...string) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldCountry), v...))
+	})
+}
+
+// CountryGT applies the GT predicate on the "country" field.
+func CountryGT(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldCountry), v))
+	})
+}
+
+// CountryGTE applies the GTE predicate on the "country" field.
+func CountryGTE(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldCountry), v))
+	})
+}
+
+// CountryLT applies the LT predicate on the "country" field.
+func CountryLT(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldCountry), v))
+	})
+}
+
+// CountryLTE applies the LTE predicate on the "country" field.
+func CountryLTE(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldCountry), v))
+	})
+}
+
+// CountryContains applies the Contains predicate on the "country" field.
+func CountryContains(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldCountry), v))
+	})
+}
+
+// CountryHasPrefix applies the HasPrefix predicate on the "country" field.
+func CountryHasPrefix(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldCountry), v))
+	})
+}
+
+// CountryHasSuffix applies the HasSuffix predicate on the "country" field.
+func CountryHasSuffix(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldCountry), v))
+	})
+}
+
+// CountryIsNil applies the IsNil predicate on the "country" field.
+func CountryIsNil() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldCountry)))
+	})
+}
+
+// CountryNotNil applies the NotNil predicate on the "country" field.
+func CountryNotNil() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldCountry)))
+	})
+}
+
+// CountryEqualFold applies the EqualFold predicate on the "country" field.
+func CountryEqualFold(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldCountry), v))
+	})
+}
+
+// CountryContainsFold applies the ContainsFold predicate on the "country" field.
+func CountryContainsFold(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldCountry), v))
 	})
 }
 

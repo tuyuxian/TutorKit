@@ -4,6 +4,7 @@ package enttodo
 
 import (
 	"fmt"
+	"time"
 )
 
 const (
@@ -11,6 +12,10 @@ const (
 	Label = "ent_todo"
 	// FieldID holds the string denoting the id field in the database.
 	FieldID = "id"
+	// FieldCreatedAt holds the string denoting the createdat field in the database.
+	FieldCreatedAt = "created_at"
+	// FieldUpdatedAt holds the string denoting the updatedat field in the database.
+	FieldUpdatedAt = "updated_at"
 	// FieldDate holds the string denoting the date field in the database.
 	FieldDate = "date"
 	// FieldStartTime holds the string denoting the starttime field in the database.
@@ -50,6 +55,8 @@ const (
 // Columns holds all SQL columns for enttodo fields.
 var Columns = []string{
 	FieldID,
+	FieldCreatedAt,
+	FieldUpdatedAt,
 	FieldDate,
 	FieldStartTime,
 	FieldEndTime,
@@ -80,6 +87,15 @@ func ValidColumn(column string) bool {
 	}
 	return false
 }
+
+var (
+	// DefaultCreatedAt holds the default value on creation for the "createdAt" field.
+	DefaultCreatedAt func() time.Time
+	// DefaultUpdatedAt holds the default value on creation for the "updatedAt" field.
+	DefaultUpdatedAt func() time.Time
+	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
+	UpdateDefaultUpdatedAt func() time.Time
+)
 
 // Status defines the type for the "status" enum field.
 type Status string

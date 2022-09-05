@@ -326,12 +326,12 @@ func (etq *EntTodoQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntTodoQuery 
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntTodo.Query().
-//		GroupBy(enttodo.FieldDate).
+//		GroupBy(enttodo.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (etq *EntTodoQuery) GroupBy(field string, fields ...string) *EntTodoGroupBy {
@@ -354,11 +354,11 @@ func (etq *EntTodoQuery) GroupBy(field string, fields ...string) *EntTodoGroupBy
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntTodo.Query().
-//		Select(enttodo.FieldDate).
+//		Select(enttodo.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (etq *EntTodoQuery) Select(fields ...string) *EntTodoSelect {
 	etq.fields = append(etq.fields, fields...)

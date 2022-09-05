@@ -16,6 +16,10 @@ type EntCourse struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// CourseUrl holds the value of the "courseUrl" field.
@@ -122,7 +126,7 @@ func (*EntCourse) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entcourse.FieldName, entcourse.FieldCourseUrl, entcourse.FieldPaymentMethod:
 			values[i] = new(sql.NullString)
-		case entcourse.FieldStartDate, entcourse.FieldEndDate:
+		case entcourse.FieldCreatedAt, entcourse.FieldUpdatedAt, entcourse.FieldStartDate, entcourse.FieldEndDate:
 			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntCourse", columns[i])
@@ -145,6 +149,18 @@ func (ec *EntCourse) assignValues(columns []string, values []interface{}) error 
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			ec.ID = int(value.Int64)
+		case entcourse.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				ec.CreatedAt = value.Time
+			}
+		case entcourse.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				ec.UpdatedAt = value.Time
+			}
 		case entcourse.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -276,6 +292,12 @@ func (ec *EntCourse) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntCourse(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", ec.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(ec.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(ec.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(ec.Name)
 	builder.WriteString(", ")

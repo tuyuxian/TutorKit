@@ -32,6 +32,12 @@ func (ecu *EntCourseUpdate) Where(ps ...predicate.EntCourse) *EntCourseUpdate {
 	return ecu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecu *EntCourseUpdate) SetUpdatedAt(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetUpdatedAt(t)
+	return ecu
+}
+
 // SetName sets the "name" field.
 func (ecu *EntCourseUpdate) SetName(s string) *EntCourseUpdate {
 	ecu.mutation.SetName(s)
@@ -476,6 +482,7 @@ func (ecu *EntCourseUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	ecu.defaults()
 	if len(ecu.hooks) == 0 {
 		if err = ecu.check(); err != nil {
 			return 0, err
@@ -530,6 +537,14 @@ func (ecu *EntCourseUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecu *EntCourseUpdate) defaults() {
+	if _, ok := ecu.mutation.UpdatedAt(); !ok {
+		v := entcourse.UpdateDefaultUpdatedAt()
+		ecu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecu *EntCourseUpdate) check() error {
 	if v, ok := ecu.mutation.Name(); ok {
@@ -562,6 +577,13 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldUpdatedAt,
+		})
 	}
 	if value, ok := ecu.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -1022,6 +1044,12 @@ type EntCourseUpdateOne struct {
 	mutation *EntCourseMutation
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (ecuo *EntCourseUpdateOne) SetUpdatedAt(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetUpdatedAt(t)
+	return ecuo
+}
+
 // SetName sets the "name" field.
 func (ecuo *EntCourseUpdateOne) SetName(s string) *EntCourseUpdateOne {
 	ecuo.mutation.SetName(s)
@@ -1473,6 +1501,7 @@ func (ecuo *EntCourseUpdateOne) Save(ctx context.Context) (*EntCourse, error) {
 		err  error
 		node *EntCourse
 	)
+	ecuo.defaults()
 	if len(ecuo.hooks) == 0 {
 		if err = ecuo.check(); err != nil {
 			return nil, err
@@ -1533,6 +1562,14 @@ func (ecuo *EntCourseUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (ecuo *EntCourseUpdateOne) defaults() {
+	if _, ok := ecuo.mutation.UpdatedAt(); !ok {
+		v := entcourse.UpdateDefaultUpdatedAt()
+		ecuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (ecuo *EntCourseUpdateOne) check() error {
 	if v, ok := ecuo.mutation.Name(); ok {
@@ -1582,6 +1619,13 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := ecuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldUpdatedAt,
+		})
 	}
 	if value, ok := ecuo.mutation.Name(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

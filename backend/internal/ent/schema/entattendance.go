@@ -11,6 +11,13 @@ type EntAttendance struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntAttendance) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the EntAttendance.
 func (EntAttendance) Fields() []ent.Field {
 	return []ent.Field{

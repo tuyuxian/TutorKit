@@ -12,6 +12,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"time"
 
 	"entgo.io/ent/dialect/sql/sqlgraph"
 	"entgo.io/ent/schema/field"
@@ -22,6 +23,34 @@ type EntUserCreate struct {
 	config
 	mutation *EntUserMutation
 	hooks    []Hook
+}
+
+// SetCreatedAt sets the "createdAt" field.
+func (euc *EntUserCreate) SetCreatedAt(t time.Time) *EntUserCreate {
+	euc.mutation.SetCreatedAt(t)
+	return euc
+}
+
+// SetNillableCreatedAt sets the "createdAt" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableCreatedAt(t *time.Time) *EntUserCreate {
+	if t != nil {
+		euc.SetCreatedAt(*t)
+	}
+	return euc
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (euc *EntUserCreate) SetUpdatedAt(t time.Time) *EntUserCreate {
+	euc.mutation.SetUpdatedAt(t)
+	return euc
+}
+
+// SetNillableUpdatedAt sets the "updatedAt" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableUpdatedAt(t *time.Time) *EntUserCreate {
+	if t != nil {
+		euc.SetUpdatedAt(*t)
+	}
+	return euc
 }
 
 // SetName sets the "name" field.
@@ -39,6 +68,20 @@ func (euc *EntUserCreate) SetEmail(s string) *EntUserCreate {
 // SetPassword sets the "password" field.
 func (euc *EntUserCreate) SetPassword(s string) *EntUserCreate {
 	euc.mutation.SetPassword(s)
+	return euc
+}
+
+// SetCountry sets the "country" field.
+func (euc *EntUserCreate) SetCountry(s string) *EntUserCreate {
+	euc.mutation.SetCountry(s)
+	return euc
+}
+
+// SetNillableCountry sets the "country" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableCountry(s *string) *EntUserCreate {
+	if s != nil {
+		euc.SetCountry(*s)
+	}
 	return euc
 }
 
@@ -76,15 +119,39 @@ func (euc *EntUserCreate) SetIsTutor(b bool) *EntUserCreate {
 	return euc
 }
 
+// SetNillableIsTutor sets the "isTutor" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableIsTutor(b *bool) *EntUserCreate {
+	if b != nil {
+		euc.SetIsTutor(*b)
+	}
+	return euc
+}
+
 // SetIsStudent sets the "isStudent" field.
 func (euc *EntUserCreate) SetIsStudent(b bool) *EntUserCreate {
 	euc.mutation.SetIsStudent(b)
 	return euc
 }
 
+// SetNillableIsStudent sets the "isStudent" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableIsStudent(b *bool) *EntUserCreate {
+	if b != nil {
+		euc.SetIsStudent(*b)
+	}
+	return euc
+}
+
 // SetIsParent sets the "isParent" field.
 func (euc *EntUserCreate) SetIsParent(b bool) *EntUserCreate {
 	euc.mutation.SetIsParent(b)
+	return euc
+}
+
+// SetNillableIsParent sets the "isParent" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableIsParent(b *bool) *EntUserCreate {
+	if b != nil {
+		euc.SetIsParent(*b)
+	}
 	return euc
 }
 
@@ -294,6 +361,7 @@ func (euc *EntUserCreate) Save(ctx context.Context) (*EntUser, error) {
 		err  error
 		node *EntUser
 	)
+	euc.defaults()
 	if len(euc.hooks) == 0 {
 		if err = euc.check(); err != nil {
 			return nil, err
@@ -357,8 +425,38 @@ func (euc *EntUserCreate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (euc *EntUserCreate) defaults() {
+	if _, ok := euc.mutation.CreatedAt(); !ok {
+		v := entuser.DefaultCreatedAt()
+		euc.mutation.SetCreatedAt(v)
+	}
+	if _, ok := euc.mutation.UpdatedAt(); !ok {
+		v := entuser.DefaultUpdatedAt()
+		euc.mutation.SetUpdatedAt(v)
+	}
+	if _, ok := euc.mutation.IsTutor(); !ok {
+		v := entuser.DefaultIsTutor
+		euc.mutation.SetIsTutor(v)
+	}
+	if _, ok := euc.mutation.IsStudent(); !ok {
+		v := entuser.DefaultIsStudent
+		euc.mutation.SetIsStudent(v)
+	}
+	if _, ok := euc.mutation.IsParent(); !ok {
+		v := entuser.DefaultIsParent
+		euc.mutation.SetIsParent(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (euc *EntUserCreate) check() error {
+	if _, ok := euc.mutation.CreatedAt(); !ok {
+		return &ValidationError{Name: "createdAt", err: errors.New(`ent: missing required field "EntUser.createdAt"`)}
+	}
+	if _, ok := euc.mutation.UpdatedAt(); !ok {
+		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntUser.updatedAt"`)}
+	}
 	if _, ok := euc.mutation.Name(); !ok {
 		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "EntUser.name"`)}
 	}
@@ -381,6 +479,11 @@ func (euc *EntUserCreate) check() error {
 	if v, ok := euc.mutation.Password(); ok {
 		if err := entuser.PasswordValidator(v); err != nil {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
+		}
+	}
+	if v, ok := euc.mutation.Phone(); ok {
+		if err := entuser.PhoneValidator(v); err != nil {
+			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
 		}
 	}
 	if _, ok := euc.mutation.IsTutor(); !ok {
@@ -419,6 +522,22 @@ func (euc *EntUserCreate) createSpec() (*EntUser, *sqlgraph.CreateSpec) {
 			},
 		}
 	)
+	if value, ok := euc.mutation.CreatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldCreatedAt,
+		})
+		_node.CreatedAt = value
+	}
+	if value, ok := euc.mutation.UpdatedAt(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldUpdatedAt,
+		})
+		_node.UpdatedAt = value
+	}
 	if value, ok := euc.mutation.Name(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -442,6 +561,14 @@ func (euc *EntUserCreate) createSpec() (*EntUser, *sqlgraph.CreateSpec) {
 			Column: entuser.FieldPassword,
 		})
 		_node.Password = value
+	}
+	if value, ok := euc.mutation.Country(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldCountry,
+		})
+		_node.Country = value
 	}
 	if value, ok := euc.mutation.Phone(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
@@ -747,6 +874,7 @@ func (eucb *EntUserCreateBulk) Save(ctx context.Context) ([]*EntUser, error) {
 	for i := range eucb.builders {
 		func(i int, root context.Context) {
 			builder := eucb.builders[i]
+			builder.defaults()
 			var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 				mutation, ok := m.(*EntUserMutation)
 				if !ok {

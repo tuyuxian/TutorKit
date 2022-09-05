@@ -11,6 +11,8 @@ var (
 	// EntAttendancesColumns holds the columns for the "ent_attendances" table.
 	EntAttendancesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "date", Type: field.TypeTime},
 		{Name: "start_time", Type: field.TypeTime, Nullable: true},
 		{Name: "end_time", Type: field.TypeTime, Nullable: true},
@@ -31,13 +33,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ent_attendances_ent_courses_attendance",
-				Columns:    []*schema.Column{EntAttendancesColumns[10]},
+				Columns:    []*schema.Column{EntAttendancesColumns[12]},
 				RefColumns: []*schema.Column{EntCoursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "ent_attendances_ent_users_attendance",
-				Columns:    []*schema.Column{EntAttendancesColumns[11]},
+				Columns:    []*schema.Column{EntAttendancesColumns[13]},
 				RefColumns: []*schema.Column{EntUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -46,6 +48,8 @@ var (
 	// EntCommentsColumns holds the columns for the "ent_comments" table.
 	EntCommentsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "timestamp", Type: field.TypeTime},
 		{Name: "content", Type: field.TypeString, Nullable: true},
 		{Name: "share", Type: field.TypeEnum, Nullable: true, Enums: []string{"public", "private"}},
@@ -60,13 +64,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ent_comments_ent_posts_comment",
-				Columns:    []*schema.Column{EntCommentsColumns[4]},
+				Columns:    []*schema.Column{EntCommentsColumns[6]},
 				RefColumns: []*schema.Column{EntPostsColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "ent_comments_ent_users_comment",
-				Columns:    []*schema.Column{EntCommentsColumns[5]},
+				Columns:    []*schema.Column{EntCommentsColumns[7]},
 				RefColumns: []*schema.Column{EntUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -75,6 +79,8 @@ var (
 	// EntCoursesColumns holds the columns for the "ent_courses" table.
 	EntCoursesColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "name", Type: field.TypeString},
 		{Name: "course_url", Type: field.TypeString, Nullable: true},
 		{Name: "payment_method", Type: field.TypeEnum, Nullable: true, Enums: []string{"times", "hours"}},
@@ -98,6 +104,8 @@ var (
 	// EntPostsColumns holds the columns for the "ent_posts" table.
 	EntPostsColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "timestamp", Type: field.TypeTime},
 		{Name: "content", Type: field.TypeString, Nullable: true},
 		{Name: "share", Type: field.TypeEnum, Nullable: true, Enums: []string{"public", "private"}},
@@ -112,13 +120,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ent_posts_ent_courses_post",
-				Columns:    []*schema.Column{EntPostsColumns[4]},
+				Columns:    []*schema.Column{EntPostsColumns[6]},
 				RefColumns: []*schema.Column{EntCoursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "ent_posts_ent_users_post",
-				Columns:    []*schema.Column{EntPostsColumns[5]},
+				Columns:    []*schema.Column{EntPostsColumns[7]},
 				RefColumns: []*schema.Column{EntUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -127,6 +135,8 @@ var (
 	// EntTodosColumns holds the columns for the "ent_todos" table.
 	EntTodosColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
 		{Name: "date", Type: field.TypeTime},
 		{Name: "start_time", Type: field.TypeTime, Nullable: true},
 		{Name: "end_time", Type: field.TypeTime, Nullable: true},
@@ -145,13 +155,13 @@ var (
 		ForeignKeys: []*schema.ForeignKey{
 			{
 				Symbol:     "ent_todos_ent_courses_todo",
-				Columns:    []*schema.Column{EntTodosColumns[8]},
+				Columns:    []*schema.Column{EntTodosColumns[10]},
 				RefColumns: []*schema.Column{EntCoursesColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
 			{
 				Symbol:     "ent_todos_ent_users_todo",
-				Columns:    []*schema.Column{EntTodosColumns[9]},
+				Columns:    []*schema.Column{EntTodosColumns[11]},
 				RefColumns: []*schema.Column{EntUsersColumns[0]},
 				OnDelete:   schema.SetNull,
 			},
@@ -160,14 +170,17 @@ var (
 	// EntUsersColumns holds the columns for the "ent_users" table.
 	EntUsersColumns = []*schema.Column{
 		{Name: "id", Type: field.TypeInt, Increment: true},
-		{Name: "name", Type: field.TypeString},
+		{Name: "created_at", Type: field.TypeTime},
+		{Name: "updated_at", Type: field.TypeTime},
+		{Name: "name", Type: field.TypeString, Size: 20},
 		{Name: "email", Type: field.TypeString},
 		{Name: "password", Type: field.TypeString},
+		{Name: "country", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
 		{Name: "profile_picture_url", Type: field.TypeString, Nullable: true},
-		{Name: "is_tutor", Type: field.TypeBool},
-		{Name: "is_student", Type: field.TypeBool},
-		{Name: "is_parent", Type: field.TypeBool},
+		{Name: "is_tutor", Type: field.TypeBool, Default: false},
+		{Name: "is_student", Type: field.TypeBool, Default: false},
+		{Name: "is_parent", Type: field.TypeBool, Default: false},
 	}
 	// EntUsersTable holds the schema information for the "ent_users" table.
 	EntUsersTable = &schema.Table{

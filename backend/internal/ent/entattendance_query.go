@@ -326,12 +326,12 @@ func (eaq *EntAttendanceQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntAtte
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntAttendance.Query().
-//		GroupBy(entattendance.FieldDate).
+//		GroupBy(entattendance.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (eaq *EntAttendanceQuery) GroupBy(field string, fields ...string) *EntAttendanceGroupBy {
@@ -354,11 +354,11 @@ func (eaq *EntAttendanceQuery) GroupBy(field string, fields ...string) *EntAtten
 // Example:
 //
 //	var v []struct {
-//		Date time.Time `json:"date,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntAttendance.Query().
-//		Select(entattendance.FieldDate).
+//		Select(entattendance.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (eaq *EntAttendanceQuery) Select(fields ...string) *EntAttendanceSelect {
 	eaq.fields = append(eaq.fields, fields...)

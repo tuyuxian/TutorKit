@@ -30,6 +30,12 @@ func (eau *EntAttendanceUpdate) Where(ps ...predicate.EntAttendance) *EntAttenda
 	return eau
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (eau *EntAttendanceUpdate) SetUpdatedAt(t time.Time) *EntAttendanceUpdate {
+	eau.mutation.SetUpdatedAt(t)
+	return eau
+}
+
 // SetDate sets the "date" field.
 func (eau *EntAttendanceUpdate) SetDate(t time.Time) *EntAttendanceUpdate {
 	eau.mutation.SetDate(t)
@@ -246,6 +252,7 @@ func (eau *EntAttendanceUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	eau.defaults()
 	if len(eau.hooks) == 0 {
 		affected, err = eau.sqlSave(ctx)
 	} else {
@@ -294,6 +301,14 @@ func (eau *EntAttendanceUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (eau *EntAttendanceUpdate) defaults() {
+	if _, ok := eau.mutation.UpdatedAt(); !ok {
+		v := entattendance.UpdateDefaultUpdatedAt()
+		eau.mutation.SetUpdatedAt(v)
+	}
+}
+
 func (eau *EntAttendanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -311,6 +326,13 @@ func (eau *EntAttendanceUpdate) sqlSave(ctx context.Context) (n int, err error) 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := eau.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entattendance.FieldUpdatedAt,
+		})
 	}
 	if value, ok := eau.mutation.Date(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -499,6 +521,12 @@ type EntAttendanceUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *EntAttendanceMutation
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (eauo *EntAttendanceUpdateOne) SetUpdatedAt(t time.Time) *EntAttendanceUpdateOne {
+	eauo.mutation.SetUpdatedAt(t)
+	return eauo
 }
 
 // SetDate sets the "date" field.
@@ -724,6 +752,7 @@ func (eauo *EntAttendanceUpdateOne) Save(ctx context.Context) (*EntAttendance, e
 		err  error
 		node *EntAttendance
 	)
+	eauo.defaults()
 	if len(eauo.hooks) == 0 {
 		node, err = eauo.sqlSave(ctx)
 	} else {
@@ -778,6 +807,14 @@ func (eauo *EntAttendanceUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (eauo *EntAttendanceUpdateOne) defaults() {
+	if _, ok := eauo.mutation.UpdatedAt(); !ok {
+		v := entattendance.UpdateDefaultUpdatedAt()
+		eauo.mutation.SetUpdatedAt(v)
+	}
+}
+
 func (eauo *EntAttendanceUpdateOne) sqlSave(ctx context.Context) (_node *EntAttendance, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -812,6 +849,13 @@ func (eauo *EntAttendanceUpdateOne) sqlSave(ctx context.Context) (_node *EntAtte
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := eauo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entattendance.FieldUpdatedAt,
+		})
 	}
 	if value, ok := eauo.mutation.Date(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

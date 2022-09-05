@@ -326,12 +326,12 @@ func (ecq *EntCommentQuery) WithOwnedBy(opts ...func(*EntUserQuery)) *EntComment
 // Example:
 //
 //	var v []struct {
-//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //		Count int `json:"count,omitempty"`
 //	}
 //
 //	client.EntComment.Query().
-//		GroupBy(entcomment.FieldTimestamp).
+//		GroupBy(entcomment.FieldCreatedAt).
 //		Aggregate(ent.Count()).
 //		Scan(ctx, &v)
 func (ecq *EntCommentQuery) GroupBy(field string, fields ...string) *EntCommentGroupBy {
@@ -354,11 +354,11 @@ func (ecq *EntCommentQuery) GroupBy(field string, fields ...string) *EntCommentG
 // Example:
 //
 //	var v []struct {
-//		Timestamp time.Time `json:"timestamp,omitempty"`
+//		CreatedAt time.Time `json:"createdAt,omitempty"`
 //	}
 //
 //	client.EntComment.Query().
-//		Select(entcomment.FieldTimestamp).
+//		Select(entcomment.FieldCreatedAt).
 //		Scan(ctx, &v)
 func (ecq *EntCommentQuery) Select(fields ...string) *EntCommentSelect {
 	ecq.fields = append(ecq.fields, fields...)

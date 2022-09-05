@@ -11,6 +11,13 @@ type EntTodo struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntTodo) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the EntTodo.
 func (EntTodo) Fields() []ent.Field {
 	return []ent.Field{

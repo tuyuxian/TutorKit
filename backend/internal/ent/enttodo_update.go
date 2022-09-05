@@ -30,6 +30,12 @@ func (etu *EntTodoUpdate) Where(ps ...predicate.EntTodo) *EntTodoUpdate {
 	return etu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (etu *EntTodoUpdate) SetUpdatedAt(t time.Time) *EntTodoUpdate {
+	etu.mutation.SetUpdatedAt(t)
+	return etu
+}
+
 // SetDate sets the "date" field.
 func (etu *EntTodoUpdate) SetDate(t time.Time) *EntTodoUpdate {
 	etu.mutation.SetDate(t)
@@ -211,6 +217,7 @@ func (etu *EntTodoUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	etu.defaults()
 	if len(etu.hooks) == 0 {
 		if err = etu.check(); err != nil {
 			return 0, err
@@ -265,6 +272,14 @@ func (etu *EntTodoUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (etu *EntTodoUpdate) defaults() {
+	if _, ok := etu.mutation.UpdatedAt(); !ok {
+		v := enttodo.UpdateDefaultUpdatedAt()
+		etu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (etu *EntTodoUpdate) check() error {
 	if v, ok := etu.mutation.Status(); ok {
@@ -292,6 +307,13 @@ func (etu *EntTodoUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := etu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldUpdatedAt,
+		})
 	}
 	if value, ok := etu.mutation.Date(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -459,6 +481,12 @@ type EntTodoUpdateOne struct {
 	fields   []string
 	hooks    []Hook
 	mutation *EntTodoMutation
+}
+
+// SetUpdatedAt sets the "updatedAt" field.
+func (etuo *EntTodoUpdateOne) SetUpdatedAt(t time.Time) *EntTodoUpdateOne {
+	etuo.mutation.SetUpdatedAt(t)
+	return etuo
 }
 
 // SetDate sets the "date" field.
@@ -649,6 +677,7 @@ func (etuo *EntTodoUpdateOne) Save(ctx context.Context) (*EntTodo, error) {
 		err  error
 		node *EntTodo
 	)
+	etuo.defaults()
 	if len(etuo.hooks) == 0 {
 		if err = etuo.check(); err != nil {
 			return nil, err
@@ -709,6 +738,14 @@ func (etuo *EntTodoUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (etuo *EntTodoUpdateOne) defaults() {
+	if _, ok := etuo.mutation.UpdatedAt(); !ok {
+		v := enttodo.UpdateDefaultUpdatedAt()
+		etuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (etuo *EntTodoUpdateOne) check() error {
 	if v, ok := etuo.mutation.Status(); ok {
@@ -753,6 +790,13 @@ func (etuo *EntTodoUpdateOne) sqlSave(ctx context.Context) (_node *EntTodo, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := etuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: enttodo.FieldUpdatedAt,
+		})
 	}
 	if value, ok := etuo.mutation.Date(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

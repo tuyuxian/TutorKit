@@ -31,6 +31,12 @@ func (epu *EntPostUpdate) Where(ps ...predicate.EntPost) *EntPostUpdate {
 	return epu
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (epu *EntPostUpdate) SetUpdatedAt(t time.Time) *EntPostUpdate {
+	epu.mutation.SetUpdatedAt(t)
+	return epu
+}
+
 // SetTimestamp sets the "timestamp" field.
 func (epu *EntPostUpdate) SetTimestamp(t time.Time) *EntPostUpdate {
 	epu.mutation.SetTimestamp(t)
@@ -218,6 +224,7 @@ func (epu *EntPostUpdate) Save(ctx context.Context) (int, error) {
 		err      error
 		affected int
 	)
+	epu.defaults()
 	if len(epu.hooks) == 0 {
 		if err = epu.check(); err != nil {
 			return 0, err
@@ -272,6 +279,14 @@ func (epu *EntPostUpdate) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (epu *EntPostUpdate) defaults() {
+	if _, ok := epu.mutation.UpdatedAt(); !ok {
+		v := entpost.UpdateDefaultUpdatedAt()
+		epu.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (epu *EntPostUpdate) check() error {
 	if v, ok := epu.mutation.Share(); ok {
@@ -299,6 +314,13 @@ func (epu *EntPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := epu.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entpost.FieldUpdatedAt,
+		})
 	}
 	if value, ok := epu.mutation.Timestamp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
@@ -530,6 +552,12 @@ type EntPostUpdateOne struct {
 	mutation *EntPostMutation
 }
 
+// SetUpdatedAt sets the "updatedAt" field.
+func (epuo *EntPostUpdateOne) SetUpdatedAt(t time.Time) *EntPostUpdateOne {
+	epuo.mutation.SetUpdatedAt(t)
+	return epuo
+}
+
 // SetTimestamp sets the "timestamp" field.
 func (epuo *EntPostUpdateOne) SetTimestamp(t time.Time) *EntPostUpdateOne {
 	epuo.mutation.SetTimestamp(t)
@@ -724,6 +752,7 @@ func (epuo *EntPostUpdateOne) Save(ctx context.Context) (*EntPost, error) {
 		err  error
 		node *EntPost
 	)
+	epuo.defaults()
 	if len(epuo.hooks) == 0 {
 		if err = epuo.check(); err != nil {
 			return nil, err
@@ -784,6 +813,14 @@ func (epuo *EntPostUpdateOne) ExecX(ctx context.Context) {
 	}
 }
 
+// defaults sets the default values of the builder before save.
+func (epuo *EntPostUpdateOne) defaults() {
+	if _, ok := epuo.mutation.UpdatedAt(); !ok {
+		v := entpost.UpdateDefaultUpdatedAt()
+		epuo.mutation.SetUpdatedAt(v)
+	}
+}
+
 // check runs all checks and user-defined validators on the builder.
 func (epuo *EntPostUpdateOne) check() error {
 	if v, ok := epuo.mutation.Share(); ok {
@@ -828,6 +865,13 @@ func (epuo *EntPostUpdateOne) sqlSave(ctx context.Context) (_node *EntPost, err 
 				ps[i](selector)
 			}
 		}
+	}
+	if value, ok := epuo.mutation.UpdatedAt(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entpost.FieldUpdatedAt,
+		})
 	}
 	if value, ok := epuo.mutation.Timestamp(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{

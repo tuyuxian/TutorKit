@@ -11,6 +11,13 @@ type EntCourse struct {
 	ent.Schema
 }
 
+// Time fields
+func (EntCourse) Mixin() []ent.Mixin {
+	return []ent.Mixin{
+		TimeMixin{},
+	}
+}
+
 // Fields of the EntCourse.
 func (EntCourse) Fields() []ent.Field {
 	return []ent.Field{

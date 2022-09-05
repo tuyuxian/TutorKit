@@ -6,6 +6,7 @@ import (
 	"backend/internal/ent/entuser"
 	"fmt"
 	"strings"
+	"time"
 
 	"entgo.io/ent/dialect/sql"
 )
@@ -15,12 +16,18 @@ type EntUser struct {
 	config `json:"-"`
 	// ID of the ent.
 	ID int `json:"id,omitempty"`
+	// CreatedAt holds the value of the "createdAt" field.
+	CreatedAt time.Time `json:"createdAt,omitempty"`
+	// UpdatedAt holds the value of the "updatedAt" field.
+	UpdatedAt time.Time `json:"updatedAt,omitempty"`
 	// Name holds the value of the "name" field.
 	Name string `json:"name,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
 	// Password holds the value of the "password" field.
 	Password string `json:"password,omitempty"`
+	// Country holds the value of the "country" field.
+	Country string `json:"country,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
 	// ProfilePictureUrl holds the value of the "profilePictureUrl" field.
@@ -195,8 +202,10 @@ func (*EntUser) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case entuser.FieldID:
 			values[i] = new(sql.NullInt64)
-		case entuser.FieldName, entuser.FieldEmail, entuser.FieldPassword, entuser.FieldPhone, entuser.FieldProfilePictureUrl:
+		case entuser.FieldName, entuser.FieldEmail, entuser.FieldPassword, entuser.FieldCountry, entuser.FieldPhone, entuser.FieldProfilePictureUrl:
 			values[i] = new(sql.NullString)
+		case entuser.FieldCreatedAt, entuser.FieldUpdatedAt:
+			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntUser", columns[i])
 		}
@@ -218,6 +227,18 @@ func (eu *EntUser) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field id", value)
 			}
 			eu.ID = int(value.Int64)
+		case entuser.FieldCreatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field createdAt", values[i])
+			} else if value.Valid {
+				eu.CreatedAt = value.Time
+			}
+		case entuser.FieldUpdatedAt:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field updatedAt", values[i])
+			} else if value.Valid {
+				eu.UpdatedAt = value.Time
+			}
 		case entuser.FieldName:
 			if value, ok := values[i].(*sql.NullString); !ok {
 				return fmt.Errorf("unexpected type %T for field name", values[i])
@@ -235,6 +256,12 @@ func (eu *EntUser) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field password", values[i])
 			} else if value.Valid {
 				eu.Password = value.String
+			}
+		case entuser.FieldCountry:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field country", values[i])
+			} else if value.Valid {
+				eu.Country = value.String
 			}
 		case entuser.FieldPhone:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -359,6 +386,12 @@ func (eu *EntUser) String() string {
 	var builder strings.Builder
 	builder.WriteString("EntUser(")
 	builder.WriteString(fmt.Sprintf("id=%v, ", eu.ID))
+	builder.WriteString("createdAt=")
+	builder.WriteString(eu.CreatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("updatedAt=")
+	builder.WriteString(eu.UpdatedAt.Format(time.ANSIC))
+	builder.WriteString(", ")
 	builder.WriteString("name=")
 	builder.WriteString(eu.Name)
 	builder.WriteString(", ")
@@ -367,6 +400,9 @@ func (eu *EntUser) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("password=")
 	builder.WriteString(eu.Password)
+	builder.WriteString(", ")
+	builder.WriteString("country=")
+	builder.WriteString(eu.Country)
 	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(eu.Phone)
