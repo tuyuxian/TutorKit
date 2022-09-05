@@ -177,6 +177,7 @@ var (
 		{Name: "password", Type: field.TypeString},
 		{Name: "country", Type: field.TypeString, Nullable: true},
 		{Name: "phone", Type: field.TypeString, Nullable: true},
+		{Name: "date_of_birth", Type: field.TypeTime, Nullable: true},
 		{Name: "profile_picture_url", Type: field.TypeString, Nullable: true},
 		{Name: "is_tutor", Type: field.TypeBool, Default: false},
 		{Name: "is_student", Type: field.TypeBool, Default: false},

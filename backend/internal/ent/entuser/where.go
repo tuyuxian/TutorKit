@@ -130,6 +130,13 @@ func Phone(v string) predicate.EntUser {
 	})
 }
 
+// DateOfBirth applies equality check predicate on the "dateOfBirth" field. It's identical to DateOfBirthEQ.
+func DateOfBirth(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDateOfBirth), v))
+	})
+}
+
 // ProfilePictureUrl applies equality check predicate on the "profilePictureUrl" field. It's identical to ProfilePictureUrlEQ.
 func ProfilePictureUrl(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
@@ -806,6 +813,84 @@ func PhoneEqualFold(v string) predicate.EntUser {
 func PhoneContainsFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
 		s.Where(sql.ContainsFold(s.C(FieldPhone), v))
+	})
+}
+
+// DateOfBirthEQ applies the EQ predicate on the "dateOfBirth" field.
+func DateOfBirthEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthNEQ applies the NEQ predicate on the "dateOfBirth" field.
+func DateOfBirthNEQ(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthIn applies the In predicate on the "dateOfBirth" field.
+func DateOfBirthIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldDateOfBirth), v...))
+	})
+}
+
+// DateOfBirthNotIn applies the NotIn predicate on the "dateOfBirth" field.
+func DateOfBirthNotIn(vs ...time.Time) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldDateOfBirth), v...))
+	})
+}
+
+// DateOfBirthGT applies the GT predicate on the "dateOfBirth" field.
+func DateOfBirthGT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthGTE applies the GTE predicate on the "dateOfBirth" field.
+func DateOfBirthGTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthLT applies the LT predicate on the "dateOfBirth" field.
+func DateOfBirthLT(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthLTE applies the LTE predicate on the "dateOfBirth" field.
+func DateOfBirthLTE(v time.Time) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldDateOfBirth), v))
+	})
+}
+
+// DateOfBirthIsNil applies the IsNil predicate on the "dateOfBirth" field.
+func DateOfBirthIsNil() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldDateOfBirth)))
+	})
+}
+
+// DateOfBirthNotNil applies the NotNil predicate on the "dateOfBirth" field.
+func DateOfBirthNotNil() predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldDateOfBirth)))
 	})
 }
 

@@ -5450,6 +5450,7 @@ type EntUserMutation struct {
 	password          *string
 	country           *string
 	phone             *string
+	dateOfBirth       *time.Time
 	profilePictureUrl *string
 	isTutor           *bool
 	isStudent         *bool
@@ -5873,6 +5874,55 @@ func (m *EntUserMutation) PhoneCleared() bool {
 func (m *EntUserMutation) ResetPhone() {
 	m.phone = nil
 	delete(m.clearedFields, entuser.FieldPhone)
+}
+
+// SetDateOfBirth sets the "dateOfBirth" field.
+func (m *EntUserMutation) SetDateOfBirth(t time.Time) {
+	m.dateOfBirth = &t
+}
+
+// DateOfBirth returns the value of the "dateOfBirth" field in the mutation.
+func (m *EntUserMutation) DateOfBirth() (r time.Time, exists bool) {
+	v := m.dateOfBirth
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldDateOfBirth returns the old "dateOfBirth" field's value of the EntUser entity.
+// If the EntUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntUserMutation) OldDateOfBirth(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldDateOfBirth is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldDateOfBirth requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldDateOfBirth: %w", err)
+	}
+	return oldValue.DateOfBirth, nil
+}
+
+// ClearDateOfBirth clears the value of the "dateOfBirth" field.
+func (m *EntUserMutation) ClearDateOfBirth() {
+	m.dateOfBirth = nil
+	m.clearedFields[entuser.FieldDateOfBirth] = struct{}{}
+}
+
+// DateOfBirthCleared returns if the "dateOfBirth" field was cleared in this mutation.
+func (m *EntUserMutation) DateOfBirthCleared() bool {
+	_, ok := m.clearedFields[entuser.FieldDateOfBirth]
+	return ok
+}
+
+// ResetDateOfBirth resets all changes to the "dateOfBirth" field.
+func (m *EntUserMutation) ResetDateOfBirth() {
+	m.dateOfBirth = nil
+	delete(m.clearedFields, entuser.FieldDateOfBirth)
 }
 
 // SetProfilePictureUrl sets the "profilePictureUrl" field.
@@ -6753,7 +6803,7 @@ func (m *EntUserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntUserMutation) Fields() []string {
-	fields := make([]string, 0, 11)
+	fields := make([]string, 0, 12)
 	if m.createdAt != nil {
 		fields = append(fields, entuser.FieldCreatedAt)
 	}
@@ -6774,6 +6824,9 @@ func (m *EntUserMutation) Fields() []string {
 	}
 	if m.phone != nil {
 		fields = append(fields, entuser.FieldPhone)
+	}
+	if m.dateOfBirth != nil {
+		fields = append(fields, entuser.FieldDateOfBirth)
 	}
 	if m.profilePictureUrl != nil {
 		fields = append(fields, entuser.FieldProfilePictureUrl)
@@ -6809,6 +6862,8 @@ func (m *EntUserMutation) Field(name string) (ent.Value, bool) {
 		return m.Country()
 	case entuser.FieldPhone:
 		return m.Phone()
+	case entuser.FieldDateOfBirth:
+		return m.DateOfBirth()
 	case entuser.FieldProfilePictureUrl:
 		return m.ProfilePictureUrl()
 	case entuser.FieldIsTutor:
@@ -6840,6 +6895,8 @@ func (m *EntUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCountry(ctx)
 	case entuser.FieldPhone:
 		return m.OldPhone(ctx)
+	case entuser.FieldDateOfBirth:
+		return m.OldDateOfBirth(ctx)
 	case entuser.FieldProfilePictureUrl:
 		return m.OldProfilePictureUrl(ctx)
 	case entuser.FieldIsTutor:
@@ -6906,6 +6963,13 @@ func (m *EntUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetPhone(v)
 		return nil
+	case entuser.FieldDateOfBirth:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetDateOfBirth(v)
+		return nil
 	case entuser.FieldProfilePictureUrl:
 		v, ok := value.(string)
 		if !ok {
@@ -6970,6 +7034,9 @@ func (m *EntUserMutation) ClearedFields() []string {
 	if m.FieldCleared(entuser.FieldPhone) {
 		fields = append(fields, entuser.FieldPhone)
 	}
+	if m.FieldCleared(entuser.FieldDateOfBirth) {
+		fields = append(fields, entuser.FieldDateOfBirth)
+	}
 	if m.FieldCleared(entuser.FieldProfilePictureUrl) {
 		fields = append(fields, entuser.FieldProfilePictureUrl)
 	}
@@ -6992,6 +7059,9 @@ func (m *EntUserMutation) ClearField(name string) error {
 		return nil
 	case entuser.FieldPhone:
 		m.ClearPhone()
+		return nil
+	case entuser.FieldDateOfBirth:
+		m.ClearDateOfBirth()
 		return nil
 	case entuser.FieldProfilePictureUrl:
 		m.ClearProfilePictureUrl()
@@ -7024,6 +7094,9 @@ func (m *EntUserMutation) ResetField(name string) error {
 		return nil
 	case entuser.FieldPhone:
 		m.ResetPhone()
+		return nil
+	case entuser.FieldDateOfBirth:
+		m.ResetDateOfBirth()
 		return nil
 	case entuser.FieldProfilePictureUrl:
 		m.ResetProfilePictureUrl()

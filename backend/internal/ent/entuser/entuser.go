@@ -25,6 +25,8 @@ const (
 	FieldCountry = "country"
 	// FieldPhone holds the string denoting the phone field in the database.
 	FieldPhone = "phone"
+	// FieldDateOfBirth holds the string denoting the dateofbirth field in the database.
+	FieldDateOfBirth = "date_of_birth"
 	// FieldProfilePictureUrl holds the string denoting the profilepictureurl field in the database.
 	FieldProfilePictureUrl = "profile_picture_url"
 	// FieldIsTutor holds the string denoting the istutor field in the database.
@@ -128,6 +130,7 @@ var Columns = []string{
 	FieldPassword,
 	FieldCountry,
 	FieldPhone,
+	FieldDateOfBirth,
 	FieldProfilePictureUrl,
 	FieldIsTutor,
 	FieldIsStudent,

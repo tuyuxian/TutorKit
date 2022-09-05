@@ -30,6 +30,8 @@ type EntUser struct {
 	Country string `json:"country,omitempty"`
 	// Phone holds the value of the "phone" field.
 	Phone string `json:"phone,omitempty"`
+	// DateOfBirth holds the value of the "dateOfBirth" field.
+	DateOfBirth time.Time `json:"dateOfBirth,omitempty"`
 	// ProfilePictureUrl holds the value of the "profilePictureUrl" field.
 	ProfilePictureUrl string `json:"profilePictureUrl,omitempty"`
 	// IsTutor holds the value of the "isTutor" field.
@@ -204,7 +206,7 @@ func (*EntUser) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entuser.FieldName, entuser.FieldEmail, entuser.FieldPassword, entuser.FieldCountry, entuser.FieldPhone, entuser.FieldProfilePictureUrl:
 			values[i] = new(sql.NullString)
-		case entuser.FieldCreatedAt, entuser.FieldUpdatedAt:
+		case entuser.FieldCreatedAt, entuser.FieldUpdatedAt, entuser.FieldDateOfBirth:
 			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntUser", columns[i])
@@ -268,6 +270,12 @@ func (eu *EntUser) assignValues(columns []string, values []interface{}) error {
 				return fmt.Errorf("unexpected type %T for field phone", values[i])
 			} else if value.Valid {
 				eu.Phone = value.String
+			}
+		case entuser.FieldDateOfBirth:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field dateOfBirth", values[i])
+			} else if value.Valid {
+				eu.DateOfBirth = value.Time
 			}
 		case entuser.FieldProfilePictureUrl:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -406,6 +414,9 @@ func (eu *EntUser) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("phone=")
 	builder.WriteString(eu.Phone)
+	builder.WriteString(", ")
+	builder.WriteString("dateOfBirth=")
+	builder.WriteString(eu.DateOfBirth.Format(time.ANSIC))
 	builder.WriteString(", ")
 	builder.WriteString("profilePictureUrl=")
 	builder.WriteString(eu.ProfilePictureUrl)

@@ -99,6 +99,20 @@ func (euc *EntUserCreate) SetNillablePhone(s *string) *EntUserCreate {
 	return euc
 }
 
+// SetDateOfBirth sets the "dateOfBirth" field.
+func (euc *EntUserCreate) SetDateOfBirth(t time.Time) *EntUserCreate {
+	euc.mutation.SetDateOfBirth(t)
+	return euc
+}
+
+// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
+func (euc *EntUserCreate) SetNillableDateOfBirth(t *time.Time) *EntUserCreate {
+	if t != nil {
+		euc.SetDateOfBirth(*t)
+	}
+	return euc
+}
+
 // SetProfilePictureUrl sets the "profilePictureUrl" field.
 func (euc *EntUserCreate) SetProfilePictureUrl(s string) *EntUserCreate {
 	euc.mutation.SetProfilePictureUrl(s)
@@ -577,6 +591,14 @@ func (euc *EntUserCreate) createSpec() (*EntUser, *sqlgraph.CreateSpec) {
 			Column: entuser.FieldPhone,
 		})
 		_node.Phone = value
+	}
+	if value, ok := euc.mutation.DateOfBirth(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldDateOfBirth,
+		})
+		_node.DateOfBirth = value
 	}
 	if value, ok := euc.mutation.ProfilePictureUrl(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

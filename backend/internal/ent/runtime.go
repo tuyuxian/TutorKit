@@ -176,15 +176,15 @@ func init() {
 	// entuser.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	entuser.PhoneValidator = entuserDescPhone.Validators[0].(func(string) error)
 	// entuserDescIsTutor is the schema descriptor for isTutor field.
-	entuserDescIsTutor := entuserFields[6].Descriptor()
+	entuserDescIsTutor := entuserFields[7].Descriptor()
 	// entuser.DefaultIsTutor holds the default value on creation for the isTutor field.
 	entuser.DefaultIsTutor = entuserDescIsTutor.Default.(bool)
 	// entuserDescIsStudent is the schema descriptor for isStudent field.
-	entuserDescIsStudent := entuserFields[7].Descriptor()
+	entuserDescIsStudent := entuserFields[8].Descriptor()
 	// entuser.DefaultIsStudent holds the default value on creation for the isStudent field.
 	entuser.DefaultIsStudent = entuserDescIsStudent.Default.(bool)
 	// entuserDescIsParent is the schema descriptor for isParent field.
-	entuserDescIsParent := entuserFields[8].Descriptor()
+	entuserDescIsParent := entuserFields[9].Descriptor()
 	// entuser.DefaultIsParent holds the default value on creation for the isParent field.
 	entuser.DefaultIsParent = entuserDescIsParent.Default.(bool)
 }

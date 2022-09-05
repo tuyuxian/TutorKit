@@ -97,6 +97,26 @@ func (euu *EntUserUpdate) ClearPhone() *EntUserUpdate {
 	return euu
 }
 
+// SetDateOfBirth sets the "dateOfBirth" field.
+func (euu *EntUserUpdate) SetDateOfBirth(t time.Time) *EntUserUpdate {
+	euu.mutation.SetDateOfBirth(t)
+	return euu
+}
+
+// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
+func (euu *EntUserUpdate) SetNillableDateOfBirth(t *time.Time) *EntUserUpdate {
+	if t != nil {
+		euu.SetDateOfBirth(*t)
+	}
+	return euu
+}
+
+// ClearDateOfBirth clears the value of the "dateOfBirth" field.
+func (euu *EntUserUpdate) ClearDateOfBirth() *EntUserUpdate {
+	euu.mutation.ClearDateOfBirth()
+	return euu
+}
+
 // SetProfilePictureUrl sets the "profilePictureUrl" field.
 func (euu *EntUserUpdate) SetProfilePictureUrl(s string) *EntUserUpdate {
 	euu.mutation.SetProfilePictureUrl(s)
@@ -796,6 +816,19 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: entuser.FieldPhone,
+		})
+	}
+	if value, ok := euu.mutation.DateOfBirth(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldDateOfBirth,
+		})
+	}
+	if euu.mutation.DateOfBirthCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entuser.FieldDateOfBirth,
 		})
 	}
 	if value, ok := euu.mutation.ProfilePictureUrl(); ok {
@@ -1617,6 +1650,26 @@ func (euuo *EntUserUpdateOne) ClearPhone() *EntUserUpdateOne {
 	return euuo
 }
 
+// SetDateOfBirth sets the "dateOfBirth" field.
+func (euuo *EntUserUpdateOne) SetDateOfBirth(t time.Time) *EntUserUpdateOne {
+	euuo.mutation.SetDateOfBirth(t)
+	return euuo
+}
+
+// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
+func (euuo *EntUserUpdateOne) SetNillableDateOfBirth(t *time.Time) *EntUserUpdateOne {
+	if t != nil {
+		euuo.SetDateOfBirth(*t)
+	}
+	return euuo
+}
+
+// ClearDateOfBirth clears the value of the "dateOfBirth" field.
+func (euuo *EntUserUpdateOne) ClearDateOfBirth() *EntUserUpdateOne {
+	euuo.mutation.ClearDateOfBirth()
+	return euuo
+}
+
 // SetProfilePictureUrl sets the "profilePictureUrl" field.
 func (euuo *EntUserUpdateOne) SetProfilePictureUrl(s string) *EntUserUpdateOne {
 	euuo.mutation.SetProfilePictureUrl(s)
@@ -2346,6 +2399,19 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Column: entuser.FieldPhone,
+		})
+	}
+	if value, ok := euuo.mutation.DateOfBirth(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entuser.FieldDateOfBirth,
+		})
+	}
+	if euuo.mutation.DateOfBirthCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entuser.FieldDateOfBirth,
 		})
 	}
 	if value, ok := euuo.mutation.ProfilePictureUrl(); ok {

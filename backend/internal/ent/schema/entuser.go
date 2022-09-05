@@ -39,6 +39,8 @@ func (EntUser) Fields() []ent.Field {
 		field.String("phone").
 			Optional().
 			Match(regexp.MustCompile(phoneRegex)),
+		field.Time("dateOfBirth").
+			Optional(),
 		field.String("profilePictureUrl").
 			Optional(),
 		field.Bool("isTutor").
