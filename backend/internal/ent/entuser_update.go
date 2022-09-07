@@ -39,9 +39,15 @@ func (euu *EntUserUpdate) SetUpdatedAt(t time.Time) *EntUserUpdate {
 	return euu
 }
 
-// SetName sets the "name" field.
-func (euu *EntUserUpdate) SetName(s string) *EntUserUpdate {
-	euu.mutation.SetName(s)
+// SetFirstName sets the "firstName" field.
+func (euu *EntUserUpdate) SetFirstName(s string) *EntUserUpdate {
+	euu.mutation.SetFirstName(s)
+	return euu
+}
+
+// SetLastName sets the "lastName" field.
+func (euu *EntUserUpdate) SetLastName(s string) *EntUserUpdate {
+	euu.mutation.SetLastName(s)
 	return euu
 }
 
@@ -723,9 +729,14 @@ func (euu *EntUserUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (euu *EntUserUpdate) check() error {
-	if v, ok := euu.mutation.Name(); ok {
-		if err := entuser.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntUser.name": %w`, err)}
+	if v, ok := euu.mutation.FirstName(); ok {
+		if err := entuser.FirstNameValidator(v); err != nil {
+			return &ValidationError{Name: "firstName", err: fmt.Errorf(`ent: validator failed for field "EntUser.firstName": %w`, err)}
+		}
+	}
+	if v, ok := euu.mutation.LastName(); ok {
+		if err := entuser.LastNameValidator(v); err != nil {
+			return &ValidationError{Name: "lastName", err: fmt.Errorf(`ent: validator failed for field "EntUser.lastName": %w`, err)}
 		}
 	}
 	if v, ok := euu.mutation.Email(); ok {
@@ -771,11 +782,18 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entuser.FieldUpdatedAt,
 		})
 	}
-	if value, ok := euu.mutation.Name(); ok {
+	if value, ok := euu.mutation.FirstName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: entuser.FieldName,
+			Column: entuser.FieldFirstName,
+		})
+	}
+	if value, ok := euu.mutation.LastName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldLastName,
 		})
 	}
 	if value, ok := euu.mutation.Email(); ok {
@@ -1592,9 +1610,15 @@ func (euuo *EntUserUpdateOne) SetUpdatedAt(t time.Time) *EntUserUpdateOne {
 	return euuo
 }
 
-// SetName sets the "name" field.
-func (euuo *EntUserUpdateOne) SetName(s string) *EntUserUpdateOne {
-	euuo.mutation.SetName(s)
+// SetFirstName sets the "firstName" field.
+func (euuo *EntUserUpdateOne) SetFirstName(s string) *EntUserUpdateOne {
+	euuo.mutation.SetFirstName(s)
+	return euuo
+}
+
+// SetLastName sets the "lastName" field.
+func (euuo *EntUserUpdateOne) SetLastName(s string) *EntUserUpdateOne {
+	euuo.mutation.SetLastName(s)
 	return euuo
 }
 
@@ -2289,9 +2313,14 @@ func (euuo *EntUserUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (euuo *EntUserUpdateOne) check() error {
-	if v, ok := euuo.mutation.Name(); ok {
-		if err := entuser.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntUser.name": %w`, err)}
+	if v, ok := euuo.mutation.FirstName(); ok {
+		if err := entuser.FirstNameValidator(v); err != nil {
+			return &ValidationError{Name: "firstName", err: fmt.Errorf(`ent: validator failed for field "EntUser.firstName": %w`, err)}
+		}
+	}
+	if v, ok := euuo.mutation.LastName(); ok {
+		if err := entuser.LastNameValidator(v); err != nil {
+			return &ValidationError{Name: "lastName", err: fmt.Errorf(`ent: validator failed for field "EntUser.lastName": %w`, err)}
 		}
 	}
 	if v, ok := euuo.mutation.Email(); ok {
@@ -2354,11 +2383,18 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 			Column: entuser.FieldUpdatedAt,
 		})
 	}
-	if value, ok := euuo.mutation.Name(); ok {
+	if value, ok := euuo.mutation.FirstName(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: entuser.FieldName,
+			Column: entuser.FieldFirstName,
+		})
+	}
+	if value, ok := euuo.mutation.LastName(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldLastName,
 		})
 	}
 	if value, ok := euuo.mutation.Email(); ok {

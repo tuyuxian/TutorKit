@@ -53,9 +53,15 @@ func (euc *EntUserCreate) SetNillableUpdatedAt(t *time.Time) *EntUserCreate {
 	return euc
 }
 
-// SetName sets the "name" field.
-func (euc *EntUserCreate) SetName(s string) *EntUserCreate {
-	euc.mutation.SetName(s)
+// SetFirstName sets the "firstName" field.
+func (euc *EntUserCreate) SetFirstName(s string) *EntUserCreate {
+	euc.mutation.SetFirstName(s)
+	return euc
+}
+
+// SetLastName sets the "lastName" field.
+func (euc *EntUserCreate) SetLastName(s string) *EntUserCreate {
+	euc.mutation.SetLastName(s)
 	return euc
 }
 
@@ -471,12 +477,20 @@ func (euc *EntUserCreate) check() error {
 	if _, ok := euc.mutation.UpdatedAt(); !ok {
 		return &ValidationError{Name: "updatedAt", err: errors.New(`ent: missing required field "EntUser.updatedAt"`)}
 	}
-	if _, ok := euc.mutation.Name(); !ok {
-		return &ValidationError{Name: "name", err: errors.New(`ent: missing required field "EntUser.name"`)}
+	if _, ok := euc.mutation.FirstName(); !ok {
+		return &ValidationError{Name: "firstName", err: errors.New(`ent: missing required field "EntUser.firstName"`)}
 	}
-	if v, ok := euc.mutation.Name(); ok {
-		if err := entuser.NameValidator(v); err != nil {
-			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntUser.name": %w`, err)}
+	if v, ok := euc.mutation.FirstName(); ok {
+		if err := entuser.FirstNameValidator(v); err != nil {
+			return &ValidationError{Name: "firstName", err: fmt.Errorf(`ent: validator failed for field "EntUser.firstName": %w`, err)}
+		}
+	}
+	if _, ok := euc.mutation.LastName(); !ok {
+		return &ValidationError{Name: "lastName", err: errors.New(`ent: missing required field "EntUser.lastName"`)}
+	}
+	if v, ok := euc.mutation.LastName(); ok {
+		if err := entuser.LastNameValidator(v); err != nil {
+			return &ValidationError{Name: "lastName", err: fmt.Errorf(`ent: validator failed for field "EntUser.lastName": %w`, err)}
 		}
 	}
 	if _, ok := euc.mutation.Email(); !ok {
@@ -552,13 +566,21 @@ func (euc *EntUserCreate) createSpec() (*EntUser, *sqlgraph.CreateSpec) {
 		})
 		_node.UpdatedAt = value
 	}
-	if value, ok := euc.mutation.Name(); ok {
+	if value, ok := euc.mutation.FirstName(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
 			Value:  value,
-			Column: entuser.FieldName,
+			Column: entuser.FieldFirstName,
 		})
-		_node.Name = value
+		_node.FirstName = value
+	}
+	if value, ok := euc.mutation.LastName(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeString,
+			Value:  value,
+			Column: entuser.FieldLastName,
+		})
+		_node.LastName = value
 	}
 	if value, ok := euc.mutation.Email(); ok {
 		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{

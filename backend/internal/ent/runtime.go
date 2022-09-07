@@ -131,18 +131,36 @@ func init() {
 	entuser.DefaultUpdatedAt = entuserDescUpdatedAt.Default.(func() time.Time)
 	// entuser.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	entuser.UpdateDefaultUpdatedAt = entuserDescUpdatedAt.UpdateDefault.(func() time.Time)
-	// entuserDescName is the schema descriptor for name field.
-	entuserDescName := entuserFields[0].Descriptor()
-	// entuser.NameValidator is a validator for the "name" field. It is called by the builders before save.
-	entuser.NameValidator = func() func(string) error {
-		validators := entuserDescName.Validators
+	// entuserDescFirstName is the schema descriptor for firstName field.
+	entuserDescFirstName := entuserFields[0].Descriptor()
+	// entuser.FirstNameValidator is a validator for the "firstName" field. It is called by the builders before save.
+	entuser.FirstNameValidator = func() func(string) error {
+		validators := entuserDescFirstName.Validators
 		fns := [...]func(string) error{
 			validators[0].(func(string) error),
 			validators[1].(func(string) error),
 		}
-		return func(name string) error {
+		return func(firstName string) error {
 			for _, fn := range fns {
-				if err := fn(name); err != nil {
+				if err := fn(firstName); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
+	// entuserDescLastName is the schema descriptor for lastName field.
+	entuserDescLastName := entuserFields[1].Descriptor()
+	// entuser.LastNameValidator is a validator for the "lastName" field. It is called by the builders before save.
+	entuser.LastNameValidator = func() func(string) error {
+		validators := entuserDescLastName.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(lastName string) error {
+			for _, fn := range fns {
+				if err := fn(lastName); err != nil {
 					return err
 				}
 			}
@@ -150,7 +168,7 @@ func init() {
 		}
 	}()
 	// entuserDescEmail is the schema descriptor for email field.
-	entuserDescEmail := entuserFields[1].Descriptor()
+	entuserDescEmail := entuserFields[2].Descriptor()
 	// entuser.EmailValidator is a validator for the "email" field. It is called by the builders before save.
 	entuser.EmailValidator = func() func(string) error {
 		validators := entuserDescEmail.Validators
@@ -168,23 +186,23 @@ func init() {
 		}
 	}()
 	// entuserDescPassword is the schema descriptor for password field.
-	entuserDescPassword := entuserFields[2].Descriptor()
+	entuserDescPassword := entuserFields[3].Descriptor()
 	// entuser.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	entuser.PasswordValidator = entuserDescPassword.Validators[0].(func(string) error)
 	// entuserDescPhone is the schema descriptor for phone field.
-	entuserDescPhone := entuserFields[4].Descriptor()
+	entuserDescPhone := entuserFields[5].Descriptor()
 	// entuser.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	entuser.PhoneValidator = entuserDescPhone.Validators[0].(func(string) error)
 	// entuserDescIsTutor is the schema descriptor for isTutor field.
-	entuserDescIsTutor := entuserFields[7].Descriptor()
+	entuserDescIsTutor := entuserFields[8].Descriptor()
 	// entuser.DefaultIsTutor holds the default value on creation for the isTutor field.
 	entuser.DefaultIsTutor = entuserDescIsTutor.Default.(bool)
 	// entuserDescIsStudent is the schema descriptor for isStudent field.
-	entuserDescIsStudent := entuserFields[8].Descriptor()
+	entuserDescIsStudent := entuserFields[9].Descriptor()
 	// entuser.DefaultIsStudent holds the default value on creation for the isStudent field.
 	entuser.DefaultIsStudent = entuserDescIsStudent.Default.(bool)
 	// entuserDescIsParent is the schema descriptor for isParent field.
-	entuserDescIsParent := entuserFields[9].Descriptor()
+	entuserDescIsParent := entuserFields[10].Descriptor()
 	// entuser.DefaultIsParent holds the default value on creation for the isParent field.
 	entuser.DefaultIsParent = entuserDescIsParent.Default.(bool)
 }

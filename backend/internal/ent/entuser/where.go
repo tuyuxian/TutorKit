@@ -95,10 +95,17 @@ func UpdatedAt(v time.Time) predicate.EntUser {
 	})
 }
 
-// Name applies equality check predicate on the "name" field. It's identical to NameEQ.
-func Name(v string) predicate.EntUser {
+// FirstName applies equality check predicate on the "firstName" field. It's identical to FirstNameEQ.
+func FirstName(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldName), v))
+		s.Where(sql.EQ(s.C(FieldFirstName), v))
+	})
+}
+
+// LastName applies equality check predicate on the "lastName" field. It's identical to LastNameEQ.
+func LastName(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastName), v))
 	})
 }
 
@@ -293,102 +300,201 @@ func UpdatedAtLTE(v time.Time) predicate.EntUser {
 	})
 }
 
-// NameEQ applies the EQ predicate on the "name" field.
-func NameEQ(v string) predicate.EntUser {
+// FirstNameEQ applies the EQ predicate on the "firstName" field.
+func FirstNameEQ(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.EQ(s.C(FieldName), v))
+		s.Where(sql.EQ(s.C(FieldFirstName), v))
 	})
 }
 
-// NameNEQ applies the NEQ predicate on the "name" field.
-func NameNEQ(v string) predicate.EntUser {
+// FirstNameNEQ applies the NEQ predicate on the "firstName" field.
+func FirstNameNEQ(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.NEQ(s.C(FieldName), v))
+		s.Where(sql.NEQ(s.C(FieldFirstName), v))
 	})
 }
 
-// NameIn applies the In predicate on the "name" field.
-func NameIn(vs ...string) predicate.EntUser {
+// FirstNameIn applies the In predicate on the "firstName" field.
+func FirstNameIn(vs ...string) predicate.EntUser {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.In(s.C(FieldName), v...))
+		s.Where(sql.In(s.C(FieldFirstName), v...))
 	})
 }
 
-// NameNotIn applies the NotIn predicate on the "name" field.
-func NameNotIn(vs ...string) predicate.EntUser {
+// FirstNameNotIn applies the NotIn predicate on the "firstName" field.
+func FirstNameNotIn(vs ...string) predicate.EntUser {
 	v := make([]interface{}, len(vs))
 	for i := range v {
 		v[i] = vs[i]
 	}
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.NotIn(s.C(FieldName), v...))
+		s.Where(sql.NotIn(s.C(FieldFirstName), v...))
 	})
 }
 
-// NameGT applies the GT predicate on the "name" field.
-func NameGT(v string) predicate.EntUser {
+// FirstNameGT applies the GT predicate on the "firstName" field.
+func FirstNameGT(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.GT(s.C(FieldName), v))
+		s.Where(sql.GT(s.C(FieldFirstName), v))
 	})
 }
 
-// NameGTE applies the GTE predicate on the "name" field.
-func NameGTE(v string) predicate.EntUser {
+// FirstNameGTE applies the GTE predicate on the "firstName" field.
+func FirstNameGTE(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.GTE(s.C(FieldName), v))
+		s.Where(sql.GTE(s.C(FieldFirstName), v))
 	})
 }
 
-// NameLT applies the LT predicate on the "name" field.
-func NameLT(v string) predicate.EntUser {
+// FirstNameLT applies the LT predicate on the "firstName" field.
+func FirstNameLT(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.LT(s.C(FieldName), v))
+		s.Where(sql.LT(s.C(FieldFirstName), v))
 	})
 }
 
-// NameLTE applies the LTE predicate on the "name" field.
-func NameLTE(v string) predicate.EntUser {
+// FirstNameLTE applies the LTE predicate on the "firstName" field.
+func FirstNameLTE(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.LTE(s.C(FieldName), v))
+		s.Where(sql.LTE(s.C(FieldFirstName), v))
 	})
 }
 
-// NameContains applies the Contains predicate on the "name" field.
-func NameContains(v string) predicate.EntUser {
+// FirstNameContains applies the Contains predicate on the "firstName" field.
+func FirstNameContains(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.Contains(s.C(FieldName), v))
+		s.Where(sql.Contains(s.C(FieldFirstName), v))
 	})
 }
 
-// NameHasPrefix applies the HasPrefix predicate on the "name" field.
-func NameHasPrefix(v string) predicate.EntUser {
+// FirstNameHasPrefix applies the HasPrefix predicate on the "firstName" field.
+func FirstNameHasPrefix(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.HasPrefix(s.C(FieldName), v))
+		s.Where(sql.HasPrefix(s.C(FieldFirstName), v))
 	})
 }
 
-// NameHasSuffix applies the HasSuffix predicate on the "name" field.
-func NameHasSuffix(v string) predicate.EntUser {
+// FirstNameHasSuffix applies the HasSuffix predicate on the "firstName" field.
+func FirstNameHasSuffix(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.HasSuffix(s.C(FieldName), v))
+		s.Where(sql.HasSuffix(s.C(FieldFirstName), v))
 	})
 }
 
-// NameEqualFold applies the EqualFold predicate on the "name" field.
-func NameEqualFold(v string) predicate.EntUser {
+// FirstNameEqualFold applies the EqualFold predicate on the "firstName" field.
+func FirstNameEqualFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.EqualFold(s.C(FieldName), v))
+		s.Where(sql.EqualFold(s.C(FieldFirstName), v))
 	})
 }
 
-// NameContainsFold applies the ContainsFold predicate on the "name" field.
-func NameContainsFold(v string) predicate.EntUser {
+// FirstNameContainsFold applies the ContainsFold predicate on the "firstName" field.
+func FirstNameContainsFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.ContainsFold(s.C(FieldName), v))
+		s.Where(sql.ContainsFold(s.C(FieldFirstName), v))
+	})
+}
+
+// LastNameEQ applies the EQ predicate on the "lastName" field.
+func LastNameEQ(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameNEQ applies the NEQ predicate on the "lastName" field.
+func LastNameNEQ(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameIn applies the In predicate on the "lastName" field.
+func LastNameIn(vs ...string) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldLastName), v...))
+	})
+}
+
+// LastNameNotIn applies the NotIn predicate on the "lastName" field.
+func LastNameNotIn(vs ...string) predicate.EntUser {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldLastName), v...))
+	})
+}
+
+// LastNameGT applies the GT predicate on the "lastName" field.
+func LastNameGT(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameGTE applies the GTE predicate on the "lastName" field.
+func LastNameGTE(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameLT applies the LT predicate on the "lastName" field.
+func LastNameLT(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameLTE applies the LTE predicate on the "lastName" field.
+func LastNameLTE(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameContains applies the Contains predicate on the "lastName" field.
+func LastNameContains(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.Contains(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameHasPrefix applies the HasPrefix predicate on the "lastName" field.
+func LastNameHasPrefix(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.HasPrefix(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameHasSuffix applies the HasSuffix predicate on the "lastName" field.
+func LastNameHasSuffix(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.HasSuffix(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameEqualFold applies the EqualFold predicate on the "lastName" field.
+func LastNameEqualFold(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.EqualFold(s.C(FieldLastName), v))
+	})
+}
+
+// LastNameContainsFold applies the ContainsFold predicate on the "lastName" field.
+func LastNameContainsFold(v string) predicate.EntUser {
+	return predicate.EntUser(func(s *sql.Selector) {
+		s.Where(sql.ContainsFold(s.C(FieldLastName), v))
 	})
 }
 

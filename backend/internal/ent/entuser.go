@@ -20,8 +20,10 @@ type EntUser struct {
 	CreatedAt time.Time `json:"createdAt,omitempty"`
 	// UpdatedAt holds the value of the "updatedAt" field.
 	UpdatedAt time.Time `json:"updatedAt,omitempty"`
-	// Name holds the value of the "name" field.
-	Name string `json:"name,omitempty"`
+	// FirstName holds the value of the "firstName" field.
+	FirstName string `json:"firstName,omitempty"`
+	// LastName holds the value of the "lastName" field.
+	LastName string `json:"lastName,omitempty"`
 	// Email holds the value of the "email" field.
 	Email string `json:"email,omitempty"`
 	// Password holds the value of the "password" field.
@@ -204,7 +206,7 @@ func (*EntUser) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullBool)
 		case entuser.FieldID:
 			values[i] = new(sql.NullInt64)
-		case entuser.FieldName, entuser.FieldEmail, entuser.FieldPassword, entuser.FieldCountry, entuser.FieldPhone, entuser.FieldProfilePictureUrl:
+		case entuser.FieldFirstName, entuser.FieldLastName, entuser.FieldEmail, entuser.FieldPassword, entuser.FieldCountry, entuser.FieldPhone, entuser.FieldProfilePictureUrl:
 			values[i] = new(sql.NullString)
 		case entuser.FieldCreatedAt, entuser.FieldUpdatedAt, entuser.FieldDateOfBirth:
 			values[i] = new(sql.NullTime)
@@ -241,11 +243,17 @@ func (eu *EntUser) assignValues(columns []string, values []interface{}) error {
 			} else if value.Valid {
 				eu.UpdatedAt = value.Time
 			}
-		case entuser.FieldName:
+		case entuser.FieldFirstName:
 			if value, ok := values[i].(*sql.NullString); !ok {
-				return fmt.Errorf("unexpected type %T for field name", values[i])
+				return fmt.Errorf("unexpected type %T for field firstName", values[i])
 			} else if value.Valid {
-				eu.Name = value.String
+				eu.FirstName = value.String
+			}
+		case entuser.FieldLastName:
+			if value, ok := values[i].(*sql.NullString); !ok {
+				return fmt.Errorf("unexpected type %T for field lastName", values[i])
+			} else if value.Valid {
+				eu.LastName = value.String
 			}
 		case entuser.FieldEmail:
 			if value, ok := values[i].(*sql.NullString); !ok {
@@ -400,8 +408,11 @@ func (eu *EntUser) String() string {
 	builder.WriteString("updatedAt=")
 	builder.WriteString(eu.UpdatedAt.Format(time.ANSIC))
 	builder.WriteString(", ")
-	builder.WriteString("name=")
-	builder.WriteString(eu.Name)
+	builder.WriteString("firstName=")
+	builder.WriteString(eu.FirstName)
+	builder.WriteString(", ")
+	builder.WriteString("lastName=")
+	builder.WriteString(eu.LastName)
 	builder.WriteString(", ")
 	builder.WriteString("email=")
 	builder.WriteString(eu.Email)

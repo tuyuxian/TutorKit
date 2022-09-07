@@ -5445,7 +5445,8 @@ type EntUserMutation struct {
 	id                *int
 	createdAt         *time.Time
 	updatedAt         *time.Time
-	name              *string
+	firstName         *string
+	lastName          *string
 	email             *string
 	password          *string
 	country           *string
@@ -5670,40 +5671,76 @@ func (m *EntUserMutation) ResetUpdatedAt() {
 	m.updatedAt = nil
 }
 
-// SetName sets the "name" field.
-func (m *EntUserMutation) SetName(s string) {
-	m.name = &s
+// SetFirstName sets the "firstName" field.
+func (m *EntUserMutation) SetFirstName(s string) {
+	m.firstName = &s
 }
 
-// Name returns the value of the "name" field in the mutation.
-func (m *EntUserMutation) Name() (r string, exists bool) {
-	v := m.name
+// FirstName returns the value of the "firstName" field in the mutation.
+func (m *EntUserMutation) FirstName() (r string, exists bool) {
+	v := m.firstName
 	if v == nil {
 		return
 	}
 	return *v, true
 }
 
-// OldName returns the old "name" field's value of the EntUser entity.
+// OldFirstName returns the old "firstName" field's value of the EntUser entity.
 // If the EntUser object wasn't provided to the builder, the object is fetched from the database.
 // An error is returned if the mutation operation is not UpdateOne, or the database query fails.
-func (m *EntUserMutation) OldName(ctx context.Context) (v string, err error) {
+func (m *EntUserMutation) OldFirstName(ctx context.Context) (v string, err error) {
 	if !m.op.Is(OpUpdateOne) {
-		return v, errors.New("OldName is only allowed on UpdateOne operations")
+		return v, errors.New("OldFirstName is only allowed on UpdateOne operations")
 	}
 	if m.id == nil || m.oldValue == nil {
-		return v, errors.New("OldName requires an ID field in the mutation")
+		return v, errors.New("OldFirstName requires an ID field in the mutation")
 	}
 	oldValue, err := m.oldValue(ctx)
 	if err != nil {
-		return v, fmt.Errorf("querying old value for OldName: %w", err)
+		return v, fmt.Errorf("querying old value for OldFirstName: %w", err)
 	}
-	return oldValue.Name, nil
+	return oldValue.FirstName, nil
 }
 
-// ResetName resets all changes to the "name" field.
-func (m *EntUserMutation) ResetName() {
-	m.name = nil
+// ResetFirstName resets all changes to the "firstName" field.
+func (m *EntUserMutation) ResetFirstName() {
+	m.firstName = nil
+}
+
+// SetLastName sets the "lastName" field.
+func (m *EntUserMutation) SetLastName(s string) {
+	m.lastName = &s
+}
+
+// LastName returns the value of the "lastName" field in the mutation.
+func (m *EntUserMutation) LastName() (r string, exists bool) {
+	v := m.lastName
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldLastName returns the old "lastName" field's value of the EntUser entity.
+// If the EntUser object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntUserMutation) OldLastName(ctx context.Context) (v string, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldLastName is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldLastName requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldLastName: %w", err)
+	}
+	return oldValue.LastName, nil
+}
+
+// ResetLastName resets all changes to the "lastName" field.
+func (m *EntUserMutation) ResetLastName() {
+	m.lastName = nil
 }
 
 // SetEmail sets the "email" field.
@@ -6803,15 +6840,18 @@ func (m *EntUserMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntUserMutation) Fields() []string {
-	fields := make([]string, 0, 12)
+	fields := make([]string, 0, 13)
 	if m.createdAt != nil {
 		fields = append(fields, entuser.FieldCreatedAt)
 	}
 	if m.updatedAt != nil {
 		fields = append(fields, entuser.FieldUpdatedAt)
 	}
-	if m.name != nil {
-		fields = append(fields, entuser.FieldName)
+	if m.firstName != nil {
+		fields = append(fields, entuser.FieldFirstName)
+	}
+	if m.lastName != nil {
+		fields = append(fields, entuser.FieldLastName)
 	}
 	if m.email != nil {
 		fields = append(fields, entuser.FieldEmail)
@@ -6852,8 +6892,10 @@ func (m *EntUserMutation) Field(name string) (ent.Value, bool) {
 		return m.CreatedAt()
 	case entuser.FieldUpdatedAt:
 		return m.UpdatedAt()
-	case entuser.FieldName:
-		return m.Name()
+	case entuser.FieldFirstName:
+		return m.FirstName()
+	case entuser.FieldLastName:
+		return m.LastName()
 	case entuser.FieldEmail:
 		return m.Email()
 	case entuser.FieldPassword:
@@ -6885,8 +6927,10 @@ func (m *EntUserMutation) OldField(ctx context.Context, name string) (ent.Value,
 		return m.OldCreatedAt(ctx)
 	case entuser.FieldUpdatedAt:
 		return m.OldUpdatedAt(ctx)
-	case entuser.FieldName:
-		return m.OldName(ctx)
+	case entuser.FieldFirstName:
+		return m.OldFirstName(ctx)
+	case entuser.FieldLastName:
+		return m.OldLastName(ctx)
 	case entuser.FieldEmail:
 		return m.OldEmail(ctx)
 	case entuser.FieldPassword:
@@ -6928,12 +6972,19 @@ func (m *EntUserMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetUpdatedAt(v)
 		return nil
-	case entuser.FieldName:
+	case entuser.FieldFirstName:
 		v, ok := value.(string)
 		if !ok {
 			return fmt.Errorf("unexpected type %T for field %s", value, name)
 		}
-		m.SetName(v)
+		m.SetFirstName(v)
+		return nil
+	case entuser.FieldLastName:
+		v, ok := value.(string)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetLastName(v)
 		return nil
 	case entuser.FieldEmail:
 		v, ok := value.(string)
@@ -7080,8 +7131,11 @@ func (m *EntUserMutation) ResetField(name string) error {
 	case entuser.FieldUpdatedAt:
 		m.ResetUpdatedAt()
 		return nil
-	case entuser.FieldName:
-		m.ResetName()
+	case entuser.FieldFirstName:
+		m.ResetFirstName()
+		return nil
+	case entuser.FieldLastName:
+		m.ResetLastName()
 		return nil
 	case entuser.FieldEmail:
 		m.ResetEmail()

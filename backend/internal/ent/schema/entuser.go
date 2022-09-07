@@ -26,7 +26,10 @@ func (EntUser) Mixin() []ent.Mixin {
 // Fields of the User.
 func (EntUser) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").
+		field.String("firstName").
+			NotEmpty().
+			MaxLen(20),
+		field.String("lastName").
 			NotEmpty().
 			MaxLen(20),
 		field.String("email").
