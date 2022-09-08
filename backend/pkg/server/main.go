@@ -1,14 +1,29 @@
 package server
 
 import (
-	"backend/internal/handlers"
+	"backend/internal/api/router"
 
-	"github.com/gin-gonic/gin"
+	"github.com/labstack/echo/v4"
+	"github.com/labstack/echo/v4/middleware"
+	"go.uber.org/zap"
 )
 
 // Run web server
 func Run() {
-	r := gin.Default()
-	r.GET("/hello", handlers.HelloWorld())
-	r.Run()
+	srv := echo.New()
+	logger, _ := zap.NewProduction()
+	srv.Use(middleware.RequestLoggerWithConfig(middleware.RequestLoggerConfig{
+		LogURI:    true,
+		LogStatus: true,
+		LogValuesFunc: func(c echo.Context, v middleware.RequestLoggerValues) error {
+			logger.Info("request",
+				zap.String("URI", v.URI),
+				zap.Int("status", v.Status),
+			)
+
+			return nil
+		},
+	}))
+	router.Route(srv)
+	srv.Logger.Fatal(srv.Start(":8080"))
 }

@@ -5,8 +5,8 @@ import (
 	"log"
 	"os"
 
-	"backend/internal/ent"
-	"backend/internal/ent/migrate"
+	"backend/internal/model/ent"
+	"backend/internal/model/ent/migrate"
 
 	"github.com/go-sql-driver/mysql"
 	"github.com/joho/godotenv"
