@@ -6,6 +6,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func HelloRoute(e *echo.Echo) {
+func InitHelloRoute(e *echo.Group) {
 	e.GET("/", controller.SayHello)
 }

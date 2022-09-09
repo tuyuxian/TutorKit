@@ -4,6 +4,6 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
-func Route(e *echo.Echo) {
-	HelloRoute(e)
+func RegisterRoutes(e *echo.Group) {
+	InitHelloRoute(e)
 }

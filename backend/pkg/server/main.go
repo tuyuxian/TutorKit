@@ -24,6 +24,7 @@ func Run() {
 			return nil
 		},
 	}))
-	router.Route(srv)
+	api := srv.Group("/api/v1")
+	router.RegisterRoutes(api)
 	srv.Logger.Fatal(srv.Start(":8080"))
 }
