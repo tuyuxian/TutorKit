@@ -179,6 +179,104 @@ func Sunday(v bool) predicate.EntCourse {
 	})
 }
 
+// MondayStartTime applies equality check predicate on the "mondayStartTime" field. It's identical to MondayStartTimeEQ.
+func MondayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayEndTime applies equality check predicate on the "mondayEndTime" field. It's identical to MondayEndTimeEQ.
+func MondayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// TuesdayStartTime applies equality check predicate on the "tuesdayStartTime" field. It's identical to TuesdayStartTimeEQ.
+func TuesdayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayEndTime applies equality check predicate on the "tuesdayEndTime" field. It's identical to TuesdayEndTimeEQ.
+func TuesdayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// WednesdayStartTime applies equality check predicate on the "wednesdayStartTime" field. It's identical to WednesdayStartTimeEQ.
+func WednesdayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayEndTime applies equality check predicate on the "wednesdayEndTime" field. It's identical to WednesdayEndTimeEQ.
+func WednesdayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// ThursdayStartTime applies equality check predicate on the "thursdayStartTime" field. It's identical to ThursdayStartTimeEQ.
+func ThursdayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayEndTime applies equality check predicate on the "thursdayEndTime" field. It's identical to ThursdayEndTimeEQ.
+func ThursdayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// FridayStartTime applies equality check predicate on the "fridayStartTime" field. It's identical to FridayStartTimeEQ.
+func FridayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayEndTime applies equality check predicate on the "fridayEndTime" field. It's identical to FridayEndTimeEQ.
+func FridayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// SaturdayStartTime applies equality check predicate on the "saturdayStartTime" field. It's identical to SaturdayStartTimeEQ.
+func SaturdayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayEndTime applies equality check predicate on the "saturdayEndTime" field. It's identical to SaturdayEndTimeEQ.
+func SaturdayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SundayStartTime applies equality check predicate on the "sundayStartTime" field. It's identical to SundayStartTimeEQ.
+func SundayStartTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayEndTime applies equality check predicate on the "sundayEndTime" field. It's identical to SundayEndTimeEQ.
+func SundayEndTime(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSundayEndTime), v))
+	})
+}
+
 // CreatedAtEQ applies the EQ predicate on the "createdAt" field.
 func CreatedAtEQ(v time.Time) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -491,20 +589,6 @@ func CourseUrlHasSuffix(v string) predicate.EntCourse {
 	})
 }
 
-// CourseUrlIsNil applies the IsNil predicate on the "courseUrl" field.
-func CourseUrlIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldCourseUrl)))
-	})
-}
-
-// CourseUrlNotNil applies the NotNil predicate on the "courseUrl" field.
-func CourseUrlNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldCourseUrl)))
-	})
-}
-
 // CourseUrlEqualFold applies the EqualFold predicate on the "courseUrl" field.
 func CourseUrlEqualFold(v string) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -552,20 +636,6 @@ func PaymentMethodNotIn(vs ...PaymentMethod) predicate.EntCourse {
 	}
 	return predicate.EntCourse(func(s *sql.Selector) {
 		s.Where(sql.NotIn(s.C(FieldPaymentMethod), v...))
-	})
-}
-
-// PaymentMethodIsNil applies the IsNil predicate on the "paymentMethod" field.
-func PaymentMethodIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldPaymentMethod)))
-	})
-}
-
-// PaymentMethodNotNil applies the NotNil predicate on the "paymentMethod" field.
-func PaymentMethodNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldPaymentMethod)))
 	})
 }
 
@@ -711,20 +781,6 @@ func StartDateLTE(v time.Time) predicate.EntCourse {
 	})
 }
 
-// StartDateIsNil applies the IsNil predicate on the "startDate" field.
-func StartDateIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldStartDate)))
-	})
-}
-
-// StartDateNotNil applies the NotNil predicate on the "startDate" field.
-func StartDateNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldStartDate)))
-	})
-}
-
 // EndDateEQ applies the EQ predicate on the "endDate" field.
 func EndDateEQ(v time.Time) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -789,20 +845,6 @@ func EndDateLTE(v time.Time) predicate.EntCourse {
 	})
 }
 
-// EndDateIsNil applies the IsNil predicate on the "endDate" field.
-func EndDateIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldEndDate)))
-	})
-}
-
-// EndDateNotNil applies the NotNil predicate on the "endDate" field.
-func EndDateNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldEndDate)))
-	})
-}
-
 // MondayEQ applies the EQ predicate on the "monday" field.
 func MondayEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -814,20 +856,6 @@ func MondayEQ(v bool) predicate.EntCourse {
 func MondayNEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldMonday), v))
-	})
-}
-
-// MondayIsNil applies the IsNil predicate on the "monday" field.
-func MondayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldMonday)))
-	})
-}
-
-// MondayNotNil applies the NotNil predicate on the "monday" field.
-func MondayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldMonday)))
 	})
 }
 
@@ -845,20 +873,6 @@ func TuesdayNEQ(v bool) predicate.EntCourse {
 	})
 }
 
-// TuesdayIsNil applies the IsNil predicate on the "tuesday" field.
-func TuesdayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldTuesday)))
-	})
-}
-
-// TuesdayNotNil applies the NotNil predicate on the "tuesday" field.
-func TuesdayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldTuesday)))
-	})
-}
-
 // WednesdayEQ applies the EQ predicate on the "wednesday" field.
 func WednesdayEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -870,20 +884,6 @@ func WednesdayEQ(v bool) predicate.EntCourse {
 func WednesdayNEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldWednesday), v))
-	})
-}
-
-// WednesdayIsNil applies the IsNil predicate on the "wednesday" field.
-func WednesdayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldWednesday)))
-	})
-}
-
-// WednesdayNotNil applies the NotNil predicate on the "wednesday" field.
-func WednesdayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldWednesday)))
 	})
 }
 
@@ -901,20 +901,6 @@ func ThursdayNEQ(v bool) predicate.EntCourse {
 	})
 }
 
-// ThursdayIsNil applies the IsNil predicate on the "thursday" field.
-func ThursdayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldThursday)))
-	})
-}
-
-// ThursdayNotNil applies the NotNil predicate on the "thursday" field.
-func ThursdayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldThursday)))
-	})
-}
-
 // FridayEQ applies the EQ predicate on the "friday" field.
 func FridayEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -926,20 +912,6 @@ func FridayEQ(v bool) predicate.EntCourse {
 func FridayNEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
 		s.Where(sql.NEQ(s.C(FieldFriday), v))
-	})
-}
-
-// FridayIsNil applies the IsNil predicate on the "friday" field.
-func FridayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldFriday)))
-	})
-}
-
-// FridayNotNil applies the NotNil predicate on the "friday" field.
-func FridayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldFriday)))
 	})
 }
 
@@ -957,20 +929,6 @@ func SaturdayNEQ(v bool) predicate.EntCourse {
 	})
 }
 
-// SaturdayIsNil applies the IsNil predicate on the "saturday" field.
-func SaturdayIsNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldSaturday)))
-	})
-}
-
-// SaturdayNotNil applies the NotNil predicate on the "saturday" field.
-func SaturdayNotNil() predicate.EntCourse {
-	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldSaturday)))
-	})
-}
-
 // SundayEQ applies the EQ predicate on the "sunday" field.
 func SundayEQ(v bool) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
@@ -985,17 +943,1095 @@ func SundayNEQ(v bool) predicate.EntCourse {
 	})
 }
 
-// SundayIsNil applies the IsNil predicate on the "sunday" field.
-func SundayIsNil() predicate.EntCourse {
+// MondayStartTimeEQ applies the EQ predicate on the "mondayStartTime" field.
+func MondayStartTimeEQ(v time.Time) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldSunday)))
+		s.Where(sql.EQ(s.C(FieldMondayStartTime), v))
 	})
 }
 
-// SundayNotNil applies the NotNil predicate on the "sunday" field.
-func SundayNotNil() predicate.EntCourse {
+// MondayStartTimeNEQ applies the NEQ predicate on the "mondayStartTime" field.
+func MondayStartTimeNEQ(v time.Time) predicate.EntCourse {
 	return predicate.EntCourse(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldSunday)))
+		s.Where(sql.NEQ(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayStartTimeIn applies the In predicate on the "mondayStartTime" field.
+func MondayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldMondayStartTime), v...))
+	})
+}
+
+// MondayStartTimeNotIn applies the NotIn predicate on the "mondayStartTime" field.
+func MondayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldMondayStartTime), v...))
+	})
+}
+
+// MondayStartTimeGT applies the GT predicate on the "mondayStartTime" field.
+func MondayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayStartTimeGTE applies the GTE predicate on the "mondayStartTime" field.
+func MondayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayStartTimeLT applies the LT predicate on the "mondayStartTime" field.
+func MondayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayStartTimeLTE applies the LTE predicate on the "mondayStartTime" field.
+func MondayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMondayStartTime), v))
+	})
+}
+
+// MondayStartTimeIsNil applies the IsNil predicate on the "mondayStartTime" field.
+func MondayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMondayStartTime)))
+	})
+}
+
+// MondayStartTimeNotNil applies the NotNil predicate on the "mondayStartTime" field.
+func MondayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMondayStartTime)))
+	})
+}
+
+// MondayEndTimeEQ applies the EQ predicate on the "mondayEndTime" field.
+func MondayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeNEQ applies the NEQ predicate on the "mondayEndTime" field.
+func MondayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeIn applies the In predicate on the "mondayEndTime" field.
+func MondayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldMondayEndTime), v...))
+	})
+}
+
+// MondayEndTimeNotIn applies the NotIn predicate on the "mondayEndTime" field.
+func MondayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldMondayEndTime), v...))
+	})
+}
+
+// MondayEndTimeGT applies the GT predicate on the "mondayEndTime" field.
+func MondayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeGTE applies the GTE predicate on the "mondayEndTime" field.
+func MondayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeLT applies the LT predicate on the "mondayEndTime" field.
+func MondayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeLTE applies the LTE predicate on the "mondayEndTime" field.
+func MondayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldMondayEndTime), v))
+	})
+}
+
+// MondayEndTimeIsNil applies the IsNil predicate on the "mondayEndTime" field.
+func MondayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldMondayEndTime)))
+	})
+}
+
+// MondayEndTimeNotNil applies the NotNil predicate on the "mondayEndTime" field.
+func MondayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldMondayEndTime)))
+	})
+}
+
+// TuesdayStartTimeEQ applies the EQ predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeNEQ applies the NEQ predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeIn applies the In predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTuesdayStartTime), v...))
+	})
+}
+
+// TuesdayStartTimeNotIn applies the NotIn predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTuesdayStartTime), v...))
+	})
+}
+
+// TuesdayStartTimeGT applies the GT predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeGTE applies the GTE predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeLT applies the LT predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeLTE applies the LTE predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTuesdayStartTime), v))
+	})
+}
+
+// TuesdayStartTimeIsNil applies the IsNil predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldTuesdayStartTime)))
+	})
+}
+
+// TuesdayStartTimeNotNil applies the NotNil predicate on the "tuesdayStartTime" field.
+func TuesdayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldTuesdayStartTime)))
+	})
+}
+
+// TuesdayEndTimeEQ applies the EQ predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeNEQ applies the NEQ predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeIn applies the In predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldTuesdayEndTime), v...))
+	})
+}
+
+// TuesdayEndTimeNotIn applies the NotIn predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldTuesdayEndTime), v...))
+	})
+}
+
+// TuesdayEndTimeGT applies the GT predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeGTE applies the GTE predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeLT applies the LT predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeLTE applies the LTE predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldTuesdayEndTime), v))
+	})
+}
+
+// TuesdayEndTimeIsNil applies the IsNil predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldTuesdayEndTime)))
+	})
+}
+
+// TuesdayEndTimeNotNil applies the NotNil predicate on the "tuesdayEndTime" field.
+func TuesdayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldTuesdayEndTime)))
+	})
+}
+
+// WednesdayStartTimeEQ applies the EQ predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeNEQ applies the NEQ predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeIn applies the In predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldWednesdayStartTime), v...))
+	})
+}
+
+// WednesdayStartTimeNotIn applies the NotIn predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldWednesdayStartTime), v...))
+	})
+}
+
+// WednesdayStartTimeGT applies the GT predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeGTE applies the GTE predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeLT applies the LT predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeLTE applies the LTE predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldWednesdayStartTime), v))
+	})
+}
+
+// WednesdayStartTimeIsNil applies the IsNil predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldWednesdayStartTime)))
+	})
+}
+
+// WednesdayStartTimeNotNil applies the NotNil predicate on the "wednesdayStartTime" field.
+func WednesdayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldWednesdayStartTime)))
+	})
+}
+
+// WednesdayEndTimeEQ applies the EQ predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeNEQ applies the NEQ predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeIn applies the In predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldWednesdayEndTime), v...))
+	})
+}
+
+// WednesdayEndTimeNotIn applies the NotIn predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldWednesdayEndTime), v...))
+	})
+}
+
+// WednesdayEndTimeGT applies the GT predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeGTE applies the GTE predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeLT applies the LT predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeLTE applies the LTE predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldWednesdayEndTime), v))
+	})
+}
+
+// WednesdayEndTimeIsNil applies the IsNil predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldWednesdayEndTime)))
+	})
+}
+
+// WednesdayEndTimeNotNil applies the NotNil predicate on the "wednesdayEndTime" field.
+func WednesdayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldWednesdayEndTime)))
+	})
+}
+
+// ThursdayStartTimeEQ applies the EQ predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeNEQ applies the NEQ predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeIn applies the In predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldThursdayStartTime), v...))
+	})
+}
+
+// ThursdayStartTimeNotIn applies the NotIn predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldThursdayStartTime), v...))
+	})
+}
+
+// ThursdayStartTimeGT applies the GT predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeGTE applies the GTE predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeLT applies the LT predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeLTE applies the LTE predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldThursdayStartTime), v))
+	})
+}
+
+// ThursdayStartTimeIsNil applies the IsNil predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldThursdayStartTime)))
+	})
+}
+
+// ThursdayStartTimeNotNil applies the NotNil predicate on the "thursdayStartTime" field.
+func ThursdayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldThursdayStartTime)))
+	})
+}
+
+// ThursdayEndTimeEQ applies the EQ predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeNEQ applies the NEQ predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeIn applies the In predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldThursdayEndTime), v...))
+	})
+}
+
+// ThursdayEndTimeNotIn applies the NotIn predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldThursdayEndTime), v...))
+	})
+}
+
+// ThursdayEndTimeGT applies the GT predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeGTE applies the GTE predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeLT applies the LT predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeLTE applies the LTE predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldThursdayEndTime), v))
+	})
+}
+
+// ThursdayEndTimeIsNil applies the IsNil predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldThursdayEndTime)))
+	})
+}
+
+// ThursdayEndTimeNotNil applies the NotNil predicate on the "thursdayEndTime" field.
+func ThursdayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldThursdayEndTime)))
+	})
+}
+
+// FridayStartTimeEQ applies the EQ predicate on the "fridayStartTime" field.
+func FridayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeNEQ applies the NEQ predicate on the "fridayStartTime" field.
+func FridayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeIn applies the In predicate on the "fridayStartTime" field.
+func FridayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldFridayStartTime), v...))
+	})
+}
+
+// FridayStartTimeNotIn applies the NotIn predicate on the "fridayStartTime" field.
+func FridayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldFridayStartTime), v...))
+	})
+}
+
+// FridayStartTimeGT applies the GT predicate on the "fridayStartTime" field.
+func FridayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeGTE applies the GTE predicate on the "fridayStartTime" field.
+func FridayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeLT applies the LT predicate on the "fridayStartTime" field.
+func FridayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeLTE applies the LTE predicate on the "fridayStartTime" field.
+func FridayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldFridayStartTime), v))
+	})
+}
+
+// FridayStartTimeIsNil applies the IsNil predicate on the "fridayStartTime" field.
+func FridayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldFridayStartTime)))
+	})
+}
+
+// FridayStartTimeNotNil applies the NotNil predicate on the "fridayStartTime" field.
+func FridayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldFridayStartTime)))
+	})
+}
+
+// FridayEndTimeEQ applies the EQ predicate on the "fridayEndTime" field.
+func FridayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeNEQ applies the NEQ predicate on the "fridayEndTime" field.
+func FridayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeIn applies the In predicate on the "fridayEndTime" field.
+func FridayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldFridayEndTime), v...))
+	})
+}
+
+// FridayEndTimeNotIn applies the NotIn predicate on the "fridayEndTime" field.
+func FridayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldFridayEndTime), v...))
+	})
+}
+
+// FridayEndTimeGT applies the GT predicate on the "fridayEndTime" field.
+func FridayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeGTE applies the GTE predicate on the "fridayEndTime" field.
+func FridayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeLT applies the LT predicate on the "fridayEndTime" field.
+func FridayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeLTE applies the LTE predicate on the "fridayEndTime" field.
+func FridayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldFridayEndTime), v))
+	})
+}
+
+// FridayEndTimeIsNil applies the IsNil predicate on the "fridayEndTime" field.
+func FridayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldFridayEndTime)))
+	})
+}
+
+// FridayEndTimeNotNil applies the NotNil predicate on the "fridayEndTime" field.
+func FridayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldFridayEndTime)))
+	})
+}
+
+// SaturdayStartTimeEQ applies the EQ predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeNEQ applies the NEQ predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeIn applies the In predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSaturdayStartTime), v...))
+	})
+}
+
+// SaturdayStartTimeNotIn applies the NotIn predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSaturdayStartTime), v...))
+	})
+}
+
+// SaturdayStartTimeGT applies the GT predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeGTE applies the GTE predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeLT applies the LT predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeLTE applies the LTE predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSaturdayStartTime), v))
+	})
+}
+
+// SaturdayStartTimeIsNil applies the IsNil predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldSaturdayStartTime)))
+	})
+}
+
+// SaturdayStartTimeNotNil applies the NotNil predicate on the "saturdayStartTime" field.
+func SaturdayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldSaturdayStartTime)))
+	})
+}
+
+// SaturdayEndTimeEQ applies the EQ predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeNEQ applies the NEQ predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeIn applies the In predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSaturdayEndTime), v...))
+	})
+}
+
+// SaturdayEndTimeNotIn applies the NotIn predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSaturdayEndTime), v...))
+	})
+}
+
+// SaturdayEndTimeGT applies the GT predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeGTE applies the GTE predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeLT applies the LT predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeLTE applies the LTE predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSaturdayEndTime), v))
+	})
+}
+
+// SaturdayEndTimeIsNil applies the IsNil predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldSaturdayEndTime)))
+	})
+}
+
+// SaturdayEndTimeNotNil applies the NotNil predicate on the "saturdayEndTime" field.
+func SaturdayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldSaturdayEndTime)))
+	})
+}
+
+// SundayStartTimeEQ applies the EQ predicate on the "sundayStartTime" field.
+func SundayStartTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeNEQ applies the NEQ predicate on the "sundayStartTime" field.
+func SundayStartTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeIn applies the In predicate on the "sundayStartTime" field.
+func SundayStartTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSundayStartTime), v...))
+	})
+}
+
+// SundayStartTimeNotIn applies the NotIn predicate on the "sundayStartTime" field.
+func SundayStartTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSundayStartTime), v...))
+	})
+}
+
+// SundayStartTimeGT applies the GT predicate on the "sundayStartTime" field.
+func SundayStartTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeGTE applies the GTE predicate on the "sundayStartTime" field.
+func SundayStartTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeLT applies the LT predicate on the "sundayStartTime" field.
+func SundayStartTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeLTE applies the LTE predicate on the "sundayStartTime" field.
+func SundayStartTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSundayStartTime), v))
+	})
+}
+
+// SundayStartTimeIsNil applies the IsNil predicate on the "sundayStartTime" field.
+func SundayStartTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldSundayStartTime)))
+	})
+}
+
+// SundayStartTimeNotNil applies the NotNil predicate on the "sundayStartTime" field.
+func SundayStartTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldSundayStartTime)))
+	})
+}
+
+// SundayEndTimeEQ applies the EQ predicate on the "sundayEndTime" field.
+func SundayEndTimeEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.EQ(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeNEQ applies the NEQ predicate on the "sundayEndTime" field.
+func SundayEndTimeNEQ(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NEQ(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeIn applies the In predicate on the "sundayEndTime" field.
+func SundayEndTimeIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.In(s.C(FieldSundayEndTime), v...))
+	})
+}
+
+// SundayEndTimeNotIn applies the NotIn predicate on the "sundayEndTime" field.
+func SundayEndTimeNotIn(vs ...time.Time) predicate.EntCourse {
+	v := make([]interface{}, len(vs))
+	for i := range v {
+		v[i] = vs[i]
+	}
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotIn(s.C(FieldSundayEndTime), v...))
+	})
+}
+
+// SundayEndTimeGT applies the GT predicate on the "sundayEndTime" field.
+func SundayEndTimeGT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GT(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeGTE applies the GTE predicate on the "sundayEndTime" field.
+func SundayEndTimeGTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.GTE(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeLT applies the LT predicate on the "sundayEndTime" field.
+func SundayEndTimeLT(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LT(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeLTE applies the LTE predicate on the "sundayEndTime" field.
+func SundayEndTimeLTE(v time.Time) predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.LTE(s.C(FieldSundayEndTime), v))
+	})
+}
+
+// SundayEndTimeIsNil applies the IsNil predicate on the "sundayEndTime" field.
+func SundayEndTimeIsNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.IsNull(s.C(FieldSundayEndTime)))
+	})
+}
+
+// SundayEndTimeNotNil applies the NotNil predicate on the "sundayEndTime" field.
+func SundayEndTimeNotNil() predicate.EntCourse {
+	return predicate.EntCourse(func(s *sql.Selector) {
+		s.Where(sql.NotNull(s.C(FieldSundayEndTime)))
 	})
 }
 

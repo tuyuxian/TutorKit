@@ -69,57 +69,15 @@ func (euu *EntUserUpdate) SetCountry(s string) *EntUserUpdate {
 	return euu
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (euu *EntUserUpdate) SetNillableCountry(s *string) *EntUserUpdate {
-	if s != nil {
-		euu.SetCountry(*s)
-	}
-	return euu
-}
-
-// ClearCountry clears the value of the "country" field.
-func (euu *EntUserUpdate) ClearCountry() *EntUserUpdate {
-	euu.mutation.ClearCountry()
-	return euu
-}
-
 // SetPhone sets the "phone" field.
 func (euu *EntUserUpdate) SetPhone(s string) *EntUserUpdate {
 	euu.mutation.SetPhone(s)
 	return euu
 }
 
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (euu *EntUserUpdate) SetNillablePhone(s *string) *EntUserUpdate {
-	if s != nil {
-		euu.SetPhone(*s)
-	}
-	return euu
-}
-
-// ClearPhone clears the value of the "phone" field.
-func (euu *EntUserUpdate) ClearPhone() *EntUserUpdate {
-	euu.mutation.ClearPhone()
-	return euu
-}
-
 // SetDateOfBirth sets the "dateOfBirth" field.
 func (euu *EntUserUpdate) SetDateOfBirth(t time.Time) *EntUserUpdate {
 	euu.mutation.SetDateOfBirth(t)
-	return euu
-}
-
-// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
-func (euu *EntUserUpdate) SetNillableDateOfBirth(t *time.Time) *EntUserUpdate {
-	if t != nil {
-		euu.SetDateOfBirth(*t)
-	}
-	return euu
-}
-
-// ClearDateOfBirth clears the value of the "dateOfBirth" field.
-func (euu *EntUserUpdate) ClearDateOfBirth() *EntUserUpdate {
-	euu.mutation.ClearDateOfBirth()
 	return euu
 }
 
@@ -749,6 +707,11 @@ func (euu *EntUserUpdate) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
 		}
 	}
+	if v, ok := euu.mutation.Country(); ok {
+		if err := entuser.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "EntUser.country": %w`, err)}
+		}
+	}
 	if v, ok := euu.mutation.Phone(); ok {
 		if err := entuser.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
@@ -817,12 +780,6 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entuser.FieldCountry,
 		})
 	}
-	if euu.mutation.CountryCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entuser.FieldCountry,
-		})
-	}
 	if value, ok := euu.mutation.Phone(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -830,22 +787,10 @@ func (euu *EntUserUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entuser.FieldPhone,
 		})
 	}
-	if euu.mutation.PhoneCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entuser.FieldPhone,
-		})
-	}
 	if value, ok := euu.mutation.DateOfBirth(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entuser.FieldDateOfBirth,
-		})
-	}
-	if euu.mutation.DateOfBirthCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entuser.FieldDateOfBirth,
 		})
 	}
@@ -1640,57 +1585,15 @@ func (euuo *EntUserUpdateOne) SetCountry(s string) *EntUserUpdateOne {
 	return euuo
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (euuo *EntUserUpdateOne) SetNillableCountry(s *string) *EntUserUpdateOne {
-	if s != nil {
-		euuo.SetCountry(*s)
-	}
-	return euuo
-}
-
-// ClearCountry clears the value of the "country" field.
-func (euuo *EntUserUpdateOne) ClearCountry() *EntUserUpdateOne {
-	euuo.mutation.ClearCountry()
-	return euuo
-}
-
 // SetPhone sets the "phone" field.
 func (euuo *EntUserUpdateOne) SetPhone(s string) *EntUserUpdateOne {
 	euuo.mutation.SetPhone(s)
 	return euuo
 }
 
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (euuo *EntUserUpdateOne) SetNillablePhone(s *string) *EntUserUpdateOne {
-	if s != nil {
-		euuo.SetPhone(*s)
-	}
-	return euuo
-}
-
-// ClearPhone clears the value of the "phone" field.
-func (euuo *EntUserUpdateOne) ClearPhone() *EntUserUpdateOne {
-	euuo.mutation.ClearPhone()
-	return euuo
-}
-
 // SetDateOfBirth sets the "dateOfBirth" field.
 func (euuo *EntUserUpdateOne) SetDateOfBirth(t time.Time) *EntUserUpdateOne {
 	euuo.mutation.SetDateOfBirth(t)
-	return euuo
-}
-
-// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
-func (euuo *EntUserUpdateOne) SetNillableDateOfBirth(t *time.Time) *EntUserUpdateOne {
-	if t != nil {
-		euuo.SetDateOfBirth(*t)
-	}
-	return euuo
-}
-
-// ClearDateOfBirth clears the value of the "dateOfBirth" field.
-func (euuo *EntUserUpdateOne) ClearDateOfBirth() *EntUserUpdateOne {
-	euuo.mutation.ClearDateOfBirth()
 	return euuo
 }
 
@@ -2333,6 +2236,11 @@ func (euuo *EntUserUpdateOne) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
 		}
 	}
+	if v, ok := euuo.mutation.Country(); ok {
+		if err := entuser.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "EntUser.country": %w`, err)}
+		}
+	}
 	if v, ok := euuo.mutation.Phone(); ok {
 		if err := entuser.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
@@ -2418,12 +2326,6 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 			Column: entuser.FieldCountry,
 		})
 	}
-	if euuo.mutation.CountryCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entuser.FieldCountry,
-		})
-	}
 	if value, ok := euuo.mutation.Phone(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeString,
@@ -2431,22 +2333,10 @@ func (euuo *EntUserUpdateOne) sqlSave(ctx context.Context) (_node *EntUser, err 
 			Column: entuser.FieldPhone,
 		})
 	}
-	if euuo.mutation.PhoneCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entuser.FieldPhone,
-		})
-	}
 	if value, ok := euuo.mutation.DateOfBirth(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entuser.FieldDateOfBirth,
-		})
-	}
-	if euuo.mutation.DateOfBirthCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entuser.FieldDateOfBirth,
 		})
 	}

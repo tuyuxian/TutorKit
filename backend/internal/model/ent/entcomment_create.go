@@ -70,14 +70,6 @@ func (ecc *EntCommentCreate) SetContent(s string) *EntCommentCreate {
 	return ecc
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (ecc *EntCommentCreate) SetNillableContent(s *string) *EntCommentCreate {
-	if s != nil {
-		ecc.SetContent(*s)
-	}
-	return ecc
-}
-
 // SetShare sets the "share" field.
 func (ecc *EntCommentCreate) SetShare(e entcomment.Share) *EntCommentCreate {
 	ecc.mutation.SetShare(e)
@@ -219,6 +211,10 @@ func (ecc *EntCommentCreate) defaults() {
 		v := entcomment.DefaultTimestamp
 		ecc.mutation.SetTimestamp(v)
 	}
+	if _, ok := ecc.mutation.Share(); !ok {
+		v := entcomment.DefaultShare
+		ecc.mutation.SetShare(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -231,6 +227,17 @@ func (ecc *EntCommentCreate) check() error {
 	}
 	if _, ok := ecc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntComment.timestamp"`)}
+	}
+	if _, ok := ecc.mutation.Content(); !ok {
+		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "EntComment.content"`)}
+	}
+	if v, ok := ecc.mutation.Content(); ok {
+		if err := entcomment.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntComment.content": %w`, err)}
+		}
+	}
+	if _, ok := ecc.mutation.Share(); !ok {
+		return &ValidationError{Name: "share", err: errors.New(`ent: missing required field "EntComment.share"`)}
 	}
 	if v, ok := ecc.mutation.Share(); ok {
 		if err := entcomment.ShareValidator(v); err != nil {

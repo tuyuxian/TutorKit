@@ -22,11 +22,14 @@ func (EntAttendance) Mixin() []ent.Mixin {
 func (EntAttendance) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("date"),
-		field.Time("startTime").Optional(),
-		field.Time("endTime").Optional(),
-		field.Time("day").Optional(),
-		field.String("note").Optional(),
-		field.Float("hours").Optional(),
+		field.Time("startTime"),
+		field.Time("endTime"),
+		field.Time("day"),
+		field.String("note").
+			Optional(),
+		field.Float("hours").
+			Positive().
+			Optional(),
 		field.Bool("checkedByTutor").
 			Default(false),
 		field.Bool("checkedByStudent").

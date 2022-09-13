@@ -38,12 +38,11 @@ func (EntUser) Fields() []ent.Field {
 		field.String("password").
 			NotEmpty(),
 		field.String("country").
-			Optional(),
+			NotEmpty(),
 		field.String("phone").
-			Optional().
+			NotEmpty().
 			Match(regexp.MustCompile(phoneRegex)),
-		field.Time("dateOfBirth").
-			Optional(),
+		field.Time("dateOfBirth"),
 		field.String("profilePictureUrl").
 			Optional(),
 		field.Bool("isTutor").

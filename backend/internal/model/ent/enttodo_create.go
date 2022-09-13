@@ -62,39 +62,15 @@ func (etc *EntTodoCreate) SetStartTime(t time.Time) *EntTodoCreate {
 	return etc
 }
 
-// SetNillableStartTime sets the "startTime" field if the given value is not nil.
-func (etc *EntTodoCreate) SetNillableStartTime(t *time.Time) *EntTodoCreate {
-	if t != nil {
-		etc.SetStartTime(*t)
-	}
-	return etc
-}
-
 // SetEndTime sets the "endTime" field.
 func (etc *EntTodoCreate) SetEndTime(t time.Time) *EntTodoCreate {
 	etc.mutation.SetEndTime(t)
 	return etc
 }
 
-// SetNillableEndTime sets the "endTime" field if the given value is not nil.
-func (etc *EntTodoCreate) SetNillableEndTime(t *time.Time) *EntTodoCreate {
-	if t != nil {
-		etc.SetEndTime(*t)
-	}
-	return etc
-}
-
 // SetDay sets the "day" field.
 func (etc *EntTodoCreate) SetDay(t time.Time) *EntTodoCreate {
 	etc.mutation.SetDay(t)
-	return etc
-}
-
-// SetNillableDay sets the "day" field if the given value is not nil.
-func (etc *EntTodoCreate) SetNillableDay(t *time.Time) *EntTodoCreate {
-	if t != nil {
-		etc.SetDay(*t)
-	}
 	return etc
 }
 
@@ -279,6 +255,15 @@ func (etc *EntTodoCreate) check() error {
 	}
 	if _, ok := etc.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "EntTodo.date"`)}
+	}
+	if _, ok := etc.mutation.StartTime(); !ok {
+		return &ValidationError{Name: "startTime", err: errors.New(`ent: missing required field "EntTodo.startTime"`)}
+	}
+	if _, ok := etc.mutation.EndTime(); !ok {
+		return &ValidationError{Name: "endTime", err: errors.New(`ent: missing required field "EntTodo.endTime"`)}
+	}
+	if _, ok := etc.mutation.Day(); !ok {
+		return &ValidationError{Name: "day", err: errors.New(`ent: missing required field "EntTodo.day"`)}
 	}
 	if _, ok := etc.mutation.Status(); !ok {
 		return &ValidationError{Name: "status", err: errors.New(`ent: missing required field "EntTodo.status"`)}

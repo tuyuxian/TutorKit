@@ -23,9 +23,16 @@ func (EntPost) Mixin() []ent.Mixin {
 // Fields of the EntPost.
 func (EntPost) Fields() []ent.Field {
 	return []ent.Field{
-		field.Time("timestamp").Default(time.Now()),
-		field.String("content").Optional(),
-		field.Enum("share").Values("public", "private").Optional(),
+		field.Time("timestamp").
+			Default(time.Now()),
+		field.String("content").
+			NotEmpty(),
+		field.Enum("share").
+			NamedValues(
+				"public", "PUBLIC",
+				"private", "PRIVATE",
+			).
+			Default("PUBLIC"),
 	}
 }
 

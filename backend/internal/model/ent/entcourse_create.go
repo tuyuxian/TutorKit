@@ -64,25 +64,9 @@ func (ecc *EntCourseCreate) SetCourseUrl(s string) *EntCourseCreate {
 	return ecc
 }
 
-// SetNillableCourseUrl sets the "courseUrl" field if the given value is not nil.
-func (ecc *EntCourseCreate) SetNillableCourseUrl(s *string) *EntCourseCreate {
-	if s != nil {
-		ecc.SetCourseUrl(*s)
-	}
-	return ecc
-}
-
 // SetPaymentMethod sets the "paymentMethod" field.
 func (ecc *EntCourseCreate) SetPaymentMethod(em entcourse.PaymentMethod) *EntCourseCreate {
 	ecc.mutation.SetPaymentMethod(em)
-	return ecc
-}
-
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
-func (ecc *EntCourseCreate) SetNillablePaymentMethod(em *entcourse.PaymentMethod) *EntCourseCreate {
-	if em != nil {
-		ecc.SetPaymentMethod(*em)
-	}
 	return ecc
 }
 
@@ -106,25 +90,9 @@ func (ecc *EntCourseCreate) SetStartDate(t time.Time) *EntCourseCreate {
 	return ecc
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
-func (ecc *EntCourseCreate) SetNillableStartDate(t *time.Time) *EntCourseCreate {
-	if t != nil {
-		ecc.SetStartDate(*t)
-	}
-	return ecc
-}
-
 // SetEndDate sets the "endDate" field.
 func (ecc *EntCourseCreate) SetEndDate(t time.Time) *EntCourseCreate {
 	ecc.mutation.SetEndDate(t)
-	return ecc
-}
-
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ecc *EntCourseCreate) SetNillableEndDate(t *time.Time) *EntCourseCreate {
-	if t != nil {
-		ecc.SetEndDate(*t)
-	}
 	return ecc
 }
 
@@ -222,6 +190,202 @@ func (ecc *EntCourseCreate) SetSunday(b bool) *EntCourseCreate {
 func (ecc *EntCourseCreate) SetNillableSunday(b *bool) *EntCourseCreate {
 	if b != nil {
 		ecc.SetSunday(*b)
+	}
+	return ecc
+}
+
+// SetMondayStartTime sets the "mondayStartTime" field.
+func (ecc *EntCourseCreate) SetMondayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetMondayStartTime(t)
+	return ecc
+}
+
+// SetNillableMondayStartTime sets the "mondayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableMondayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetMondayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetMondayEndTime sets the "mondayEndTime" field.
+func (ecc *EntCourseCreate) SetMondayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetMondayEndTime(t)
+	return ecc
+}
+
+// SetNillableMondayEndTime sets the "mondayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableMondayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetMondayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetTuesdayStartTime sets the "tuesdayStartTime" field.
+func (ecc *EntCourseCreate) SetTuesdayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetTuesdayStartTime(t)
+	return ecc
+}
+
+// SetNillableTuesdayStartTime sets the "tuesdayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableTuesdayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetTuesdayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetTuesdayEndTime sets the "tuesdayEndTime" field.
+func (ecc *EntCourseCreate) SetTuesdayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetTuesdayEndTime(t)
+	return ecc
+}
+
+// SetNillableTuesdayEndTime sets the "tuesdayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableTuesdayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetTuesdayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetWednesdayStartTime sets the "wednesdayStartTime" field.
+func (ecc *EntCourseCreate) SetWednesdayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetWednesdayStartTime(t)
+	return ecc
+}
+
+// SetNillableWednesdayStartTime sets the "wednesdayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableWednesdayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetWednesdayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetWednesdayEndTime sets the "wednesdayEndTime" field.
+func (ecc *EntCourseCreate) SetWednesdayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetWednesdayEndTime(t)
+	return ecc
+}
+
+// SetNillableWednesdayEndTime sets the "wednesdayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableWednesdayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetWednesdayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetThursdayStartTime sets the "thursdayStartTime" field.
+func (ecc *EntCourseCreate) SetThursdayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetThursdayStartTime(t)
+	return ecc
+}
+
+// SetNillableThursdayStartTime sets the "thursdayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableThursdayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetThursdayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetThursdayEndTime sets the "thursdayEndTime" field.
+func (ecc *EntCourseCreate) SetThursdayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetThursdayEndTime(t)
+	return ecc
+}
+
+// SetNillableThursdayEndTime sets the "thursdayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableThursdayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetThursdayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetFridayStartTime sets the "fridayStartTime" field.
+func (ecc *EntCourseCreate) SetFridayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetFridayStartTime(t)
+	return ecc
+}
+
+// SetNillableFridayStartTime sets the "fridayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableFridayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetFridayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetFridayEndTime sets the "fridayEndTime" field.
+func (ecc *EntCourseCreate) SetFridayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetFridayEndTime(t)
+	return ecc
+}
+
+// SetNillableFridayEndTime sets the "fridayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableFridayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetFridayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetSaturdayStartTime sets the "saturdayStartTime" field.
+func (ecc *EntCourseCreate) SetSaturdayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetSaturdayStartTime(t)
+	return ecc
+}
+
+// SetNillableSaturdayStartTime sets the "saturdayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableSaturdayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetSaturdayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetSaturdayEndTime sets the "saturdayEndTime" field.
+func (ecc *EntCourseCreate) SetSaturdayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetSaturdayEndTime(t)
+	return ecc
+}
+
+// SetNillableSaturdayEndTime sets the "saturdayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableSaturdayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetSaturdayEndTime(*t)
+	}
+	return ecc
+}
+
+// SetSundayStartTime sets the "sundayStartTime" field.
+func (ecc *EntCourseCreate) SetSundayStartTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetSundayStartTime(t)
+	return ecc
+}
+
+// SetNillableSundayStartTime sets the "sundayStartTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableSundayStartTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetSundayStartTime(*t)
+	}
+	return ecc
+}
+
+// SetSundayEndTime sets the "sundayEndTime" field.
+func (ecc *EntCourseCreate) SetSundayEndTime(t time.Time) *EntCourseCreate {
+	ecc.mutation.SetSundayEndTime(t)
+	return ecc
+}
+
+// SetNillableSundayEndTime sets the "sundayEndTime" field if the given value is not nil.
+func (ecc *EntCourseCreate) SetNillableSundayEndTime(t *time.Time) *EntCourseCreate {
+	if t != nil {
+		ecc.SetSundayEndTime(*t)
 	}
 	return ecc
 }
@@ -386,6 +550,34 @@ func (ecc *EntCourseCreate) defaults() {
 		v := entcourse.DefaultUpdatedAt()
 		ecc.mutation.SetUpdatedAt(v)
 	}
+	if _, ok := ecc.mutation.Monday(); !ok {
+		v := entcourse.DefaultMonday
+		ecc.mutation.SetMonday(v)
+	}
+	if _, ok := ecc.mutation.Tuesday(); !ok {
+		v := entcourse.DefaultTuesday
+		ecc.mutation.SetTuesday(v)
+	}
+	if _, ok := ecc.mutation.Wednesday(); !ok {
+		v := entcourse.DefaultWednesday
+		ecc.mutation.SetWednesday(v)
+	}
+	if _, ok := ecc.mutation.Thursday(); !ok {
+		v := entcourse.DefaultThursday
+		ecc.mutation.SetThursday(v)
+	}
+	if _, ok := ecc.mutation.Friday(); !ok {
+		v := entcourse.DefaultFriday
+		ecc.mutation.SetFriday(v)
+	}
+	if _, ok := ecc.mutation.Saturday(); !ok {
+		v := entcourse.DefaultSaturday
+		ecc.mutation.SetSaturday(v)
+	}
+	if _, ok := ecc.mutation.Sunday(); !ok {
+		v := entcourse.DefaultSunday
+		ecc.mutation.SetSunday(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -404,10 +596,53 @@ func (ecc *EntCourseCreate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntCourse.name": %w`, err)}
 		}
 	}
+	if _, ok := ecc.mutation.CourseUrl(); !ok {
+		return &ValidationError{Name: "courseUrl", err: errors.New(`ent: missing required field "EntCourse.courseUrl"`)}
+	}
+	if v, ok := ecc.mutation.CourseUrl(); ok {
+		if err := entcourse.CourseUrlValidator(v); err != nil {
+			return &ValidationError{Name: "courseUrl", err: fmt.Errorf(`ent: validator failed for field "EntCourse.courseUrl": %w`, err)}
+		}
+	}
+	if _, ok := ecc.mutation.PaymentMethod(); !ok {
+		return &ValidationError{Name: "paymentMethod", err: errors.New(`ent: missing required field "EntCourse.paymentMethod"`)}
+	}
 	if v, ok := ecc.mutation.PaymentMethod(); ok {
 		if err := entcourse.PaymentMethodValidator(v); err != nil {
 			return &ValidationError{Name: "paymentMethod", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentMethod": %w`, err)}
 		}
+	}
+	if v, ok := ecc.mutation.PaymentAmount(); ok {
+		if err := entcourse.PaymentAmountValidator(v); err != nil {
+			return &ValidationError{Name: "paymentAmount", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentAmount": %w`, err)}
+		}
+	}
+	if _, ok := ecc.mutation.StartDate(); !ok {
+		return &ValidationError{Name: "startDate", err: errors.New(`ent: missing required field "EntCourse.startDate"`)}
+	}
+	if _, ok := ecc.mutation.EndDate(); !ok {
+		return &ValidationError{Name: "endDate", err: errors.New(`ent: missing required field "EntCourse.endDate"`)}
+	}
+	if _, ok := ecc.mutation.Monday(); !ok {
+		return &ValidationError{Name: "monday", err: errors.New(`ent: missing required field "EntCourse.monday"`)}
+	}
+	if _, ok := ecc.mutation.Tuesday(); !ok {
+		return &ValidationError{Name: "tuesday", err: errors.New(`ent: missing required field "EntCourse.tuesday"`)}
+	}
+	if _, ok := ecc.mutation.Wednesday(); !ok {
+		return &ValidationError{Name: "wednesday", err: errors.New(`ent: missing required field "EntCourse.wednesday"`)}
+	}
+	if _, ok := ecc.mutation.Thursday(); !ok {
+		return &ValidationError{Name: "thursday", err: errors.New(`ent: missing required field "EntCourse.thursday"`)}
+	}
+	if _, ok := ecc.mutation.Friday(); !ok {
+		return &ValidationError{Name: "friday", err: errors.New(`ent: missing required field "EntCourse.friday"`)}
+	}
+	if _, ok := ecc.mutation.Saturday(); !ok {
+		return &ValidationError{Name: "saturday", err: errors.New(`ent: missing required field "EntCourse.saturday"`)}
+	}
+	if _, ok := ecc.mutation.Sunday(); !ok {
+		return &ValidationError{Name: "sunday", err: errors.New(`ent: missing required field "EntCourse.sunday"`)}
 	}
 	return nil
 }
@@ -555,6 +790,118 @@ func (ecc *EntCourseCreate) createSpec() (*EntCourse, *sqlgraph.CreateSpec) {
 			Column: entcourse.FieldSunday,
 		})
 		_node.Sunday = value
+	}
+	if value, ok := ecc.mutation.MondayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayStartTime,
+		})
+		_node.MondayStartTime = value
+	}
+	if value, ok := ecc.mutation.MondayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayEndTime,
+		})
+		_node.MondayEndTime = value
+	}
+	if value, ok := ecc.mutation.TuesdayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayStartTime,
+		})
+		_node.TuesdayStartTime = value
+	}
+	if value, ok := ecc.mutation.TuesdayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayEndTime,
+		})
+		_node.TuesdayEndTime = value
+	}
+	if value, ok := ecc.mutation.WednesdayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayStartTime,
+		})
+		_node.WednesdayStartTime = value
+	}
+	if value, ok := ecc.mutation.WednesdayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayEndTime,
+		})
+		_node.WednesdayEndTime = value
+	}
+	if value, ok := ecc.mutation.ThursdayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayStartTime,
+		})
+		_node.ThursdayStartTime = value
+	}
+	if value, ok := ecc.mutation.ThursdayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayEndTime,
+		})
+		_node.ThursdayEndTime = value
+	}
+	if value, ok := ecc.mutation.FridayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayStartTime,
+		})
+		_node.FridayStartTime = value
+	}
+	if value, ok := ecc.mutation.FridayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayEndTime,
+		})
+		_node.FridayEndTime = value
+	}
+	if value, ok := ecc.mutation.SaturdayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayStartTime,
+		})
+		_node.SaturdayStartTime = value
+	}
+	if value, ok := ecc.mutation.SaturdayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayEndTime,
+		})
+		_node.SaturdayEndTime = value
+	}
+	if value, ok := ecc.mutation.SundayStartTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayStartTime,
+		})
+		_node.SundayStartTime = value
+	}
+	if value, ok := ecc.mutation.SundayEndTime(); ok {
+		_spec.Fields = append(_spec.Fields, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayEndTime,
+		})
+		_node.SundayEndTime = value
 	}
 	if nodes := ecc.mutation.TodoIDs(); len(nodes) > 0 {
 		edge := &sqlgraph.EdgeSpec{

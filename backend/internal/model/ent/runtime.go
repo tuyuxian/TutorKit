@@ -32,6 +32,10 @@ func init() {
 	entattendance.DefaultUpdatedAt = entattendanceDescUpdatedAt.Default.(func() time.Time)
 	// entattendance.UpdateDefaultUpdatedAt holds the default value on update for the updatedAt field.
 	entattendance.UpdateDefaultUpdatedAt = entattendanceDescUpdatedAt.UpdateDefault.(func() time.Time)
+	// entattendanceDescHours is the schema descriptor for hours field.
+	entattendanceDescHours := entattendanceFields[5].Descriptor()
+	// entattendance.HoursValidator is a validator for the "hours" field. It is called by the builders before save.
+	entattendance.HoursValidator = entattendanceDescHours.Validators[0].(func(float64) error)
 	// entattendanceDescCheckedByTutor is the schema descriptor for checkedByTutor field.
 	entattendanceDescCheckedByTutor := entattendanceFields[6].Descriptor()
 	// entattendance.DefaultCheckedByTutor holds the default value on creation for the checkedByTutor field.
@@ -63,6 +67,10 @@ func init() {
 	entcommentDescTimestamp := entcommentFields[0].Descriptor()
 	// entcomment.DefaultTimestamp holds the default value on creation for the timestamp field.
 	entcomment.DefaultTimestamp = entcommentDescTimestamp.Default.(time.Time)
+	// entcommentDescContent is the schema descriptor for content field.
+	entcommentDescContent := entcommentFields[1].Descriptor()
+	// entcomment.ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	entcomment.ContentValidator = entcommentDescContent.Validators[0].(func(string) error)
 	entcourseMixin := schema.EntCourse{}.Mixin()
 	entcourseMixinFields0 := entcourseMixin[0].Fields()
 	_ = entcourseMixinFields0
@@ -82,6 +90,42 @@ func init() {
 	entcourseDescName := entcourseFields[0].Descriptor()
 	// entcourse.NameValidator is a validator for the "name" field. It is called by the builders before save.
 	entcourse.NameValidator = entcourseDescName.Validators[0].(func(string) error)
+	// entcourseDescCourseUrl is the schema descriptor for courseUrl field.
+	entcourseDescCourseUrl := entcourseFields[1].Descriptor()
+	// entcourse.CourseUrlValidator is a validator for the "courseUrl" field. It is called by the builders before save.
+	entcourse.CourseUrlValidator = entcourseDescCourseUrl.Validators[0].(func(string) error)
+	// entcourseDescPaymentAmount is the schema descriptor for paymentAmount field.
+	entcourseDescPaymentAmount := entcourseFields[3].Descriptor()
+	// entcourse.PaymentAmountValidator is a validator for the "paymentAmount" field. It is called by the builders before save.
+	entcourse.PaymentAmountValidator = entcourseDescPaymentAmount.Validators[0].(func(float64) error)
+	// entcourseDescMonday is the schema descriptor for monday field.
+	entcourseDescMonday := entcourseFields[6].Descriptor()
+	// entcourse.DefaultMonday holds the default value on creation for the monday field.
+	entcourse.DefaultMonday = entcourseDescMonday.Default.(bool)
+	// entcourseDescTuesday is the schema descriptor for tuesday field.
+	entcourseDescTuesday := entcourseFields[7].Descriptor()
+	// entcourse.DefaultTuesday holds the default value on creation for the tuesday field.
+	entcourse.DefaultTuesday = entcourseDescTuesday.Default.(bool)
+	// entcourseDescWednesday is the schema descriptor for wednesday field.
+	entcourseDescWednesday := entcourseFields[8].Descriptor()
+	// entcourse.DefaultWednesday holds the default value on creation for the wednesday field.
+	entcourse.DefaultWednesday = entcourseDescWednesday.Default.(bool)
+	// entcourseDescThursday is the schema descriptor for thursday field.
+	entcourseDescThursday := entcourseFields[9].Descriptor()
+	// entcourse.DefaultThursday holds the default value on creation for the thursday field.
+	entcourse.DefaultThursday = entcourseDescThursday.Default.(bool)
+	// entcourseDescFriday is the schema descriptor for friday field.
+	entcourseDescFriday := entcourseFields[10].Descriptor()
+	// entcourse.DefaultFriday holds the default value on creation for the friday field.
+	entcourse.DefaultFriday = entcourseDescFriday.Default.(bool)
+	// entcourseDescSaturday is the schema descriptor for saturday field.
+	entcourseDescSaturday := entcourseFields[11].Descriptor()
+	// entcourse.DefaultSaturday holds the default value on creation for the saturday field.
+	entcourse.DefaultSaturday = entcourseDescSaturday.Default.(bool)
+	// entcourseDescSunday is the schema descriptor for sunday field.
+	entcourseDescSunday := entcourseFields[12].Descriptor()
+	// entcourse.DefaultSunday holds the default value on creation for the sunday field.
+	entcourse.DefaultSunday = entcourseDescSunday.Default.(bool)
 	entpostMixin := schema.EntPost{}.Mixin()
 	entpostMixinFields0 := entpostMixin[0].Fields()
 	_ = entpostMixinFields0
@@ -101,6 +145,10 @@ func init() {
 	entpostDescTimestamp := entpostFields[0].Descriptor()
 	// entpost.DefaultTimestamp holds the default value on creation for the timestamp field.
 	entpost.DefaultTimestamp = entpostDescTimestamp.Default.(time.Time)
+	// entpostDescContent is the schema descriptor for content field.
+	entpostDescContent := entpostFields[1].Descriptor()
+	// entpost.ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	entpost.ContentValidator = entpostDescContent.Validators[0].(func(string) error)
 	enttodoMixin := schema.EntTodo{}.Mixin()
 	enttodoMixinFields0 := enttodoMixin[0].Fields()
 	_ = enttodoMixinFields0
@@ -189,10 +237,28 @@ func init() {
 	entuserDescPassword := entuserFields[3].Descriptor()
 	// entuser.PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	entuser.PasswordValidator = entuserDescPassword.Validators[0].(func(string) error)
+	// entuserDescCountry is the schema descriptor for country field.
+	entuserDescCountry := entuserFields[4].Descriptor()
+	// entuser.CountryValidator is a validator for the "country" field. It is called by the builders before save.
+	entuser.CountryValidator = entuserDescCountry.Validators[0].(func(string) error)
 	// entuserDescPhone is the schema descriptor for phone field.
 	entuserDescPhone := entuserFields[5].Descriptor()
 	// entuser.PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
-	entuser.PhoneValidator = entuserDescPhone.Validators[0].(func(string) error)
+	entuser.PhoneValidator = func() func(string) error {
+		validators := entuserDescPhone.Validators
+		fns := [...]func(string) error{
+			validators[0].(func(string) error),
+			validators[1].(func(string) error),
+		}
+		return func(phone string) error {
+			for _, fn := range fns {
+				if err := fn(phone); err != nil {
+					return err
+				}
+			}
+			return nil
+		}
+	}()
 	// entuserDescIsTutor is the schema descriptor for isTutor field.
 	entuserDescIsTutor := entuserFields[8].Descriptor()
 	// entuser.DefaultIsTutor holds the default value on creation for the isTutor field.

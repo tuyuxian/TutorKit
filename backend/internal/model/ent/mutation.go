@@ -301,22 +301,9 @@ func (m *EntAttendanceMutation) OldStartTime(ctx context.Context) (v time.Time, 
 	return oldValue.StartTime, nil
 }
 
-// ClearStartTime clears the value of the "startTime" field.
-func (m *EntAttendanceMutation) ClearStartTime() {
-	m.startTime = nil
-	m.clearedFields[entattendance.FieldStartTime] = struct{}{}
-}
-
-// StartTimeCleared returns if the "startTime" field was cleared in this mutation.
-func (m *EntAttendanceMutation) StartTimeCleared() bool {
-	_, ok := m.clearedFields[entattendance.FieldStartTime]
-	return ok
-}
-
 // ResetStartTime resets all changes to the "startTime" field.
 func (m *EntAttendanceMutation) ResetStartTime() {
 	m.startTime = nil
-	delete(m.clearedFields, entattendance.FieldStartTime)
 }
 
 // SetEndTime sets the "endTime" field.
@@ -350,22 +337,9 @@ func (m *EntAttendanceMutation) OldEndTime(ctx context.Context) (v time.Time, er
 	return oldValue.EndTime, nil
 }
 
-// ClearEndTime clears the value of the "endTime" field.
-func (m *EntAttendanceMutation) ClearEndTime() {
-	m.endTime = nil
-	m.clearedFields[entattendance.FieldEndTime] = struct{}{}
-}
-
-// EndTimeCleared returns if the "endTime" field was cleared in this mutation.
-func (m *EntAttendanceMutation) EndTimeCleared() bool {
-	_, ok := m.clearedFields[entattendance.FieldEndTime]
-	return ok
-}
-
 // ResetEndTime resets all changes to the "endTime" field.
 func (m *EntAttendanceMutation) ResetEndTime() {
 	m.endTime = nil
-	delete(m.clearedFields, entattendance.FieldEndTime)
 }
 
 // SetDay sets the "day" field.
@@ -399,22 +373,9 @@ func (m *EntAttendanceMutation) OldDay(ctx context.Context) (v time.Time, err er
 	return oldValue.Day, nil
 }
 
-// ClearDay clears the value of the "day" field.
-func (m *EntAttendanceMutation) ClearDay() {
-	m.day = nil
-	m.clearedFields[entattendance.FieldDay] = struct{}{}
-}
-
-// DayCleared returns if the "day" field was cleared in this mutation.
-func (m *EntAttendanceMutation) DayCleared() bool {
-	_, ok := m.clearedFields[entattendance.FieldDay]
-	return ok
-}
-
 // ResetDay resets all changes to the "day" field.
 func (m *EntAttendanceMutation) ResetDay() {
 	m.day = nil
-	delete(m.clearedFields, entattendance.FieldDay)
 }
 
 // SetNote sets the "note" field.
@@ -967,15 +928,6 @@ func (m *EntAttendanceMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *EntAttendanceMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(entattendance.FieldStartTime) {
-		fields = append(fields, entattendance.FieldStartTime)
-	}
-	if m.FieldCleared(entattendance.FieldEndTime) {
-		fields = append(fields, entattendance.FieldEndTime)
-	}
-	if m.FieldCleared(entattendance.FieldDay) {
-		fields = append(fields, entattendance.FieldDay)
-	}
 	if m.FieldCleared(entattendance.FieldNote) {
 		fields = append(fields, entattendance.FieldNote)
 	}
@@ -996,15 +948,6 @@ func (m *EntAttendanceMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *EntAttendanceMutation) ClearField(name string) error {
 	switch name {
-	case entattendance.FieldStartTime:
-		m.ClearStartTime()
-		return nil
-	case entattendance.FieldEndTime:
-		m.ClearEndTime()
-		return nil
-	case entattendance.FieldDay:
-		m.ClearDay()
-		return nil
 	case entattendance.FieldNote:
 		m.ClearNote()
 		return nil
@@ -1408,22 +1351,9 @@ func (m *EntCommentMutation) OldContent(ctx context.Context) (v string, err erro
 	return oldValue.Content, nil
 }
 
-// ClearContent clears the value of the "content" field.
-func (m *EntCommentMutation) ClearContent() {
-	m.content = nil
-	m.clearedFields[entcomment.FieldContent] = struct{}{}
-}
-
-// ContentCleared returns if the "content" field was cleared in this mutation.
-func (m *EntCommentMutation) ContentCleared() bool {
-	_, ok := m.clearedFields[entcomment.FieldContent]
-	return ok
-}
-
 // ResetContent resets all changes to the "content" field.
 func (m *EntCommentMutation) ResetContent() {
 	m.content = nil
-	delete(m.clearedFields, entcomment.FieldContent)
 }
 
 // SetShare sets the "share" field.
@@ -1457,22 +1387,9 @@ func (m *EntCommentMutation) OldShare(ctx context.Context) (v entcomment.Share, 
 	return oldValue.Share, nil
 }
 
-// ClearShare clears the value of the "share" field.
-func (m *EntCommentMutation) ClearShare() {
-	m.share = nil
-	m.clearedFields[entcomment.FieldShare] = struct{}{}
-}
-
-// ShareCleared returns if the "share" field was cleared in this mutation.
-func (m *EntCommentMutation) ShareCleared() bool {
-	_, ok := m.clearedFields[entcomment.FieldShare]
-	return ok
-}
-
 // ResetShare resets all changes to the "share" field.
 func (m *EntCommentMutation) ResetShare() {
 	m.share = nil
-	delete(m.clearedFields, entcomment.FieldShare)
 }
 
 // SetBelongsToID sets the "belongsTo" edge to the EntPost entity by id.
@@ -1698,14 +1615,7 @@ func (m *EntCommentMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntCommentMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(entcomment.FieldContent) {
-		fields = append(fields, entcomment.FieldContent)
-	}
-	if m.FieldCleared(entcomment.FieldShare) {
-		fields = append(fields, entcomment.FieldShare)
-	}
-	return fields
+	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -1718,14 +1628,6 @@ func (m *EntCommentMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntCommentMutation) ClearField(name string) error {
-	switch name {
-	case entcomment.FieldContent:
-		m.ClearContent()
-		return nil
-	case entcomment.FieldShare:
-		m.ClearShare()
-		return nil
-	}
 	return fmt.Errorf("unknown EntComment nullable field %s", name)
 }
 
@@ -1849,44 +1751,58 @@ func (m *EntCommentMutation) ResetEdge(name string) error {
 // EntCourseMutation represents an operation that mutates the EntCourse nodes in the graph.
 type EntCourseMutation struct {
 	config
-	op                Op
-	typ               string
-	id                *int
-	createdAt         *time.Time
-	updatedAt         *time.Time
-	name              *string
-	courseUrl         *string
-	paymentMethod     *entcourse.PaymentMethod
-	paymentAmount     *float64
-	addpaymentAmount  *float64
-	startDate         *time.Time
-	endDate           *time.Time
-	monday            *bool
-	tuesday           *bool
-	wednesday         *bool
-	thursday          *bool
-	friday            *bool
-	saturday          *bool
-	sunday            *bool
-	clearedFields     map[string]struct{}
-	todo              map[int]struct{}
-	removedtodo       map[int]struct{}
-	clearedtodo       bool
-	attendance        map[int]struct{}
-	removedattendance map[int]struct{}
-	clearedattendance bool
-	post              map[int]struct{}
-	removedpost       map[int]struct{}
-	clearedpost       bool
-	ownedBy           map[int]struct{}
-	removedownedBy    map[int]struct{}
-	clearedownedBy    bool
-	joinedBy          map[int]struct{}
-	removedjoinedBy   map[int]struct{}
-	clearedjoinedBy   bool
-	done              bool
-	oldValue          func(context.Context) (*EntCourse, error)
-	predicates        []predicate.EntCourse
+	op                 Op
+	typ                string
+	id                 *int
+	createdAt          *time.Time
+	updatedAt          *time.Time
+	name               *string
+	courseUrl          *string
+	paymentMethod      *entcourse.PaymentMethod
+	paymentAmount      *float64
+	addpaymentAmount   *float64
+	startDate          *time.Time
+	endDate            *time.Time
+	monday             *bool
+	tuesday            *bool
+	wednesday          *bool
+	thursday           *bool
+	friday             *bool
+	saturday           *bool
+	sunday             *bool
+	mondayStartTime    *time.Time
+	mondayEndTime      *time.Time
+	tuesdayStartTime   *time.Time
+	tuesdayEndTime     *time.Time
+	wednesdayStartTime *time.Time
+	wednesdayEndTime   *time.Time
+	thursdayStartTime  *time.Time
+	thursdayEndTime    *time.Time
+	fridayStartTime    *time.Time
+	fridayEndTime      *time.Time
+	saturdayStartTime  *time.Time
+	saturdayEndTime    *time.Time
+	sundayStartTime    *time.Time
+	sundayEndTime      *time.Time
+	clearedFields      map[string]struct{}
+	todo               map[int]struct{}
+	removedtodo        map[int]struct{}
+	clearedtodo        bool
+	attendance         map[int]struct{}
+	removedattendance  map[int]struct{}
+	clearedattendance  bool
+	post               map[int]struct{}
+	removedpost        map[int]struct{}
+	clearedpost        bool
+	ownedBy            map[int]struct{}
+	removedownedBy     map[int]struct{}
+	clearedownedBy     bool
+	joinedBy           map[int]struct{}
+	removedjoinedBy    map[int]struct{}
+	clearedjoinedBy    bool
+	done               bool
+	oldValue           func(context.Context) (*EntCourse, error)
+	predicates         []predicate.EntCourse
 }
 
 var _ ent.Mutation = (*EntCourseMutation)(nil)
@@ -2126,22 +2042,9 @@ func (m *EntCourseMutation) OldCourseUrl(ctx context.Context) (v string, err err
 	return oldValue.CourseUrl, nil
 }
 
-// ClearCourseUrl clears the value of the "courseUrl" field.
-func (m *EntCourseMutation) ClearCourseUrl() {
-	m.courseUrl = nil
-	m.clearedFields[entcourse.FieldCourseUrl] = struct{}{}
-}
-
-// CourseUrlCleared returns if the "courseUrl" field was cleared in this mutation.
-func (m *EntCourseMutation) CourseUrlCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldCourseUrl]
-	return ok
-}
-
 // ResetCourseUrl resets all changes to the "courseUrl" field.
 func (m *EntCourseMutation) ResetCourseUrl() {
 	m.courseUrl = nil
-	delete(m.clearedFields, entcourse.FieldCourseUrl)
 }
 
 // SetPaymentMethod sets the "paymentMethod" field.
@@ -2175,22 +2078,9 @@ func (m *EntCourseMutation) OldPaymentMethod(ctx context.Context) (v entcourse.P
 	return oldValue.PaymentMethod, nil
 }
 
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
-func (m *EntCourseMutation) ClearPaymentMethod() {
-	m.paymentMethod = nil
-	m.clearedFields[entcourse.FieldPaymentMethod] = struct{}{}
-}
-
-// PaymentMethodCleared returns if the "paymentMethod" field was cleared in this mutation.
-func (m *EntCourseMutation) PaymentMethodCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldPaymentMethod]
-	return ok
-}
-
 // ResetPaymentMethod resets all changes to the "paymentMethod" field.
 func (m *EntCourseMutation) ResetPaymentMethod() {
 	m.paymentMethod = nil
-	delete(m.clearedFields, entcourse.FieldPaymentMethod)
 }
 
 // SetPaymentAmount sets the "paymentAmount" field.
@@ -2294,22 +2184,9 @@ func (m *EntCourseMutation) OldStartDate(ctx context.Context) (v time.Time, err 
 	return oldValue.StartDate, nil
 }
 
-// ClearStartDate clears the value of the "startDate" field.
-func (m *EntCourseMutation) ClearStartDate() {
-	m.startDate = nil
-	m.clearedFields[entcourse.FieldStartDate] = struct{}{}
-}
-
-// StartDateCleared returns if the "startDate" field was cleared in this mutation.
-func (m *EntCourseMutation) StartDateCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldStartDate]
-	return ok
-}
-
 // ResetStartDate resets all changes to the "startDate" field.
 func (m *EntCourseMutation) ResetStartDate() {
 	m.startDate = nil
-	delete(m.clearedFields, entcourse.FieldStartDate)
 }
 
 // SetEndDate sets the "endDate" field.
@@ -2343,22 +2220,9 @@ func (m *EntCourseMutation) OldEndDate(ctx context.Context) (v time.Time, err er
 	return oldValue.EndDate, nil
 }
 
-// ClearEndDate clears the value of the "endDate" field.
-func (m *EntCourseMutation) ClearEndDate() {
-	m.endDate = nil
-	m.clearedFields[entcourse.FieldEndDate] = struct{}{}
-}
-
-// EndDateCleared returns if the "endDate" field was cleared in this mutation.
-func (m *EntCourseMutation) EndDateCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldEndDate]
-	return ok
-}
-
 // ResetEndDate resets all changes to the "endDate" field.
 func (m *EntCourseMutation) ResetEndDate() {
 	m.endDate = nil
-	delete(m.clearedFields, entcourse.FieldEndDate)
 }
 
 // SetMonday sets the "monday" field.
@@ -2392,22 +2256,9 @@ func (m *EntCourseMutation) OldMonday(ctx context.Context) (v bool, err error) {
 	return oldValue.Monday, nil
 }
 
-// ClearMonday clears the value of the "monday" field.
-func (m *EntCourseMutation) ClearMonday() {
-	m.monday = nil
-	m.clearedFields[entcourse.FieldMonday] = struct{}{}
-}
-
-// MondayCleared returns if the "monday" field was cleared in this mutation.
-func (m *EntCourseMutation) MondayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldMonday]
-	return ok
-}
-
 // ResetMonday resets all changes to the "monday" field.
 func (m *EntCourseMutation) ResetMonday() {
 	m.monday = nil
-	delete(m.clearedFields, entcourse.FieldMonday)
 }
 
 // SetTuesday sets the "tuesday" field.
@@ -2441,22 +2292,9 @@ func (m *EntCourseMutation) OldTuesday(ctx context.Context) (v bool, err error) 
 	return oldValue.Tuesday, nil
 }
 
-// ClearTuesday clears the value of the "tuesday" field.
-func (m *EntCourseMutation) ClearTuesday() {
-	m.tuesday = nil
-	m.clearedFields[entcourse.FieldTuesday] = struct{}{}
-}
-
-// TuesdayCleared returns if the "tuesday" field was cleared in this mutation.
-func (m *EntCourseMutation) TuesdayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldTuesday]
-	return ok
-}
-
 // ResetTuesday resets all changes to the "tuesday" field.
 func (m *EntCourseMutation) ResetTuesday() {
 	m.tuesday = nil
-	delete(m.clearedFields, entcourse.FieldTuesday)
 }
 
 // SetWednesday sets the "wednesday" field.
@@ -2490,22 +2328,9 @@ func (m *EntCourseMutation) OldWednesday(ctx context.Context) (v bool, err error
 	return oldValue.Wednesday, nil
 }
 
-// ClearWednesday clears the value of the "wednesday" field.
-func (m *EntCourseMutation) ClearWednesday() {
-	m.wednesday = nil
-	m.clearedFields[entcourse.FieldWednesday] = struct{}{}
-}
-
-// WednesdayCleared returns if the "wednesday" field was cleared in this mutation.
-func (m *EntCourseMutation) WednesdayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldWednesday]
-	return ok
-}
-
 // ResetWednesday resets all changes to the "wednesday" field.
 func (m *EntCourseMutation) ResetWednesday() {
 	m.wednesday = nil
-	delete(m.clearedFields, entcourse.FieldWednesday)
 }
 
 // SetThursday sets the "thursday" field.
@@ -2539,22 +2364,9 @@ func (m *EntCourseMutation) OldThursday(ctx context.Context) (v bool, err error)
 	return oldValue.Thursday, nil
 }
 
-// ClearThursday clears the value of the "thursday" field.
-func (m *EntCourseMutation) ClearThursday() {
-	m.thursday = nil
-	m.clearedFields[entcourse.FieldThursday] = struct{}{}
-}
-
-// ThursdayCleared returns if the "thursday" field was cleared in this mutation.
-func (m *EntCourseMutation) ThursdayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldThursday]
-	return ok
-}
-
 // ResetThursday resets all changes to the "thursday" field.
 func (m *EntCourseMutation) ResetThursday() {
 	m.thursday = nil
-	delete(m.clearedFields, entcourse.FieldThursday)
 }
 
 // SetFriday sets the "friday" field.
@@ -2588,22 +2400,9 @@ func (m *EntCourseMutation) OldFriday(ctx context.Context) (v bool, err error) {
 	return oldValue.Friday, nil
 }
 
-// ClearFriday clears the value of the "friday" field.
-func (m *EntCourseMutation) ClearFriday() {
-	m.friday = nil
-	m.clearedFields[entcourse.FieldFriday] = struct{}{}
-}
-
-// FridayCleared returns if the "friday" field was cleared in this mutation.
-func (m *EntCourseMutation) FridayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldFriday]
-	return ok
-}
-
 // ResetFriday resets all changes to the "friday" field.
 func (m *EntCourseMutation) ResetFriday() {
 	m.friday = nil
-	delete(m.clearedFields, entcourse.FieldFriday)
 }
 
 // SetSaturday sets the "saturday" field.
@@ -2637,22 +2436,9 @@ func (m *EntCourseMutation) OldSaturday(ctx context.Context) (v bool, err error)
 	return oldValue.Saturday, nil
 }
 
-// ClearSaturday clears the value of the "saturday" field.
-func (m *EntCourseMutation) ClearSaturday() {
-	m.saturday = nil
-	m.clearedFields[entcourse.FieldSaturday] = struct{}{}
-}
-
-// SaturdayCleared returns if the "saturday" field was cleared in this mutation.
-func (m *EntCourseMutation) SaturdayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldSaturday]
-	return ok
-}
-
 // ResetSaturday resets all changes to the "saturday" field.
 func (m *EntCourseMutation) ResetSaturday() {
 	m.saturday = nil
-	delete(m.clearedFields, entcourse.FieldSaturday)
 }
 
 // SetSunday sets the "sunday" field.
@@ -2686,22 +2472,695 @@ func (m *EntCourseMutation) OldSunday(ctx context.Context) (v bool, err error) {
 	return oldValue.Sunday, nil
 }
 
-// ClearSunday clears the value of the "sunday" field.
-func (m *EntCourseMutation) ClearSunday() {
-	m.sunday = nil
-	m.clearedFields[entcourse.FieldSunday] = struct{}{}
-}
-
-// SundayCleared returns if the "sunday" field was cleared in this mutation.
-func (m *EntCourseMutation) SundayCleared() bool {
-	_, ok := m.clearedFields[entcourse.FieldSunday]
-	return ok
-}
-
 // ResetSunday resets all changes to the "sunday" field.
 func (m *EntCourseMutation) ResetSunday() {
 	m.sunday = nil
-	delete(m.clearedFields, entcourse.FieldSunday)
+}
+
+// SetMondayStartTime sets the "mondayStartTime" field.
+func (m *EntCourseMutation) SetMondayStartTime(t time.Time) {
+	m.mondayStartTime = &t
+}
+
+// MondayStartTime returns the value of the "mondayStartTime" field in the mutation.
+func (m *EntCourseMutation) MondayStartTime() (r time.Time, exists bool) {
+	v := m.mondayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMondayStartTime returns the old "mondayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldMondayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMondayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMondayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMondayStartTime: %w", err)
+	}
+	return oldValue.MondayStartTime, nil
+}
+
+// ClearMondayStartTime clears the value of the "mondayStartTime" field.
+func (m *EntCourseMutation) ClearMondayStartTime() {
+	m.mondayStartTime = nil
+	m.clearedFields[entcourse.FieldMondayStartTime] = struct{}{}
+}
+
+// MondayStartTimeCleared returns if the "mondayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) MondayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldMondayStartTime]
+	return ok
+}
+
+// ResetMondayStartTime resets all changes to the "mondayStartTime" field.
+func (m *EntCourseMutation) ResetMondayStartTime() {
+	m.mondayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldMondayStartTime)
+}
+
+// SetMondayEndTime sets the "mondayEndTime" field.
+func (m *EntCourseMutation) SetMondayEndTime(t time.Time) {
+	m.mondayEndTime = &t
+}
+
+// MondayEndTime returns the value of the "mondayEndTime" field in the mutation.
+func (m *EntCourseMutation) MondayEndTime() (r time.Time, exists bool) {
+	v := m.mondayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldMondayEndTime returns the old "mondayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldMondayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldMondayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldMondayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldMondayEndTime: %w", err)
+	}
+	return oldValue.MondayEndTime, nil
+}
+
+// ClearMondayEndTime clears the value of the "mondayEndTime" field.
+func (m *EntCourseMutation) ClearMondayEndTime() {
+	m.mondayEndTime = nil
+	m.clearedFields[entcourse.FieldMondayEndTime] = struct{}{}
+}
+
+// MondayEndTimeCleared returns if the "mondayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) MondayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldMondayEndTime]
+	return ok
+}
+
+// ResetMondayEndTime resets all changes to the "mondayEndTime" field.
+func (m *EntCourseMutation) ResetMondayEndTime() {
+	m.mondayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldMondayEndTime)
+}
+
+// SetTuesdayStartTime sets the "tuesdayStartTime" field.
+func (m *EntCourseMutation) SetTuesdayStartTime(t time.Time) {
+	m.tuesdayStartTime = &t
+}
+
+// TuesdayStartTime returns the value of the "tuesdayStartTime" field in the mutation.
+func (m *EntCourseMutation) TuesdayStartTime() (r time.Time, exists bool) {
+	v := m.tuesdayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTuesdayStartTime returns the old "tuesdayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldTuesdayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTuesdayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTuesdayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTuesdayStartTime: %w", err)
+	}
+	return oldValue.TuesdayStartTime, nil
+}
+
+// ClearTuesdayStartTime clears the value of the "tuesdayStartTime" field.
+func (m *EntCourseMutation) ClearTuesdayStartTime() {
+	m.tuesdayStartTime = nil
+	m.clearedFields[entcourse.FieldTuesdayStartTime] = struct{}{}
+}
+
+// TuesdayStartTimeCleared returns if the "tuesdayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) TuesdayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldTuesdayStartTime]
+	return ok
+}
+
+// ResetTuesdayStartTime resets all changes to the "tuesdayStartTime" field.
+func (m *EntCourseMutation) ResetTuesdayStartTime() {
+	m.tuesdayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldTuesdayStartTime)
+}
+
+// SetTuesdayEndTime sets the "tuesdayEndTime" field.
+func (m *EntCourseMutation) SetTuesdayEndTime(t time.Time) {
+	m.tuesdayEndTime = &t
+}
+
+// TuesdayEndTime returns the value of the "tuesdayEndTime" field in the mutation.
+func (m *EntCourseMutation) TuesdayEndTime() (r time.Time, exists bool) {
+	v := m.tuesdayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldTuesdayEndTime returns the old "tuesdayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldTuesdayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldTuesdayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldTuesdayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldTuesdayEndTime: %w", err)
+	}
+	return oldValue.TuesdayEndTime, nil
+}
+
+// ClearTuesdayEndTime clears the value of the "tuesdayEndTime" field.
+func (m *EntCourseMutation) ClearTuesdayEndTime() {
+	m.tuesdayEndTime = nil
+	m.clearedFields[entcourse.FieldTuesdayEndTime] = struct{}{}
+}
+
+// TuesdayEndTimeCleared returns if the "tuesdayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) TuesdayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldTuesdayEndTime]
+	return ok
+}
+
+// ResetTuesdayEndTime resets all changes to the "tuesdayEndTime" field.
+func (m *EntCourseMutation) ResetTuesdayEndTime() {
+	m.tuesdayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldTuesdayEndTime)
+}
+
+// SetWednesdayStartTime sets the "wednesdayStartTime" field.
+func (m *EntCourseMutation) SetWednesdayStartTime(t time.Time) {
+	m.wednesdayStartTime = &t
+}
+
+// WednesdayStartTime returns the value of the "wednesdayStartTime" field in the mutation.
+func (m *EntCourseMutation) WednesdayStartTime() (r time.Time, exists bool) {
+	v := m.wednesdayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWednesdayStartTime returns the old "wednesdayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldWednesdayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWednesdayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWednesdayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWednesdayStartTime: %w", err)
+	}
+	return oldValue.WednesdayStartTime, nil
+}
+
+// ClearWednesdayStartTime clears the value of the "wednesdayStartTime" field.
+func (m *EntCourseMutation) ClearWednesdayStartTime() {
+	m.wednesdayStartTime = nil
+	m.clearedFields[entcourse.FieldWednesdayStartTime] = struct{}{}
+}
+
+// WednesdayStartTimeCleared returns if the "wednesdayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) WednesdayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldWednesdayStartTime]
+	return ok
+}
+
+// ResetWednesdayStartTime resets all changes to the "wednesdayStartTime" field.
+func (m *EntCourseMutation) ResetWednesdayStartTime() {
+	m.wednesdayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldWednesdayStartTime)
+}
+
+// SetWednesdayEndTime sets the "wednesdayEndTime" field.
+func (m *EntCourseMutation) SetWednesdayEndTime(t time.Time) {
+	m.wednesdayEndTime = &t
+}
+
+// WednesdayEndTime returns the value of the "wednesdayEndTime" field in the mutation.
+func (m *EntCourseMutation) WednesdayEndTime() (r time.Time, exists bool) {
+	v := m.wednesdayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldWednesdayEndTime returns the old "wednesdayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldWednesdayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldWednesdayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldWednesdayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldWednesdayEndTime: %w", err)
+	}
+	return oldValue.WednesdayEndTime, nil
+}
+
+// ClearWednesdayEndTime clears the value of the "wednesdayEndTime" field.
+func (m *EntCourseMutation) ClearWednesdayEndTime() {
+	m.wednesdayEndTime = nil
+	m.clearedFields[entcourse.FieldWednesdayEndTime] = struct{}{}
+}
+
+// WednesdayEndTimeCleared returns if the "wednesdayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) WednesdayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldWednesdayEndTime]
+	return ok
+}
+
+// ResetWednesdayEndTime resets all changes to the "wednesdayEndTime" field.
+func (m *EntCourseMutation) ResetWednesdayEndTime() {
+	m.wednesdayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldWednesdayEndTime)
+}
+
+// SetThursdayStartTime sets the "thursdayStartTime" field.
+func (m *EntCourseMutation) SetThursdayStartTime(t time.Time) {
+	m.thursdayStartTime = &t
+}
+
+// ThursdayStartTime returns the value of the "thursdayStartTime" field in the mutation.
+func (m *EntCourseMutation) ThursdayStartTime() (r time.Time, exists bool) {
+	v := m.thursdayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldThursdayStartTime returns the old "thursdayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldThursdayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldThursdayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldThursdayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldThursdayStartTime: %w", err)
+	}
+	return oldValue.ThursdayStartTime, nil
+}
+
+// ClearThursdayStartTime clears the value of the "thursdayStartTime" field.
+func (m *EntCourseMutation) ClearThursdayStartTime() {
+	m.thursdayStartTime = nil
+	m.clearedFields[entcourse.FieldThursdayStartTime] = struct{}{}
+}
+
+// ThursdayStartTimeCleared returns if the "thursdayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) ThursdayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldThursdayStartTime]
+	return ok
+}
+
+// ResetThursdayStartTime resets all changes to the "thursdayStartTime" field.
+func (m *EntCourseMutation) ResetThursdayStartTime() {
+	m.thursdayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldThursdayStartTime)
+}
+
+// SetThursdayEndTime sets the "thursdayEndTime" field.
+func (m *EntCourseMutation) SetThursdayEndTime(t time.Time) {
+	m.thursdayEndTime = &t
+}
+
+// ThursdayEndTime returns the value of the "thursdayEndTime" field in the mutation.
+func (m *EntCourseMutation) ThursdayEndTime() (r time.Time, exists bool) {
+	v := m.thursdayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldThursdayEndTime returns the old "thursdayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldThursdayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldThursdayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldThursdayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldThursdayEndTime: %w", err)
+	}
+	return oldValue.ThursdayEndTime, nil
+}
+
+// ClearThursdayEndTime clears the value of the "thursdayEndTime" field.
+func (m *EntCourseMutation) ClearThursdayEndTime() {
+	m.thursdayEndTime = nil
+	m.clearedFields[entcourse.FieldThursdayEndTime] = struct{}{}
+}
+
+// ThursdayEndTimeCleared returns if the "thursdayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) ThursdayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldThursdayEndTime]
+	return ok
+}
+
+// ResetThursdayEndTime resets all changes to the "thursdayEndTime" field.
+func (m *EntCourseMutation) ResetThursdayEndTime() {
+	m.thursdayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldThursdayEndTime)
+}
+
+// SetFridayStartTime sets the "fridayStartTime" field.
+func (m *EntCourseMutation) SetFridayStartTime(t time.Time) {
+	m.fridayStartTime = &t
+}
+
+// FridayStartTime returns the value of the "fridayStartTime" field in the mutation.
+func (m *EntCourseMutation) FridayStartTime() (r time.Time, exists bool) {
+	v := m.fridayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFridayStartTime returns the old "fridayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldFridayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFridayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFridayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFridayStartTime: %w", err)
+	}
+	return oldValue.FridayStartTime, nil
+}
+
+// ClearFridayStartTime clears the value of the "fridayStartTime" field.
+func (m *EntCourseMutation) ClearFridayStartTime() {
+	m.fridayStartTime = nil
+	m.clearedFields[entcourse.FieldFridayStartTime] = struct{}{}
+}
+
+// FridayStartTimeCleared returns if the "fridayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) FridayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldFridayStartTime]
+	return ok
+}
+
+// ResetFridayStartTime resets all changes to the "fridayStartTime" field.
+func (m *EntCourseMutation) ResetFridayStartTime() {
+	m.fridayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldFridayStartTime)
+}
+
+// SetFridayEndTime sets the "fridayEndTime" field.
+func (m *EntCourseMutation) SetFridayEndTime(t time.Time) {
+	m.fridayEndTime = &t
+}
+
+// FridayEndTime returns the value of the "fridayEndTime" field in the mutation.
+func (m *EntCourseMutation) FridayEndTime() (r time.Time, exists bool) {
+	v := m.fridayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldFridayEndTime returns the old "fridayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldFridayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldFridayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldFridayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldFridayEndTime: %w", err)
+	}
+	return oldValue.FridayEndTime, nil
+}
+
+// ClearFridayEndTime clears the value of the "fridayEndTime" field.
+func (m *EntCourseMutation) ClearFridayEndTime() {
+	m.fridayEndTime = nil
+	m.clearedFields[entcourse.FieldFridayEndTime] = struct{}{}
+}
+
+// FridayEndTimeCleared returns if the "fridayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) FridayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldFridayEndTime]
+	return ok
+}
+
+// ResetFridayEndTime resets all changes to the "fridayEndTime" field.
+func (m *EntCourseMutation) ResetFridayEndTime() {
+	m.fridayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldFridayEndTime)
+}
+
+// SetSaturdayStartTime sets the "saturdayStartTime" field.
+func (m *EntCourseMutation) SetSaturdayStartTime(t time.Time) {
+	m.saturdayStartTime = &t
+}
+
+// SaturdayStartTime returns the value of the "saturdayStartTime" field in the mutation.
+func (m *EntCourseMutation) SaturdayStartTime() (r time.Time, exists bool) {
+	v := m.saturdayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSaturdayStartTime returns the old "saturdayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldSaturdayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSaturdayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSaturdayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSaturdayStartTime: %w", err)
+	}
+	return oldValue.SaturdayStartTime, nil
+}
+
+// ClearSaturdayStartTime clears the value of the "saturdayStartTime" field.
+func (m *EntCourseMutation) ClearSaturdayStartTime() {
+	m.saturdayStartTime = nil
+	m.clearedFields[entcourse.FieldSaturdayStartTime] = struct{}{}
+}
+
+// SaturdayStartTimeCleared returns if the "saturdayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) SaturdayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldSaturdayStartTime]
+	return ok
+}
+
+// ResetSaturdayStartTime resets all changes to the "saturdayStartTime" field.
+func (m *EntCourseMutation) ResetSaturdayStartTime() {
+	m.saturdayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldSaturdayStartTime)
+}
+
+// SetSaturdayEndTime sets the "saturdayEndTime" field.
+func (m *EntCourseMutation) SetSaturdayEndTime(t time.Time) {
+	m.saturdayEndTime = &t
+}
+
+// SaturdayEndTime returns the value of the "saturdayEndTime" field in the mutation.
+func (m *EntCourseMutation) SaturdayEndTime() (r time.Time, exists bool) {
+	v := m.saturdayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSaturdayEndTime returns the old "saturdayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldSaturdayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSaturdayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSaturdayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSaturdayEndTime: %w", err)
+	}
+	return oldValue.SaturdayEndTime, nil
+}
+
+// ClearSaturdayEndTime clears the value of the "saturdayEndTime" field.
+func (m *EntCourseMutation) ClearSaturdayEndTime() {
+	m.saturdayEndTime = nil
+	m.clearedFields[entcourse.FieldSaturdayEndTime] = struct{}{}
+}
+
+// SaturdayEndTimeCleared returns if the "saturdayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) SaturdayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldSaturdayEndTime]
+	return ok
+}
+
+// ResetSaturdayEndTime resets all changes to the "saturdayEndTime" field.
+func (m *EntCourseMutation) ResetSaturdayEndTime() {
+	m.saturdayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldSaturdayEndTime)
+}
+
+// SetSundayStartTime sets the "sundayStartTime" field.
+func (m *EntCourseMutation) SetSundayStartTime(t time.Time) {
+	m.sundayStartTime = &t
+}
+
+// SundayStartTime returns the value of the "sundayStartTime" field in the mutation.
+func (m *EntCourseMutation) SundayStartTime() (r time.Time, exists bool) {
+	v := m.sundayStartTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSundayStartTime returns the old "sundayStartTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldSundayStartTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSundayStartTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSundayStartTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSundayStartTime: %w", err)
+	}
+	return oldValue.SundayStartTime, nil
+}
+
+// ClearSundayStartTime clears the value of the "sundayStartTime" field.
+func (m *EntCourseMutation) ClearSundayStartTime() {
+	m.sundayStartTime = nil
+	m.clearedFields[entcourse.FieldSundayStartTime] = struct{}{}
+}
+
+// SundayStartTimeCleared returns if the "sundayStartTime" field was cleared in this mutation.
+func (m *EntCourseMutation) SundayStartTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldSundayStartTime]
+	return ok
+}
+
+// ResetSundayStartTime resets all changes to the "sundayStartTime" field.
+func (m *EntCourseMutation) ResetSundayStartTime() {
+	m.sundayStartTime = nil
+	delete(m.clearedFields, entcourse.FieldSundayStartTime)
+}
+
+// SetSundayEndTime sets the "sundayEndTime" field.
+func (m *EntCourseMutation) SetSundayEndTime(t time.Time) {
+	m.sundayEndTime = &t
+}
+
+// SundayEndTime returns the value of the "sundayEndTime" field in the mutation.
+func (m *EntCourseMutation) SundayEndTime() (r time.Time, exists bool) {
+	v := m.sundayEndTime
+	if v == nil {
+		return
+	}
+	return *v, true
+}
+
+// OldSundayEndTime returns the old "sundayEndTime" field's value of the EntCourse entity.
+// If the EntCourse object wasn't provided to the builder, the object is fetched from the database.
+// An error is returned if the mutation operation is not UpdateOne, or the database query fails.
+func (m *EntCourseMutation) OldSundayEndTime(ctx context.Context) (v time.Time, err error) {
+	if !m.op.Is(OpUpdateOne) {
+		return v, errors.New("OldSundayEndTime is only allowed on UpdateOne operations")
+	}
+	if m.id == nil || m.oldValue == nil {
+		return v, errors.New("OldSundayEndTime requires an ID field in the mutation")
+	}
+	oldValue, err := m.oldValue(ctx)
+	if err != nil {
+		return v, fmt.Errorf("querying old value for OldSundayEndTime: %w", err)
+	}
+	return oldValue.SundayEndTime, nil
+}
+
+// ClearSundayEndTime clears the value of the "sundayEndTime" field.
+func (m *EntCourseMutation) ClearSundayEndTime() {
+	m.sundayEndTime = nil
+	m.clearedFields[entcourse.FieldSundayEndTime] = struct{}{}
+}
+
+// SundayEndTimeCleared returns if the "sundayEndTime" field was cleared in this mutation.
+func (m *EntCourseMutation) SundayEndTimeCleared() bool {
+	_, ok := m.clearedFields[entcourse.FieldSundayEndTime]
+	return ok
+}
+
+// ResetSundayEndTime resets all changes to the "sundayEndTime" field.
+func (m *EntCourseMutation) ResetSundayEndTime() {
+	m.sundayEndTime = nil
+	delete(m.clearedFields, entcourse.FieldSundayEndTime)
 }
 
 // AddTodoIDs adds the "todo" edge to the EntTodo entity by ids.
@@ -2993,7 +3452,7 @@ func (m *EntCourseMutation) Type() string {
 // order to get all numeric fields that were incremented/decremented, call
 // AddedFields().
 func (m *EntCourseMutation) Fields() []string {
-	fields := make([]string, 0, 15)
+	fields := make([]string, 0, 29)
 	if m.createdAt != nil {
 		fields = append(fields, entcourse.FieldCreatedAt)
 	}
@@ -3039,6 +3498,48 @@ func (m *EntCourseMutation) Fields() []string {
 	if m.sunday != nil {
 		fields = append(fields, entcourse.FieldSunday)
 	}
+	if m.mondayStartTime != nil {
+		fields = append(fields, entcourse.FieldMondayStartTime)
+	}
+	if m.mondayEndTime != nil {
+		fields = append(fields, entcourse.FieldMondayEndTime)
+	}
+	if m.tuesdayStartTime != nil {
+		fields = append(fields, entcourse.FieldTuesdayStartTime)
+	}
+	if m.tuesdayEndTime != nil {
+		fields = append(fields, entcourse.FieldTuesdayEndTime)
+	}
+	if m.wednesdayStartTime != nil {
+		fields = append(fields, entcourse.FieldWednesdayStartTime)
+	}
+	if m.wednesdayEndTime != nil {
+		fields = append(fields, entcourse.FieldWednesdayEndTime)
+	}
+	if m.thursdayStartTime != nil {
+		fields = append(fields, entcourse.FieldThursdayStartTime)
+	}
+	if m.thursdayEndTime != nil {
+		fields = append(fields, entcourse.FieldThursdayEndTime)
+	}
+	if m.fridayStartTime != nil {
+		fields = append(fields, entcourse.FieldFridayStartTime)
+	}
+	if m.fridayEndTime != nil {
+		fields = append(fields, entcourse.FieldFridayEndTime)
+	}
+	if m.saturdayStartTime != nil {
+		fields = append(fields, entcourse.FieldSaturdayStartTime)
+	}
+	if m.saturdayEndTime != nil {
+		fields = append(fields, entcourse.FieldSaturdayEndTime)
+	}
+	if m.sundayStartTime != nil {
+		fields = append(fields, entcourse.FieldSundayStartTime)
+	}
+	if m.sundayEndTime != nil {
+		fields = append(fields, entcourse.FieldSundayEndTime)
+	}
 	return fields
 }
 
@@ -3077,6 +3578,34 @@ func (m *EntCourseMutation) Field(name string) (ent.Value, bool) {
 		return m.Saturday()
 	case entcourse.FieldSunday:
 		return m.Sunday()
+	case entcourse.FieldMondayStartTime:
+		return m.MondayStartTime()
+	case entcourse.FieldMondayEndTime:
+		return m.MondayEndTime()
+	case entcourse.FieldTuesdayStartTime:
+		return m.TuesdayStartTime()
+	case entcourse.FieldTuesdayEndTime:
+		return m.TuesdayEndTime()
+	case entcourse.FieldWednesdayStartTime:
+		return m.WednesdayStartTime()
+	case entcourse.FieldWednesdayEndTime:
+		return m.WednesdayEndTime()
+	case entcourse.FieldThursdayStartTime:
+		return m.ThursdayStartTime()
+	case entcourse.FieldThursdayEndTime:
+		return m.ThursdayEndTime()
+	case entcourse.FieldFridayStartTime:
+		return m.FridayStartTime()
+	case entcourse.FieldFridayEndTime:
+		return m.FridayEndTime()
+	case entcourse.FieldSaturdayStartTime:
+		return m.SaturdayStartTime()
+	case entcourse.FieldSaturdayEndTime:
+		return m.SaturdayEndTime()
+	case entcourse.FieldSundayStartTime:
+		return m.SundayStartTime()
+	case entcourse.FieldSundayEndTime:
+		return m.SundayEndTime()
 	}
 	return nil, false
 }
@@ -3116,6 +3645,34 @@ func (m *EntCourseMutation) OldField(ctx context.Context, name string) (ent.Valu
 		return m.OldSaturday(ctx)
 	case entcourse.FieldSunday:
 		return m.OldSunday(ctx)
+	case entcourse.FieldMondayStartTime:
+		return m.OldMondayStartTime(ctx)
+	case entcourse.FieldMondayEndTime:
+		return m.OldMondayEndTime(ctx)
+	case entcourse.FieldTuesdayStartTime:
+		return m.OldTuesdayStartTime(ctx)
+	case entcourse.FieldTuesdayEndTime:
+		return m.OldTuesdayEndTime(ctx)
+	case entcourse.FieldWednesdayStartTime:
+		return m.OldWednesdayStartTime(ctx)
+	case entcourse.FieldWednesdayEndTime:
+		return m.OldWednesdayEndTime(ctx)
+	case entcourse.FieldThursdayStartTime:
+		return m.OldThursdayStartTime(ctx)
+	case entcourse.FieldThursdayEndTime:
+		return m.OldThursdayEndTime(ctx)
+	case entcourse.FieldFridayStartTime:
+		return m.OldFridayStartTime(ctx)
+	case entcourse.FieldFridayEndTime:
+		return m.OldFridayEndTime(ctx)
+	case entcourse.FieldSaturdayStartTime:
+		return m.OldSaturdayStartTime(ctx)
+	case entcourse.FieldSaturdayEndTime:
+		return m.OldSaturdayEndTime(ctx)
+	case entcourse.FieldSundayStartTime:
+		return m.OldSundayStartTime(ctx)
+	case entcourse.FieldSundayEndTime:
+		return m.OldSundayEndTime(ctx)
 	}
 	return nil, fmt.Errorf("unknown EntCourse field %s", name)
 }
@@ -3230,6 +3787,104 @@ func (m *EntCourseMutation) SetField(name string, value ent.Value) error {
 		}
 		m.SetSunday(v)
 		return nil
+	case entcourse.FieldMondayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMondayStartTime(v)
+		return nil
+	case entcourse.FieldMondayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetMondayEndTime(v)
+		return nil
+	case entcourse.FieldTuesdayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTuesdayStartTime(v)
+		return nil
+	case entcourse.FieldTuesdayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetTuesdayEndTime(v)
+		return nil
+	case entcourse.FieldWednesdayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWednesdayStartTime(v)
+		return nil
+	case entcourse.FieldWednesdayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetWednesdayEndTime(v)
+		return nil
+	case entcourse.FieldThursdayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetThursdayStartTime(v)
+		return nil
+	case entcourse.FieldThursdayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetThursdayEndTime(v)
+		return nil
+	case entcourse.FieldFridayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFridayStartTime(v)
+		return nil
+	case entcourse.FieldFridayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetFridayEndTime(v)
+		return nil
+	case entcourse.FieldSaturdayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSaturdayStartTime(v)
+		return nil
+	case entcourse.FieldSaturdayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSaturdayEndTime(v)
+		return nil
+	case entcourse.FieldSundayStartTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSundayStartTime(v)
+		return nil
+	case entcourse.FieldSundayEndTime:
+		v, ok := value.(time.Time)
+		if !ok {
+			return fmt.Errorf("unexpected type %T for field %s", value, name)
+		}
+		m.SetSundayEndTime(v)
+		return nil
 	}
 	return fmt.Errorf("unknown EntCourse field %s", name)
 }
@@ -3275,41 +3930,50 @@ func (m *EntCourseMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *EntCourseMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(entcourse.FieldCourseUrl) {
-		fields = append(fields, entcourse.FieldCourseUrl)
-	}
-	if m.FieldCleared(entcourse.FieldPaymentMethod) {
-		fields = append(fields, entcourse.FieldPaymentMethod)
-	}
 	if m.FieldCleared(entcourse.FieldPaymentAmount) {
 		fields = append(fields, entcourse.FieldPaymentAmount)
 	}
-	if m.FieldCleared(entcourse.FieldStartDate) {
-		fields = append(fields, entcourse.FieldStartDate)
+	if m.FieldCleared(entcourse.FieldMondayStartTime) {
+		fields = append(fields, entcourse.FieldMondayStartTime)
 	}
-	if m.FieldCleared(entcourse.FieldEndDate) {
-		fields = append(fields, entcourse.FieldEndDate)
+	if m.FieldCleared(entcourse.FieldMondayEndTime) {
+		fields = append(fields, entcourse.FieldMondayEndTime)
 	}
-	if m.FieldCleared(entcourse.FieldMonday) {
-		fields = append(fields, entcourse.FieldMonday)
+	if m.FieldCleared(entcourse.FieldTuesdayStartTime) {
+		fields = append(fields, entcourse.FieldTuesdayStartTime)
 	}
-	if m.FieldCleared(entcourse.FieldTuesday) {
-		fields = append(fields, entcourse.FieldTuesday)
+	if m.FieldCleared(entcourse.FieldTuesdayEndTime) {
+		fields = append(fields, entcourse.FieldTuesdayEndTime)
 	}
-	if m.FieldCleared(entcourse.FieldWednesday) {
-		fields = append(fields, entcourse.FieldWednesday)
+	if m.FieldCleared(entcourse.FieldWednesdayStartTime) {
+		fields = append(fields, entcourse.FieldWednesdayStartTime)
 	}
-	if m.FieldCleared(entcourse.FieldThursday) {
-		fields = append(fields, entcourse.FieldThursday)
+	if m.FieldCleared(entcourse.FieldWednesdayEndTime) {
+		fields = append(fields, entcourse.FieldWednesdayEndTime)
 	}
-	if m.FieldCleared(entcourse.FieldFriday) {
-		fields = append(fields, entcourse.FieldFriday)
+	if m.FieldCleared(entcourse.FieldThursdayStartTime) {
+		fields = append(fields, entcourse.FieldThursdayStartTime)
 	}
-	if m.FieldCleared(entcourse.FieldSaturday) {
-		fields = append(fields, entcourse.FieldSaturday)
+	if m.FieldCleared(entcourse.FieldThursdayEndTime) {
+		fields = append(fields, entcourse.FieldThursdayEndTime)
 	}
-	if m.FieldCleared(entcourse.FieldSunday) {
-		fields = append(fields, entcourse.FieldSunday)
+	if m.FieldCleared(entcourse.FieldFridayStartTime) {
+		fields = append(fields, entcourse.FieldFridayStartTime)
+	}
+	if m.FieldCleared(entcourse.FieldFridayEndTime) {
+		fields = append(fields, entcourse.FieldFridayEndTime)
+	}
+	if m.FieldCleared(entcourse.FieldSaturdayStartTime) {
+		fields = append(fields, entcourse.FieldSaturdayStartTime)
+	}
+	if m.FieldCleared(entcourse.FieldSaturdayEndTime) {
+		fields = append(fields, entcourse.FieldSaturdayEndTime)
+	}
+	if m.FieldCleared(entcourse.FieldSundayStartTime) {
+		fields = append(fields, entcourse.FieldSundayStartTime)
+	}
+	if m.FieldCleared(entcourse.FieldSundayEndTime) {
+		fields = append(fields, entcourse.FieldSundayEndTime)
 	}
 	return fields
 }
@@ -3325,41 +3989,50 @@ func (m *EntCourseMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *EntCourseMutation) ClearField(name string) error {
 	switch name {
-	case entcourse.FieldCourseUrl:
-		m.ClearCourseUrl()
-		return nil
-	case entcourse.FieldPaymentMethod:
-		m.ClearPaymentMethod()
-		return nil
 	case entcourse.FieldPaymentAmount:
 		m.ClearPaymentAmount()
 		return nil
-	case entcourse.FieldStartDate:
-		m.ClearStartDate()
+	case entcourse.FieldMondayStartTime:
+		m.ClearMondayStartTime()
 		return nil
-	case entcourse.FieldEndDate:
-		m.ClearEndDate()
+	case entcourse.FieldMondayEndTime:
+		m.ClearMondayEndTime()
 		return nil
-	case entcourse.FieldMonday:
-		m.ClearMonday()
+	case entcourse.FieldTuesdayStartTime:
+		m.ClearTuesdayStartTime()
 		return nil
-	case entcourse.FieldTuesday:
-		m.ClearTuesday()
+	case entcourse.FieldTuesdayEndTime:
+		m.ClearTuesdayEndTime()
 		return nil
-	case entcourse.FieldWednesday:
-		m.ClearWednesday()
+	case entcourse.FieldWednesdayStartTime:
+		m.ClearWednesdayStartTime()
 		return nil
-	case entcourse.FieldThursday:
-		m.ClearThursday()
+	case entcourse.FieldWednesdayEndTime:
+		m.ClearWednesdayEndTime()
 		return nil
-	case entcourse.FieldFriday:
-		m.ClearFriday()
+	case entcourse.FieldThursdayStartTime:
+		m.ClearThursdayStartTime()
 		return nil
-	case entcourse.FieldSaturday:
-		m.ClearSaturday()
+	case entcourse.FieldThursdayEndTime:
+		m.ClearThursdayEndTime()
 		return nil
-	case entcourse.FieldSunday:
-		m.ClearSunday()
+	case entcourse.FieldFridayStartTime:
+		m.ClearFridayStartTime()
+		return nil
+	case entcourse.FieldFridayEndTime:
+		m.ClearFridayEndTime()
+		return nil
+	case entcourse.FieldSaturdayStartTime:
+		m.ClearSaturdayStartTime()
+		return nil
+	case entcourse.FieldSaturdayEndTime:
+		m.ClearSaturdayEndTime()
+		return nil
+	case entcourse.FieldSundayStartTime:
+		m.ClearSundayStartTime()
+		return nil
+	case entcourse.FieldSundayEndTime:
+		m.ClearSundayEndTime()
 		return nil
 	}
 	return fmt.Errorf("unknown EntCourse nullable field %s", name)
@@ -3413,6 +4086,48 @@ func (m *EntCourseMutation) ResetField(name string) error {
 		return nil
 	case entcourse.FieldSunday:
 		m.ResetSunday()
+		return nil
+	case entcourse.FieldMondayStartTime:
+		m.ResetMondayStartTime()
+		return nil
+	case entcourse.FieldMondayEndTime:
+		m.ResetMondayEndTime()
+		return nil
+	case entcourse.FieldTuesdayStartTime:
+		m.ResetTuesdayStartTime()
+		return nil
+	case entcourse.FieldTuesdayEndTime:
+		m.ResetTuesdayEndTime()
+		return nil
+	case entcourse.FieldWednesdayStartTime:
+		m.ResetWednesdayStartTime()
+		return nil
+	case entcourse.FieldWednesdayEndTime:
+		m.ResetWednesdayEndTime()
+		return nil
+	case entcourse.FieldThursdayStartTime:
+		m.ResetThursdayStartTime()
+		return nil
+	case entcourse.FieldThursdayEndTime:
+		m.ResetThursdayEndTime()
+		return nil
+	case entcourse.FieldFridayStartTime:
+		m.ResetFridayStartTime()
+		return nil
+	case entcourse.FieldFridayEndTime:
+		m.ResetFridayEndTime()
+		return nil
+	case entcourse.FieldSaturdayStartTime:
+		m.ResetSaturdayStartTime()
+		return nil
+	case entcourse.FieldSaturdayEndTime:
+		m.ResetSaturdayEndTime()
+		return nil
+	case entcourse.FieldSundayStartTime:
+		m.ResetSundayStartTime()
+		return nil
+	case entcourse.FieldSundayEndTime:
+		m.ResetSundayEndTime()
 		return nil
 	}
 	return fmt.Errorf("unknown EntCourse field %s", name)
@@ -3870,22 +4585,9 @@ func (m *EntPostMutation) OldContent(ctx context.Context) (v string, err error) 
 	return oldValue.Content, nil
 }
 
-// ClearContent clears the value of the "content" field.
-func (m *EntPostMutation) ClearContent() {
-	m.content = nil
-	m.clearedFields[entpost.FieldContent] = struct{}{}
-}
-
-// ContentCleared returns if the "content" field was cleared in this mutation.
-func (m *EntPostMutation) ContentCleared() bool {
-	_, ok := m.clearedFields[entpost.FieldContent]
-	return ok
-}
-
 // ResetContent resets all changes to the "content" field.
 func (m *EntPostMutation) ResetContent() {
 	m.content = nil
-	delete(m.clearedFields, entpost.FieldContent)
 }
 
 // SetShare sets the "share" field.
@@ -3919,22 +4621,9 @@ func (m *EntPostMutation) OldShare(ctx context.Context) (v entpost.Share, err er
 	return oldValue.Share, nil
 }
 
-// ClearShare clears the value of the "share" field.
-func (m *EntPostMutation) ClearShare() {
-	m.share = nil
-	m.clearedFields[entpost.FieldShare] = struct{}{}
-}
-
-// ShareCleared returns if the "share" field was cleared in this mutation.
-func (m *EntPostMutation) ShareCleared() bool {
-	_, ok := m.clearedFields[entpost.FieldShare]
-	return ok
-}
-
 // ResetShare resets all changes to the "share" field.
 func (m *EntPostMutation) ResetShare() {
 	m.share = nil
-	delete(m.clearedFields, entpost.FieldShare)
 }
 
 // AddCommentIDs adds the "comment" edge to the EntComment entity by ids.
@@ -4268,14 +4957,7 @@ func (m *EntPostMutation) AddField(name string, value ent.Value) error {
 // ClearedFields returns all nullable fields that were cleared during this
 // mutation.
 func (m *EntPostMutation) ClearedFields() []string {
-	var fields []string
-	if m.FieldCleared(entpost.FieldContent) {
-		fields = append(fields, entpost.FieldContent)
-	}
-	if m.FieldCleared(entpost.FieldShare) {
-		fields = append(fields, entpost.FieldShare)
-	}
-	return fields
+	return nil
 }
 
 // FieldCleared returns a boolean indicating if a field with the given name was
@@ -4288,14 +4970,6 @@ func (m *EntPostMutation) FieldCleared(name string) bool {
 // ClearField clears the value of the field with the given name. It returns an
 // error if the field is not defined in the schema.
 func (m *EntPostMutation) ClearField(name string) error {
-	switch name {
-	case entpost.FieldContent:
-		m.ClearContent()
-		return nil
-	case entpost.FieldShare:
-		m.ClearShare()
-		return nil
-	}
 	return fmt.Errorf("unknown EntPost nullable field %s", name)
 }
 
@@ -4730,22 +5404,9 @@ func (m *EntTodoMutation) OldStartTime(ctx context.Context) (v time.Time, err er
 	return oldValue.StartTime, nil
 }
 
-// ClearStartTime clears the value of the "startTime" field.
-func (m *EntTodoMutation) ClearStartTime() {
-	m.startTime = nil
-	m.clearedFields[enttodo.FieldStartTime] = struct{}{}
-}
-
-// StartTimeCleared returns if the "startTime" field was cleared in this mutation.
-func (m *EntTodoMutation) StartTimeCleared() bool {
-	_, ok := m.clearedFields[enttodo.FieldStartTime]
-	return ok
-}
-
 // ResetStartTime resets all changes to the "startTime" field.
 func (m *EntTodoMutation) ResetStartTime() {
 	m.startTime = nil
-	delete(m.clearedFields, enttodo.FieldStartTime)
 }
 
 // SetEndTime sets the "endTime" field.
@@ -4779,22 +5440,9 @@ func (m *EntTodoMutation) OldEndTime(ctx context.Context) (v time.Time, err erro
 	return oldValue.EndTime, nil
 }
 
-// ClearEndTime clears the value of the "endTime" field.
-func (m *EntTodoMutation) ClearEndTime() {
-	m.endTime = nil
-	m.clearedFields[enttodo.FieldEndTime] = struct{}{}
-}
-
-// EndTimeCleared returns if the "endTime" field was cleared in this mutation.
-func (m *EntTodoMutation) EndTimeCleared() bool {
-	_, ok := m.clearedFields[enttodo.FieldEndTime]
-	return ok
-}
-
 // ResetEndTime resets all changes to the "endTime" field.
 func (m *EntTodoMutation) ResetEndTime() {
 	m.endTime = nil
-	delete(m.clearedFields, enttodo.FieldEndTime)
 }
 
 // SetDay sets the "day" field.
@@ -4828,22 +5476,9 @@ func (m *EntTodoMutation) OldDay(ctx context.Context) (v time.Time, err error) {
 	return oldValue.Day, nil
 }
 
-// ClearDay clears the value of the "day" field.
-func (m *EntTodoMutation) ClearDay() {
-	m.day = nil
-	m.clearedFields[enttodo.FieldDay] = struct{}{}
-}
-
-// DayCleared returns if the "day" field was cleared in this mutation.
-func (m *EntTodoMutation) DayCleared() bool {
-	_, ok := m.clearedFields[enttodo.FieldDay]
-	return ok
-}
-
 // ResetDay resets all changes to the "day" field.
 func (m *EntTodoMutation) ResetDay() {
 	m.day = nil
-	delete(m.clearedFields, enttodo.FieldDay)
 }
 
 // SetLesson sets the "lesson" field.
@@ -5260,15 +5895,6 @@ func (m *EntTodoMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *EntTodoMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(enttodo.FieldStartTime) {
-		fields = append(fields, enttodo.FieldStartTime)
-	}
-	if m.FieldCleared(enttodo.FieldEndTime) {
-		fields = append(fields, enttodo.FieldEndTime)
-	}
-	if m.FieldCleared(enttodo.FieldDay) {
-		fields = append(fields, enttodo.FieldDay)
-	}
 	if m.FieldCleared(enttodo.FieldLesson) {
 		fields = append(fields, enttodo.FieldLesson)
 	}
@@ -5289,15 +5915,6 @@ func (m *EntTodoMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *EntTodoMutation) ClearField(name string) error {
 	switch name {
-	case enttodo.FieldStartTime:
-		m.ClearStartTime()
-		return nil
-	case enttodo.FieldEndTime:
-		m.ClearEndTime()
-		return nil
-	case enttodo.FieldDay:
-		m.ClearDay()
-		return nil
 	case enttodo.FieldLesson:
 		m.ClearLesson()
 		return nil
@@ -5846,22 +6463,9 @@ func (m *EntUserMutation) OldCountry(ctx context.Context) (v string, err error) 
 	return oldValue.Country, nil
 }
 
-// ClearCountry clears the value of the "country" field.
-func (m *EntUserMutation) ClearCountry() {
-	m.country = nil
-	m.clearedFields[entuser.FieldCountry] = struct{}{}
-}
-
-// CountryCleared returns if the "country" field was cleared in this mutation.
-func (m *EntUserMutation) CountryCleared() bool {
-	_, ok := m.clearedFields[entuser.FieldCountry]
-	return ok
-}
-
 // ResetCountry resets all changes to the "country" field.
 func (m *EntUserMutation) ResetCountry() {
 	m.country = nil
-	delete(m.clearedFields, entuser.FieldCountry)
 }
 
 // SetPhone sets the "phone" field.
@@ -5895,22 +6499,9 @@ func (m *EntUserMutation) OldPhone(ctx context.Context) (v string, err error) {
 	return oldValue.Phone, nil
 }
 
-// ClearPhone clears the value of the "phone" field.
-func (m *EntUserMutation) ClearPhone() {
-	m.phone = nil
-	m.clearedFields[entuser.FieldPhone] = struct{}{}
-}
-
-// PhoneCleared returns if the "phone" field was cleared in this mutation.
-func (m *EntUserMutation) PhoneCleared() bool {
-	_, ok := m.clearedFields[entuser.FieldPhone]
-	return ok
-}
-
 // ResetPhone resets all changes to the "phone" field.
 func (m *EntUserMutation) ResetPhone() {
 	m.phone = nil
-	delete(m.clearedFields, entuser.FieldPhone)
 }
 
 // SetDateOfBirth sets the "dateOfBirth" field.
@@ -5944,22 +6535,9 @@ func (m *EntUserMutation) OldDateOfBirth(ctx context.Context) (v time.Time, err 
 	return oldValue.DateOfBirth, nil
 }
 
-// ClearDateOfBirth clears the value of the "dateOfBirth" field.
-func (m *EntUserMutation) ClearDateOfBirth() {
-	m.dateOfBirth = nil
-	m.clearedFields[entuser.FieldDateOfBirth] = struct{}{}
-}
-
-// DateOfBirthCleared returns if the "dateOfBirth" field was cleared in this mutation.
-func (m *EntUserMutation) DateOfBirthCleared() bool {
-	_, ok := m.clearedFields[entuser.FieldDateOfBirth]
-	return ok
-}
-
 // ResetDateOfBirth resets all changes to the "dateOfBirth" field.
 func (m *EntUserMutation) ResetDateOfBirth() {
 	m.dateOfBirth = nil
-	delete(m.clearedFields, entuser.FieldDateOfBirth)
 }
 
 // SetProfilePictureUrl sets the "profilePictureUrl" field.
@@ -7079,15 +7657,6 @@ func (m *EntUserMutation) AddField(name string, value ent.Value) error {
 // mutation.
 func (m *EntUserMutation) ClearedFields() []string {
 	var fields []string
-	if m.FieldCleared(entuser.FieldCountry) {
-		fields = append(fields, entuser.FieldCountry)
-	}
-	if m.FieldCleared(entuser.FieldPhone) {
-		fields = append(fields, entuser.FieldPhone)
-	}
-	if m.FieldCleared(entuser.FieldDateOfBirth) {
-		fields = append(fields, entuser.FieldDateOfBirth)
-	}
 	if m.FieldCleared(entuser.FieldProfilePictureUrl) {
 		fields = append(fields, entuser.FieldProfilePictureUrl)
 	}
@@ -7105,15 +7674,6 @@ func (m *EntUserMutation) FieldCleared(name string) bool {
 // error if the field is not defined in the schema.
 func (m *EntUserMutation) ClearField(name string) error {
 	switch name {
-	case entuser.FieldCountry:
-		m.ClearCountry()
-		return nil
-	case entuser.FieldPhone:
-		m.ClearPhone()
-		return nil
-	case entuser.FieldDateOfBirth:
-		m.ClearDateOfBirth()
-		return nil
 	case entuser.FieldProfilePictureUrl:
 		m.ClearProfilePictureUrl()
 		return nil

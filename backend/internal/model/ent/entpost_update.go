@@ -57,20 +57,6 @@ func (epu *EntPostUpdate) SetContent(s string) *EntPostUpdate {
 	return epu
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (epu *EntPostUpdate) SetNillableContent(s *string) *EntPostUpdate {
-	if s != nil {
-		epu.SetContent(*s)
-	}
-	return epu
-}
-
-// ClearContent clears the value of the "content" field.
-func (epu *EntPostUpdate) ClearContent() *EntPostUpdate {
-	epu.mutation.ClearContent()
-	return epu
-}
-
 // SetShare sets the "share" field.
 func (epu *EntPostUpdate) SetShare(e entpost.Share) *EntPostUpdate {
 	epu.mutation.SetShare(e)
@@ -82,12 +68,6 @@ func (epu *EntPostUpdate) SetNillableShare(e *entpost.Share) *EntPostUpdate {
 	if e != nil {
 		epu.SetShare(*e)
 	}
-	return epu
-}
-
-// ClearShare clears the value of the "share" field.
-func (epu *EntPostUpdate) ClearShare() *EntPostUpdate {
-	epu.mutation.ClearShare()
 	return epu
 }
 
@@ -289,6 +269,11 @@ func (epu *EntPostUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (epu *EntPostUpdate) check() error {
+	if v, ok := epu.mutation.Content(); ok {
+		if err := entpost.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntPost.content": %w`, err)}
+		}
+	}
 	if v, ok := epu.mutation.Share(); ok {
 		if err := entpost.ShareValidator(v); err != nil {
 			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntPost.share": %w`, err)}
@@ -336,22 +321,10 @@ func (epu *EntPostUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entpost.FieldContent,
 		})
 	}
-	if epu.mutation.ContentCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entpost.FieldContent,
-		})
-	}
 	if value, ok := epu.mutation.Share(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entpost.FieldShare,
-		})
-	}
-	if epu.mutation.ShareCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entpost.FieldShare,
 		})
 	}
@@ -578,20 +551,6 @@ func (epuo *EntPostUpdateOne) SetContent(s string) *EntPostUpdateOne {
 	return epuo
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (epuo *EntPostUpdateOne) SetNillableContent(s *string) *EntPostUpdateOne {
-	if s != nil {
-		epuo.SetContent(*s)
-	}
-	return epuo
-}
-
-// ClearContent clears the value of the "content" field.
-func (epuo *EntPostUpdateOne) ClearContent() *EntPostUpdateOne {
-	epuo.mutation.ClearContent()
-	return epuo
-}
-
 // SetShare sets the "share" field.
 func (epuo *EntPostUpdateOne) SetShare(e entpost.Share) *EntPostUpdateOne {
 	epuo.mutation.SetShare(e)
@@ -603,12 +562,6 @@ func (epuo *EntPostUpdateOne) SetNillableShare(e *entpost.Share) *EntPostUpdateO
 	if e != nil {
 		epuo.SetShare(*e)
 	}
-	return epuo
-}
-
-// ClearShare clears the value of the "share" field.
-func (epuo *EntPostUpdateOne) ClearShare() *EntPostUpdateOne {
-	epuo.mutation.ClearShare()
 	return epuo
 }
 
@@ -823,6 +776,11 @@ func (epuo *EntPostUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (epuo *EntPostUpdateOne) check() error {
+	if v, ok := epuo.mutation.Content(); ok {
+		if err := entpost.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntPost.content": %w`, err)}
+		}
+	}
 	if v, ok := epuo.mutation.Share(); ok {
 		if err := entpost.ShareValidator(v); err != nil {
 			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntPost.share": %w`, err)}
@@ -887,22 +845,10 @@ func (epuo *EntPostUpdateOne) sqlSave(ctx context.Context) (_node *EntPost, err 
 			Column: entpost.FieldContent,
 		})
 	}
-	if epuo.mutation.ContentCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entpost.FieldContent,
-		})
-	}
 	if value, ok := epuo.mutation.Share(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entpost.FieldShare,
-		})
-	}
-	if epuo.mutation.ShareCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entpost.FieldShare,
 		})
 	}

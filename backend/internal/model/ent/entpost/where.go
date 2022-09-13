@@ -386,20 +386,6 @@ func ContentHasSuffix(v string) predicate.EntPost {
 	})
 }
 
-// ContentIsNil applies the IsNil predicate on the "content" field.
-func ContentIsNil() predicate.EntPost {
-	return predicate.EntPost(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldContent)))
-	})
-}
-
-// ContentNotNil applies the NotNil predicate on the "content" field.
-func ContentNotNil() predicate.EntPost {
-	return predicate.EntPost(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldContent)))
-	})
-}
-
 // ContentEqualFold applies the EqualFold predicate on the "content" field.
 func ContentEqualFold(v string) predicate.EntPost {
 	return predicate.EntPost(func(s *sql.Selector) {
@@ -447,20 +433,6 @@ func ShareNotIn(vs ...Share) predicate.EntPost {
 	}
 	return predicate.EntPost(func(s *sql.Selector) {
 		s.Where(sql.NotIn(s.C(FieldShare), v...))
-	})
-}
-
-// ShareIsNil applies the IsNil predicate on the "share" field.
-func ShareIsNil() predicate.EntPost {
-	return predicate.EntPost(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldShare)))
-	})
-}
-
-// ShareNotNil applies the NotNil predicate on the "share" field.
-func ShareNotNil() predicate.EntPost {
-	return predicate.EntPost(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldShare)))
 	})
 }
 

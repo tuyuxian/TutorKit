@@ -50,37 +50,9 @@ func (ecu *EntCourseUpdate) SetCourseUrl(s string) *EntCourseUpdate {
 	return ecu
 }
 
-// SetNillableCourseUrl sets the "courseUrl" field if the given value is not nil.
-func (ecu *EntCourseUpdate) SetNillableCourseUrl(s *string) *EntCourseUpdate {
-	if s != nil {
-		ecu.SetCourseUrl(*s)
-	}
-	return ecu
-}
-
-// ClearCourseUrl clears the value of the "courseUrl" field.
-func (ecu *EntCourseUpdate) ClearCourseUrl() *EntCourseUpdate {
-	ecu.mutation.ClearCourseUrl()
-	return ecu
-}
-
 // SetPaymentMethod sets the "paymentMethod" field.
 func (ecu *EntCourseUpdate) SetPaymentMethod(em entcourse.PaymentMethod) *EntCourseUpdate {
 	ecu.mutation.SetPaymentMethod(em)
-	return ecu
-}
-
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
-func (ecu *EntCourseUpdate) SetNillablePaymentMethod(em *entcourse.PaymentMethod) *EntCourseUpdate {
-	if em != nil {
-		ecu.SetPaymentMethod(*em)
-	}
-	return ecu
-}
-
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
-func (ecu *EntCourseUpdate) ClearPaymentMethod() *EntCourseUpdate {
-	ecu.mutation.ClearPaymentMethod()
 	return ecu
 }
 
@@ -117,37 +89,9 @@ func (ecu *EntCourseUpdate) SetStartDate(t time.Time) *EntCourseUpdate {
 	return ecu
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
-func (ecu *EntCourseUpdate) SetNillableStartDate(t *time.Time) *EntCourseUpdate {
-	if t != nil {
-		ecu.SetStartDate(*t)
-	}
-	return ecu
-}
-
-// ClearStartDate clears the value of the "startDate" field.
-func (ecu *EntCourseUpdate) ClearStartDate() *EntCourseUpdate {
-	ecu.mutation.ClearStartDate()
-	return ecu
-}
-
 // SetEndDate sets the "endDate" field.
 func (ecu *EntCourseUpdate) SetEndDate(t time.Time) *EntCourseUpdate {
 	ecu.mutation.SetEndDate(t)
-	return ecu
-}
-
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ecu *EntCourseUpdate) SetNillableEndDate(t *time.Time) *EntCourseUpdate {
-	if t != nil {
-		ecu.SetEndDate(*t)
-	}
-	return ecu
-}
-
-// ClearEndDate clears the value of the "endDate" field.
-func (ecu *EntCourseUpdate) ClearEndDate() *EntCourseUpdate {
-	ecu.mutation.ClearEndDate()
 	return ecu
 }
 
@@ -165,12 +109,6 @@ func (ecu *EntCourseUpdate) SetNillableMonday(b *bool) *EntCourseUpdate {
 	return ecu
 }
 
-// ClearMonday clears the value of the "monday" field.
-func (ecu *EntCourseUpdate) ClearMonday() *EntCourseUpdate {
-	ecu.mutation.ClearMonday()
-	return ecu
-}
-
 // SetTuesday sets the "tuesday" field.
 func (ecu *EntCourseUpdate) SetTuesday(b bool) *EntCourseUpdate {
 	ecu.mutation.SetTuesday(b)
@@ -182,12 +120,6 @@ func (ecu *EntCourseUpdate) SetNillableTuesday(b *bool) *EntCourseUpdate {
 	if b != nil {
 		ecu.SetTuesday(*b)
 	}
-	return ecu
-}
-
-// ClearTuesday clears the value of the "tuesday" field.
-func (ecu *EntCourseUpdate) ClearTuesday() *EntCourseUpdate {
-	ecu.mutation.ClearTuesday()
 	return ecu
 }
 
@@ -205,12 +137,6 @@ func (ecu *EntCourseUpdate) SetNillableWednesday(b *bool) *EntCourseUpdate {
 	return ecu
 }
 
-// ClearWednesday clears the value of the "wednesday" field.
-func (ecu *EntCourseUpdate) ClearWednesday() *EntCourseUpdate {
-	ecu.mutation.ClearWednesday()
-	return ecu
-}
-
 // SetThursday sets the "thursday" field.
 func (ecu *EntCourseUpdate) SetThursday(b bool) *EntCourseUpdate {
 	ecu.mutation.SetThursday(b)
@@ -222,12 +148,6 @@ func (ecu *EntCourseUpdate) SetNillableThursday(b *bool) *EntCourseUpdate {
 	if b != nil {
 		ecu.SetThursday(*b)
 	}
-	return ecu
-}
-
-// ClearThursday clears the value of the "thursday" field.
-func (ecu *EntCourseUpdate) ClearThursday() *EntCourseUpdate {
-	ecu.mutation.ClearThursday()
 	return ecu
 }
 
@@ -245,12 +165,6 @@ func (ecu *EntCourseUpdate) SetNillableFriday(b *bool) *EntCourseUpdate {
 	return ecu
 }
 
-// ClearFriday clears the value of the "friday" field.
-func (ecu *EntCourseUpdate) ClearFriday() *EntCourseUpdate {
-	ecu.mutation.ClearFriday()
-	return ecu
-}
-
 // SetSaturday sets the "saturday" field.
 func (ecu *EntCourseUpdate) SetSaturday(b bool) *EntCourseUpdate {
 	ecu.mutation.SetSaturday(b)
@@ -262,12 +176,6 @@ func (ecu *EntCourseUpdate) SetNillableSaturday(b *bool) *EntCourseUpdate {
 	if b != nil {
 		ecu.SetSaturday(*b)
 	}
-	return ecu
-}
-
-// ClearSaturday clears the value of the "saturday" field.
-func (ecu *EntCourseUpdate) ClearSaturday() *EntCourseUpdate {
-	ecu.mutation.ClearSaturday()
 	return ecu
 }
 
@@ -285,9 +193,283 @@ func (ecu *EntCourseUpdate) SetNillableSunday(b *bool) *EntCourseUpdate {
 	return ecu
 }
 
-// ClearSunday clears the value of the "sunday" field.
-func (ecu *EntCourseUpdate) ClearSunday() *EntCourseUpdate {
-	ecu.mutation.ClearSunday()
+// SetMondayStartTime sets the "mondayStartTime" field.
+func (ecu *EntCourseUpdate) SetMondayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetMondayStartTime(t)
+	return ecu
+}
+
+// SetNillableMondayStartTime sets the "mondayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableMondayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetMondayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearMondayStartTime clears the value of the "mondayStartTime" field.
+func (ecu *EntCourseUpdate) ClearMondayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearMondayStartTime()
+	return ecu
+}
+
+// SetMondayEndTime sets the "mondayEndTime" field.
+func (ecu *EntCourseUpdate) SetMondayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetMondayEndTime(t)
+	return ecu
+}
+
+// SetNillableMondayEndTime sets the "mondayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableMondayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetMondayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearMondayEndTime clears the value of the "mondayEndTime" field.
+func (ecu *EntCourseUpdate) ClearMondayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearMondayEndTime()
+	return ecu
+}
+
+// SetTuesdayStartTime sets the "tuesdayStartTime" field.
+func (ecu *EntCourseUpdate) SetTuesdayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetTuesdayStartTime(t)
+	return ecu
+}
+
+// SetNillableTuesdayStartTime sets the "tuesdayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableTuesdayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetTuesdayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearTuesdayStartTime clears the value of the "tuesdayStartTime" field.
+func (ecu *EntCourseUpdate) ClearTuesdayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearTuesdayStartTime()
+	return ecu
+}
+
+// SetTuesdayEndTime sets the "tuesdayEndTime" field.
+func (ecu *EntCourseUpdate) SetTuesdayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetTuesdayEndTime(t)
+	return ecu
+}
+
+// SetNillableTuesdayEndTime sets the "tuesdayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableTuesdayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetTuesdayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearTuesdayEndTime clears the value of the "tuesdayEndTime" field.
+func (ecu *EntCourseUpdate) ClearTuesdayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearTuesdayEndTime()
+	return ecu
+}
+
+// SetWednesdayStartTime sets the "wednesdayStartTime" field.
+func (ecu *EntCourseUpdate) SetWednesdayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetWednesdayStartTime(t)
+	return ecu
+}
+
+// SetNillableWednesdayStartTime sets the "wednesdayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableWednesdayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetWednesdayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearWednesdayStartTime clears the value of the "wednesdayStartTime" field.
+func (ecu *EntCourseUpdate) ClearWednesdayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearWednesdayStartTime()
+	return ecu
+}
+
+// SetWednesdayEndTime sets the "wednesdayEndTime" field.
+func (ecu *EntCourseUpdate) SetWednesdayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetWednesdayEndTime(t)
+	return ecu
+}
+
+// SetNillableWednesdayEndTime sets the "wednesdayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableWednesdayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetWednesdayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearWednesdayEndTime clears the value of the "wednesdayEndTime" field.
+func (ecu *EntCourseUpdate) ClearWednesdayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearWednesdayEndTime()
+	return ecu
+}
+
+// SetThursdayStartTime sets the "thursdayStartTime" field.
+func (ecu *EntCourseUpdate) SetThursdayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetThursdayStartTime(t)
+	return ecu
+}
+
+// SetNillableThursdayStartTime sets the "thursdayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableThursdayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetThursdayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearThursdayStartTime clears the value of the "thursdayStartTime" field.
+func (ecu *EntCourseUpdate) ClearThursdayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearThursdayStartTime()
+	return ecu
+}
+
+// SetThursdayEndTime sets the "thursdayEndTime" field.
+func (ecu *EntCourseUpdate) SetThursdayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetThursdayEndTime(t)
+	return ecu
+}
+
+// SetNillableThursdayEndTime sets the "thursdayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableThursdayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetThursdayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearThursdayEndTime clears the value of the "thursdayEndTime" field.
+func (ecu *EntCourseUpdate) ClearThursdayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearThursdayEndTime()
+	return ecu
+}
+
+// SetFridayStartTime sets the "fridayStartTime" field.
+func (ecu *EntCourseUpdate) SetFridayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetFridayStartTime(t)
+	return ecu
+}
+
+// SetNillableFridayStartTime sets the "fridayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableFridayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetFridayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearFridayStartTime clears the value of the "fridayStartTime" field.
+func (ecu *EntCourseUpdate) ClearFridayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearFridayStartTime()
+	return ecu
+}
+
+// SetFridayEndTime sets the "fridayEndTime" field.
+func (ecu *EntCourseUpdate) SetFridayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetFridayEndTime(t)
+	return ecu
+}
+
+// SetNillableFridayEndTime sets the "fridayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableFridayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetFridayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearFridayEndTime clears the value of the "fridayEndTime" field.
+func (ecu *EntCourseUpdate) ClearFridayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearFridayEndTime()
+	return ecu
+}
+
+// SetSaturdayStartTime sets the "saturdayStartTime" field.
+func (ecu *EntCourseUpdate) SetSaturdayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetSaturdayStartTime(t)
+	return ecu
+}
+
+// SetNillableSaturdayStartTime sets the "saturdayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableSaturdayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetSaturdayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearSaturdayStartTime clears the value of the "saturdayStartTime" field.
+func (ecu *EntCourseUpdate) ClearSaturdayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearSaturdayStartTime()
+	return ecu
+}
+
+// SetSaturdayEndTime sets the "saturdayEndTime" field.
+func (ecu *EntCourseUpdate) SetSaturdayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetSaturdayEndTime(t)
+	return ecu
+}
+
+// SetNillableSaturdayEndTime sets the "saturdayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableSaturdayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetSaturdayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearSaturdayEndTime clears the value of the "saturdayEndTime" field.
+func (ecu *EntCourseUpdate) ClearSaturdayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearSaturdayEndTime()
+	return ecu
+}
+
+// SetSundayStartTime sets the "sundayStartTime" field.
+func (ecu *EntCourseUpdate) SetSundayStartTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetSundayStartTime(t)
+	return ecu
+}
+
+// SetNillableSundayStartTime sets the "sundayStartTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableSundayStartTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetSundayStartTime(*t)
+	}
+	return ecu
+}
+
+// ClearSundayStartTime clears the value of the "sundayStartTime" field.
+func (ecu *EntCourseUpdate) ClearSundayStartTime() *EntCourseUpdate {
+	ecu.mutation.ClearSundayStartTime()
+	return ecu
+}
+
+// SetSundayEndTime sets the "sundayEndTime" field.
+func (ecu *EntCourseUpdate) SetSundayEndTime(t time.Time) *EntCourseUpdate {
+	ecu.mutation.SetSundayEndTime(t)
+	return ecu
+}
+
+// SetNillableSundayEndTime sets the "sundayEndTime" field if the given value is not nil.
+func (ecu *EntCourseUpdate) SetNillableSundayEndTime(t *time.Time) *EntCourseUpdate {
+	if t != nil {
+		ecu.SetSundayEndTime(*t)
+	}
+	return ecu
+}
+
+// ClearSundayEndTime clears the value of the "sundayEndTime" field.
+func (ecu *EntCourseUpdate) ClearSundayEndTime() *EntCourseUpdate {
+	ecu.mutation.ClearSundayEndTime()
 	return ecu
 }
 
@@ -552,9 +734,19 @@ func (ecu *EntCourseUpdate) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntCourse.name": %w`, err)}
 		}
 	}
+	if v, ok := ecu.mutation.CourseUrl(); ok {
+		if err := entcourse.CourseUrlValidator(v); err != nil {
+			return &ValidationError{Name: "courseUrl", err: fmt.Errorf(`ent: validator failed for field "EntCourse.courseUrl": %w`, err)}
+		}
+	}
 	if v, ok := ecu.mutation.PaymentMethod(); ok {
 		if err := entcourse.PaymentMethodValidator(v); err != nil {
 			return &ValidationError{Name: "paymentMethod", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentMethod": %w`, err)}
+		}
+	}
+	if v, ok := ecu.mutation.PaymentAmount(); ok {
+		if err := entcourse.PaymentAmountValidator(v); err != nil {
+			return &ValidationError{Name: "paymentAmount", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentAmount": %w`, err)}
 		}
 	}
 	return nil
@@ -599,22 +791,10 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldCourseUrl,
 		})
 	}
-	if ecu.mutation.CourseUrlCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entcourse.FieldCourseUrl,
-		})
-	}
 	if value, ok := ecu.mutation.PaymentMethod(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entcourse.FieldPaymentMethod,
-		})
-	}
-	if ecu.mutation.PaymentMethodCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entcourse.FieldPaymentMethod,
 		})
 	}
@@ -645,22 +825,10 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldStartDate,
 		})
 	}
-	if ecu.mutation.StartDateCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entcourse.FieldStartDate,
-		})
-	}
 	if value, ok := ecu.mutation.EndDate(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entcourse.FieldEndDate,
-		})
-	}
-	if ecu.mutation.EndDateCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entcourse.FieldEndDate,
 		})
 	}
@@ -671,22 +839,10 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldMonday,
 		})
 	}
-	if ecu.mutation.MondayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldMonday,
-		})
-	}
 	if value, ok := ecu.mutation.Tuesday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldTuesday,
-		})
-	}
-	if ecu.mutation.TuesdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldTuesday,
 		})
 	}
@@ -697,22 +853,10 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldWednesday,
 		})
 	}
-	if ecu.mutation.WednesdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldWednesday,
-		})
-	}
 	if value, ok := ecu.mutation.Thursday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldThursday,
-		})
-	}
-	if ecu.mutation.ThursdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldThursday,
 		})
 	}
@@ -723,22 +867,10 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldFriday,
 		})
 	}
-	if ecu.mutation.FridayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldFriday,
-		})
-	}
 	if value, ok := ecu.mutation.Saturday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldSaturday,
-		})
-	}
-	if ecu.mutation.SaturdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldSaturday,
 		})
 	}
@@ -749,10 +881,186 @@ func (ecu *EntCourseUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcourse.FieldSunday,
 		})
 	}
-	if ecu.mutation.SundayCleared() {
+	if value, ok := ecu.mutation.MondayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayStartTime,
+		})
+	}
+	if ecu.mutation.MondayStartTimeCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldSunday,
+			Type:   field.TypeTime,
+			Column: entcourse.FieldMondayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.MondayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayEndTime,
+		})
+	}
+	if ecu.mutation.MondayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldMondayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.TuesdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayStartTime,
+		})
+	}
+	if ecu.mutation.TuesdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldTuesdayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.TuesdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayEndTime,
+		})
+	}
+	if ecu.mutation.TuesdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldTuesdayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.WednesdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayStartTime,
+		})
+	}
+	if ecu.mutation.WednesdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldWednesdayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.WednesdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayEndTime,
+		})
+	}
+	if ecu.mutation.WednesdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldWednesdayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.ThursdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayStartTime,
+		})
+	}
+	if ecu.mutation.ThursdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldThursdayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.ThursdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayEndTime,
+		})
+	}
+	if ecu.mutation.ThursdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldThursdayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.FridayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayStartTime,
+		})
+	}
+	if ecu.mutation.FridayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldFridayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.FridayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayEndTime,
+		})
+	}
+	if ecu.mutation.FridayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldFridayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.SaturdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayStartTime,
+		})
+	}
+	if ecu.mutation.SaturdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSaturdayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.SaturdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayEndTime,
+		})
+	}
+	if ecu.mutation.SaturdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSaturdayEndTime,
+		})
+	}
+	if value, ok := ecu.mutation.SundayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayStartTime,
+		})
+	}
+	if ecu.mutation.SundayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSundayStartTime,
+		})
+	}
+	if value, ok := ecu.mutation.SundayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayEndTime,
+		})
+	}
+	if ecu.mutation.SundayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSundayEndTime,
 		})
 	}
 	if ecu.mutation.TodoCleared() {
@@ -1062,37 +1370,9 @@ func (ecuo *EntCourseUpdateOne) SetCourseUrl(s string) *EntCourseUpdateOne {
 	return ecuo
 }
 
-// SetNillableCourseUrl sets the "courseUrl" field if the given value is not nil.
-func (ecuo *EntCourseUpdateOne) SetNillableCourseUrl(s *string) *EntCourseUpdateOne {
-	if s != nil {
-		ecuo.SetCourseUrl(*s)
-	}
-	return ecuo
-}
-
-// ClearCourseUrl clears the value of the "courseUrl" field.
-func (ecuo *EntCourseUpdateOne) ClearCourseUrl() *EntCourseUpdateOne {
-	ecuo.mutation.ClearCourseUrl()
-	return ecuo
-}
-
 // SetPaymentMethod sets the "paymentMethod" field.
 func (ecuo *EntCourseUpdateOne) SetPaymentMethod(em entcourse.PaymentMethod) *EntCourseUpdateOne {
 	ecuo.mutation.SetPaymentMethod(em)
-	return ecuo
-}
-
-// SetNillablePaymentMethod sets the "paymentMethod" field if the given value is not nil.
-func (ecuo *EntCourseUpdateOne) SetNillablePaymentMethod(em *entcourse.PaymentMethod) *EntCourseUpdateOne {
-	if em != nil {
-		ecuo.SetPaymentMethod(*em)
-	}
-	return ecuo
-}
-
-// ClearPaymentMethod clears the value of the "paymentMethod" field.
-func (ecuo *EntCourseUpdateOne) ClearPaymentMethod() *EntCourseUpdateOne {
-	ecuo.mutation.ClearPaymentMethod()
 	return ecuo
 }
 
@@ -1129,37 +1409,9 @@ func (ecuo *EntCourseUpdateOne) SetStartDate(t time.Time) *EntCourseUpdateOne {
 	return ecuo
 }
 
-// SetNillableStartDate sets the "startDate" field if the given value is not nil.
-func (ecuo *EntCourseUpdateOne) SetNillableStartDate(t *time.Time) *EntCourseUpdateOne {
-	if t != nil {
-		ecuo.SetStartDate(*t)
-	}
-	return ecuo
-}
-
-// ClearStartDate clears the value of the "startDate" field.
-func (ecuo *EntCourseUpdateOne) ClearStartDate() *EntCourseUpdateOne {
-	ecuo.mutation.ClearStartDate()
-	return ecuo
-}
-
 // SetEndDate sets the "endDate" field.
 func (ecuo *EntCourseUpdateOne) SetEndDate(t time.Time) *EntCourseUpdateOne {
 	ecuo.mutation.SetEndDate(t)
-	return ecuo
-}
-
-// SetNillableEndDate sets the "endDate" field if the given value is not nil.
-func (ecuo *EntCourseUpdateOne) SetNillableEndDate(t *time.Time) *EntCourseUpdateOne {
-	if t != nil {
-		ecuo.SetEndDate(*t)
-	}
-	return ecuo
-}
-
-// ClearEndDate clears the value of the "endDate" field.
-func (ecuo *EntCourseUpdateOne) ClearEndDate() *EntCourseUpdateOne {
-	ecuo.mutation.ClearEndDate()
 	return ecuo
 }
 
@@ -1177,12 +1429,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableMonday(b *bool) *EntCourseUpdateOne {
 	return ecuo
 }
 
-// ClearMonday clears the value of the "monday" field.
-func (ecuo *EntCourseUpdateOne) ClearMonday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearMonday()
-	return ecuo
-}
-
 // SetTuesday sets the "tuesday" field.
 func (ecuo *EntCourseUpdateOne) SetTuesday(b bool) *EntCourseUpdateOne {
 	ecuo.mutation.SetTuesday(b)
@@ -1194,12 +1440,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableTuesday(b *bool) *EntCourseUpdateOne 
 	if b != nil {
 		ecuo.SetTuesday(*b)
 	}
-	return ecuo
-}
-
-// ClearTuesday clears the value of the "tuesday" field.
-func (ecuo *EntCourseUpdateOne) ClearTuesday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearTuesday()
 	return ecuo
 }
 
@@ -1217,12 +1457,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableWednesday(b *bool) *EntCourseUpdateOn
 	return ecuo
 }
 
-// ClearWednesday clears the value of the "wednesday" field.
-func (ecuo *EntCourseUpdateOne) ClearWednesday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearWednesday()
-	return ecuo
-}
-
 // SetThursday sets the "thursday" field.
 func (ecuo *EntCourseUpdateOne) SetThursday(b bool) *EntCourseUpdateOne {
 	ecuo.mutation.SetThursday(b)
@@ -1234,12 +1468,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableThursday(b *bool) *EntCourseUpdateOne
 	if b != nil {
 		ecuo.SetThursday(*b)
 	}
-	return ecuo
-}
-
-// ClearThursday clears the value of the "thursday" field.
-func (ecuo *EntCourseUpdateOne) ClearThursday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearThursday()
 	return ecuo
 }
 
@@ -1257,12 +1485,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableFriday(b *bool) *EntCourseUpdateOne {
 	return ecuo
 }
 
-// ClearFriday clears the value of the "friday" field.
-func (ecuo *EntCourseUpdateOne) ClearFriday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearFriday()
-	return ecuo
-}
-
 // SetSaturday sets the "saturday" field.
 func (ecuo *EntCourseUpdateOne) SetSaturday(b bool) *EntCourseUpdateOne {
 	ecuo.mutation.SetSaturday(b)
@@ -1274,12 +1496,6 @@ func (ecuo *EntCourseUpdateOne) SetNillableSaturday(b *bool) *EntCourseUpdateOne
 	if b != nil {
 		ecuo.SetSaturday(*b)
 	}
-	return ecuo
-}
-
-// ClearSaturday clears the value of the "saturday" field.
-func (ecuo *EntCourseUpdateOne) ClearSaturday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearSaturday()
 	return ecuo
 }
 
@@ -1297,9 +1513,283 @@ func (ecuo *EntCourseUpdateOne) SetNillableSunday(b *bool) *EntCourseUpdateOne {
 	return ecuo
 }
 
-// ClearSunday clears the value of the "sunday" field.
-func (ecuo *EntCourseUpdateOne) ClearSunday() *EntCourseUpdateOne {
-	ecuo.mutation.ClearSunday()
+// SetMondayStartTime sets the "mondayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetMondayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetMondayStartTime(t)
+	return ecuo
+}
+
+// SetNillableMondayStartTime sets the "mondayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableMondayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetMondayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearMondayStartTime clears the value of the "mondayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearMondayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearMondayStartTime()
+	return ecuo
+}
+
+// SetMondayEndTime sets the "mondayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetMondayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetMondayEndTime(t)
+	return ecuo
+}
+
+// SetNillableMondayEndTime sets the "mondayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableMondayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetMondayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearMondayEndTime clears the value of the "mondayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearMondayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearMondayEndTime()
+	return ecuo
+}
+
+// SetTuesdayStartTime sets the "tuesdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetTuesdayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetTuesdayStartTime(t)
+	return ecuo
+}
+
+// SetNillableTuesdayStartTime sets the "tuesdayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableTuesdayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetTuesdayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearTuesdayStartTime clears the value of the "tuesdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearTuesdayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearTuesdayStartTime()
+	return ecuo
+}
+
+// SetTuesdayEndTime sets the "tuesdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetTuesdayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetTuesdayEndTime(t)
+	return ecuo
+}
+
+// SetNillableTuesdayEndTime sets the "tuesdayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableTuesdayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetTuesdayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearTuesdayEndTime clears the value of the "tuesdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearTuesdayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearTuesdayEndTime()
+	return ecuo
+}
+
+// SetWednesdayStartTime sets the "wednesdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetWednesdayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetWednesdayStartTime(t)
+	return ecuo
+}
+
+// SetNillableWednesdayStartTime sets the "wednesdayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableWednesdayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetWednesdayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearWednesdayStartTime clears the value of the "wednesdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearWednesdayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearWednesdayStartTime()
+	return ecuo
+}
+
+// SetWednesdayEndTime sets the "wednesdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetWednesdayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetWednesdayEndTime(t)
+	return ecuo
+}
+
+// SetNillableWednesdayEndTime sets the "wednesdayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableWednesdayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetWednesdayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearWednesdayEndTime clears the value of the "wednesdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearWednesdayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearWednesdayEndTime()
+	return ecuo
+}
+
+// SetThursdayStartTime sets the "thursdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetThursdayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetThursdayStartTime(t)
+	return ecuo
+}
+
+// SetNillableThursdayStartTime sets the "thursdayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableThursdayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetThursdayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearThursdayStartTime clears the value of the "thursdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearThursdayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearThursdayStartTime()
+	return ecuo
+}
+
+// SetThursdayEndTime sets the "thursdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetThursdayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetThursdayEndTime(t)
+	return ecuo
+}
+
+// SetNillableThursdayEndTime sets the "thursdayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableThursdayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetThursdayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearThursdayEndTime clears the value of the "thursdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearThursdayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearThursdayEndTime()
+	return ecuo
+}
+
+// SetFridayStartTime sets the "fridayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetFridayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetFridayStartTime(t)
+	return ecuo
+}
+
+// SetNillableFridayStartTime sets the "fridayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableFridayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetFridayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearFridayStartTime clears the value of the "fridayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearFridayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearFridayStartTime()
+	return ecuo
+}
+
+// SetFridayEndTime sets the "fridayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetFridayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetFridayEndTime(t)
+	return ecuo
+}
+
+// SetNillableFridayEndTime sets the "fridayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableFridayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetFridayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearFridayEndTime clears the value of the "fridayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearFridayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearFridayEndTime()
+	return ecuo
+}
+
+// SetSaturdayStartTime sets the "saturdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetSaturdayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetSaturdayStartTime(t)
+	return ecuo
+}
+
+// SetNillableSaturdayStartTime sets the "saturdayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableSaturdayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetSaturdayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearSaturdayStartTime clears the value of the "saturdayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearSaturdayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearSaturdayStartTime()
+	return ecuo
+}
+
+// SetSaturdayEndTime sets the "saturdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetSaturdayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetSaturdayEndTime(t)
+	return ecuo
+}
+
+// SetNillableSaturdayEndTime sets the "saturdayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableSaturdayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetSaturdayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearSaturdayEndTime clears the value of the "saturdayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearSaturdayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearSaturdayEndTime()
+	return ecuo
+}
+
+// SetSundayStartTime sets the "sundayStartTime" field.
+func (ecuo *EntCourseUpdateOne) SetSundayStartTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetSundayStartTime(t)
+	return ecuo
+}
+
+// SetNillableSundayStartTime sets the "sundayStartTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableSundayStartTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetSundayStartTime(*t)
+	}
+	return ecuo
+}
+
+// ClearSundayStartTime clears the value of the "sundayStartTime" field.
+func (ecuo *EntCourseUpdateOne) ClearSundayStartTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearSundayStartTime()
+	return ecuo
+}
+
+// SetSundayEndTime sets the "sundayEndTime" field.
+func (ecuo *EntCourseUpdateOne) SetSundayEndTime(t time.Time) *EntCourseUpdateOne {
+	ecuo.mutation.SetSundayEndTime(t)
+	return ecuo
+}
+
+// SetNillableSundayEndTime sets the "sundayEndTime" field if the given value is not nil.
+func (ecuo *EntCourseUpdateOne) SetNillableSundayEndTime(t *time.Time) *EntCourseUpdateOne {
+	if t != nil {
+		ecuo.SetSundayEndTime(*t)
+	}
+	return ecuo
+}
+
+// ClearSundayEndTime clears the value of the "sundayEndTime" field.
+func (ecuo *EntCourseUpdateOne) ClearSundayEndTime() *EntCourseUpdateOne {
+	ecuo.mutation.ClearSundayEndTime()
 	return ecuo
 }
 
@@ -1577,9 +2067,19 @@ func (ecuo *EntCourseUpdateOne) check() error {
 			return &ValidationError{Name: "name", err: fmt.Errorf(`ent: validator failed for field "EntCourse.name": %w`, err)}
 		}
 	}
+	if v, ok := ecuo.mutation.CourseUrl(); ok {
+		if err := entcourse.CourseUrlValidator(v); err != nil {
+			return &ValidationError{Name: "courseUrl", err: fmt.Errorf(`ent: validator failed for field "EntCourse.courseUrl": %w`, err)}
+		}
+	}
 	if v, ok := ecuo.mutation.PaymentMethod(); ok {
 		if err := entcourse.PaymentMethodValidator(v); err != nil {
 			return &ValidationError{Name: "paymentMethod", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentMethod": %w`, err)}
+		}
+	}
+	if v, ok := ecuo.mutation.PaymentAmount(); ok {
+		if err := entcourse.PaymentAmountValidator(v); err != nil {
+			return &ValidationError{Name: "paymentAmount", err: fmt.Errorf(`ent: validator failed for field "EntCourse.paymentAmount": %w`, err)}
 		}
 	}
 	return nil
@@ -1641,22 +2141,10 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldCourseUrl,
 		})
 	}
-	if ecuo.mutation.CourseUrlCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entcourse.FieldCourseUrl,
-		})
-	}
 	if value, ok := ecuo.mutation.PaymentMethod(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entcourse.FieldPaymentMethod,
-		})
-	}
-	if ecuo.mutation.PaymentMethodCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entcourse.FieldPaymentMethod,
 		})
 	}
@@ -1687,22 +2175,10 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldStartDate,
 		})
 	}
-	if ecuo.mutation.StartDateCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entcourse.FieldStartDate,
-		})
-	}
 	if value, ok := ecuo.mutation.EndDate(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entcourse.FieldEndDate,
-		})
-	}
-	if ecuo.mutation.EndDateCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entcourse.FieldEndDate,
 		})
 	}
@@ -1713,22 +2189,10 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldMonday,
 		})
 	}
-	if ecuo.mutation.MondayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldMonday,
-		})
-	}
 	if value, ok := ecuo.mutation.Tuesday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldTuesday,
-		})
-	}
-	if ecuo.mutation.TuesdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldTuesday,
 		})
 	}
@@ -1739,22 +2203,10 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldWednesday,
 		})
 	}
-	if ecuo.mutation.WednesdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldWednesday,
-		})
-	}
 	if value, ok := ecuo.mutation.Thursday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldThursday,
-		})
-	}
-	if ecuo.mutation.ThursdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldThursday,
 		})
 	}
@@ -1765,22 +2217,10 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldFriday,
 		})
 	}
-	if ecuo.mutation.FridayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldFriday,
-		})
-	}
 	if value, ok := ecuo.mutation.Saturday(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeBool,
 			Value:  value,
-			Column: entcourse.FieldSaturday,
-		})
-	}
-	if ecuo.mutation.SaturdayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
 			Column: entcourse.FieldSaturday,
 		})
 	}
@@ -1791,10 +2231,186 @@ func (ecuo *EntCourseUpdateOne) sqlSave(ctx context.Context) (_node *EntCourse, 
 			Column: entcourse.FieldSunday,
 		})
 	}
-	if ecuo.mutation.SundayCleared() {
+	if value, ok := ecuo.mutation.MondayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayStartTime,
+		})
+	}
+	if ecuo.mutation.MondayStartTimeCleared() {
 		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeBool,
-			Column: entcourse.FieldSunday,
+			Type:   field.TypeTime,
+			Column: entcourse.FieldMondayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.MondayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldMondayEndTime,
+		})
+	}
+	if ecuo.mutation.MondayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldMondayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.TuesdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayStartTime,
+		})
+	}
+	if ecuo.mutation.TuesdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldTuesdayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.TuesdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldTuesdayEndTime,
+		})
+	}
+	if ecuo.mutation.TuesdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldTuesdayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.WednesdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayStartTime,
+		})
+	}
+	if ecuo.mutation.WednesdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldWednesdayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.WednesdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldWednesdayEndTime,
+		})
+	}
+	if ecuo.mutation.WednesdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldWednesdayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.ThursdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayStartTime,
+		})
+	}
+	if ecuo.mutation.ThursdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldThursdayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.ThursdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldThursdayEndTime,
+		})
+	}
+	if ecuo.mutation.ThursdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldThursdayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.FridayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayStartTime,
+		})
+	}
+	if ecuo.mutation.FridayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldFridayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.FridayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldFridayEndTime,
+		})
+	}
+	if ecuo.mutation.FridayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldFridayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.SaturdayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayStartTime,
+		})
+	}
+	if ecuo.mutation.SaturdayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSaturdayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.SaturdayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSaturdayEndTime,
+		})
+	}
+	if ecuo.mutation.SaturdayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSaturdayEndTime,
+		})
+	}
+	if value, ok := ecuo.mutation.SundayStartTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayStartTime,
+		})
+	}
+	if ecuo.mutation.SundayStartTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSundayStartTime,
+		})
+	}
+	if value, ok := ecuo.mutation.SundayEndTime(); ok {
+		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Value:  value,
+			Column: entcourse.FieldSundayEndTime,
+		})
+	}
+	if ecuo.mutation.SundayEndTimeCleared() {
+		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
+			Type:   field.TypeTime,
+			Column: entcourse.FieldSundayEndTime,
 		})
 	}
 	if ecuo.mutation.TodoCleared() {

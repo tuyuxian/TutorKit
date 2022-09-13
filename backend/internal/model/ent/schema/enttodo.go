@@ -22,15 +22,18 @@ func (EntTodo) Mixin() []ent.Mixin {
 func (EntTodo) Fields() []ent.Field {
 	return []ent.Field{
 		field.Time("date"),
-		field.Time("startTime").Optional(),
-		field.Time("endTime").Optional(),
-		field.Time("day").Optional(),
-		field.String("lesson").Optional(),
-		field.String("homework").Optional(),
-		field.Enum("status").NamedValues(
-			"InProgress", "IN_PROGRESS",
-			"Completed", "COMPLETED",
-		).
+		field.Time("startTime"),
+		field.Time("endTime"),
+		field.Time("day"),
+		field.String("lesson").
+			Optional(),
+		field.String("homework").
+			Optional(),
+		field.Enum("status").
+			NamedValues(
+				"InProgress", "IN_PROGRESS",
+				"Completed", "COMPLETED",
+			).
 			Default("IN_PROGRESS"),
 	}
 }

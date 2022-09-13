@@ -83,39 +83,15 @@ func (euc *EntUserCreate) SetCountry(s string) *EntUserCreate {
 	return euc
 }
 
-// SetNillableCountry sets the "country" field if the given value is not nil.
-func (euc *EntUserCreate) SetNillableCountry(s *string) *EntUserCreate {
-	if s != nil {
-		euc.SetCountry(*s)
-	}
-	return euc
-}
-
 // SetPhone sets the "phone" field.
 func (euc *EntUserCreate) SetPhone(s string) *EntUserCreate {
 	euc.mutation.SetPhone(s)
 	return euc
 }
 
-// SetNillablePhone sets the "phone" field if the given value is not nil.
-func (euc *EntUserCreate) SetNillablePhone(s *string) *EntUserCreate {
-	if s != nil {
-		euc.SetPhone(*s)
-	}
-	return euc
-}
-
 // SetDateOfBirth sets the "dateOfBirth" field.
 func (euc *EntUserCreate) SetDateOfBirth(t time.Time) *EntUserCreate {
 	euc.mutation.SetDateOfBirth(t)
-	return euc
-}
-
-// SetNillableDateOfBirth sets the "dateOfBirth" field if the given value is not nil.
-func (euc *EntUserCreate) SetNillableDateOfBirth(t *time.Time) *EntUserCreate {
-	if t != nil {
-		euc.SetDateOfBirth(*t)
-	}
 	return euc
 }
 
@@ -509,10 +485,24 @@ func (euc *EntUserCreate) check() error {
 			return &ValidationError{Name: "password", err: fmt.Errorf(`ent: validator failed for field "EntUser.password": %w`, err)}
 		}
 	}
+	if _, ok := euc.mutation.Country(); !ok {
+		return &ValidationError{Name: "country", err: errors.New(`ent: missing required field "EntUser.country"`)}
+	}
+	if v, ok := euc.mutation.Country(); ok {
+		if err := entuser.CountryValidator(v); err != nil {
+			return &ValidationError{Name: "country", err: fmt.Errorf(`ent: validator failed for field "EntUser.country": %w`, err)}
+		}
+	}
+	if _, ok := euc.mutation.Phone(); !ok {
+		return &ValidationError{Name: "phone", err: errors.New(`ent: missing required field "EntUser.phone"`)}
+	}
 	if v, ok := euc.mutation.Phone(); ok {
 		if err := entuser.PhoneValidator(v); err != nil {
 			return &ValidationError{Name: "phone", err: fmt.Errorf(`ent: validator failed for field "EntUser.phone": %w`, err)}
 		}
+	}
+	if _, ok := euc.mutation.DateOfBirth(); !ok {
+		return &ValidationError{Name: "dateOfBirth", err: errors.New(`ent: missing required field "EntUser.dateOfBirth"`)}
 	}
 	if _, ok := euc.mutation.IsTutor(); !ok {
 		return &ValidationError{Name: "isTutor", err: errors.New(`ent: missing required field "EntUser.isTutor"`)}

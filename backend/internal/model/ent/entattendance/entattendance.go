@@ -100,6 +100,8 @@ var (
 	DefaultUpdatedAt func() time.Time
 	// UpdateDefaultUpdatedAt holds the default value on update for the "updatedAt" field.
 	UpdateDefaultUpdatedAt func() time.Time
+	// HoursValidator is a validator for the "hours" field. It is called by the builders before save.
+	HoursValidator func(float64) error
 	// DefaultCheckedByTutor holds the default value on creation for the "checkedByTutor" field.
 	DefaultCheckedByTutor bool
 	// DefaultCheckedByStudent holds the default value on creation for the "checkedByStudent" field.

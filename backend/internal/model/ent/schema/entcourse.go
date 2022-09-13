@@ -21,19 +21,62 @@ func (EntCourse) Mixin() []ent.Mixin {
 // Fields of the EntCourse.
 func (EntCourse) Fields() []ent.Field {
 	return []ent.Field{
-		field.String("name").NotEmpty(),
-		field.String("courseUrl").Optional(),
-		field.Enum("paymentMethod").Values("times", "hours").Optional(),
-		field.Float("paymentAmount").Optional(),
-		field.Time("startDate").Optional(),
-		field.Time("endDate").Optional(),
-		field.Bool("monday").Optional(),
-		field.Bool("tuesday").Optional(),
-		field.Bool("wednesday").Optional(),
-		field.Bool("thursday").Optional(),
-		field.Bool("friday").Optional(),
-		field.Bool("saturday").Optional(),
-		field.Bool("sunday").Optional(),
+		field.String("name").
+			NotEmpty(),
+		field.String("courseUrl").
+			NotEmpty(),
+		field.Enum("paymentMethod").
+			NamedValues(
+				"times", "TIMES",
+				"hours", "HOURS",
+			),
+		field.Float("paymentAmount").
+			Positive().
+			Optional(),
+		field.Time("startDate"),
+		field.Time("endDate"),
+		field.Bool("monday").
+			Default(false),
+		field.Bool("tuesday").
+			Default(false),
+		field.Bool("wednesday").
+			Default(false),
+		field.Bool("thursday").
+			Default(false),
+		field.Bool("friday").
+			Default(false),
+		field.Bool("saturday").
+			Default(false),
+		field.Bool("sunday").
+			Default(false),
+		field.Time("mondayStartTime").
+			Optional(),
+		field.Time("mondayEndTime").
+			Optional(),
+		field.Time("tuesdayStartTime").
+			Optional(),
+		field.Time("tuesdayEndTime").
+			Optional(),
+		field.Time("wednesdayStartTime").
+			Optional(),
+		field.Time("wednesdayEndTime").
+			Optional(),
+		field.Time("thursdayStartTime").
+			Optional(),
+		field.Time("thursdayEndTime").
+			Optional(),
+		field.Time("fridayStartTime").
+			Optional(),
+		field.Time("fridayEndTime").
+			Optional(),
+		field.Time("saturdayStartTime").
+			Optional(),
+		field.Time("saturdayEndTime").
+			Optional(),
+		field.Time("sundayStartTime").
+			Optional(),
+		field.Time("sundayEndTime").
+			Optional(),
 	}
 }
 

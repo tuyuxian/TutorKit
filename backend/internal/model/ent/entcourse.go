@@ -46,6 +46,34 @@ type EntCourse struct {
 	Saturday bool `json:"saturday,omitempty"`
 	// Sunday holds the value of the "sunday" field.
 	Sunday bool `json:"sunday,omitempty"`
+	// MondayStartTime holds the value of the "mondayStartTime" field.
+	MondayStartTime time.Time `json:"mondayStartTime,omitempty"`
+	// MondayEndTime holds the value of the "mondayEndTime" field.
+	MondayEndTime time.Time `json:"mondayEndTime,omitempty"`
+	// TuesdayStartTime holds the value of the "tuesdayStartTime" field.
+	TuesdayStartTime time.Time `json:"tuesdayStartTime,omitempty"`
+	// TuesdayEndTime holds the value of the "tuesdayEndTime" field.
+	TuesdayEndTime time.Time `json:"tuesdayEndTime,omitempty"`
+	// WednesdayStartTime holds the value of the "wednesdayStartTime" field.
+	WednesdayStartTime time.Time `json:"wednesdayStartTime,omitempty"`
+	// WednesdayEndTime holds the value of the "wednesdayEndTime" field.
+	WednesdayEndTime time.Time `json:"wednesdayEndTime,omitempty"`
+	// ThursdayStartTime holds the value of the "thursdayStartTime" field.
+	ThursdayStartTime time.Time `json:"thursdayStartTime,omitempty"`
+	// ThursdayEndTime holds the value of the "thursdayEndTime" field.
+	ThursdayEndTime time.Time `json:"thursdayEndTime,omitempty"`
+	// FridayStartTime holds the value of the "fridayStartTime" field.
+	FridayStartTime time.Time `json:"fridayStartTime,omitempty"`
+	// FridayEndTime holds the value of the "fridayEndTime" field.
+	FridayEndTime time.Time `json:"fridayEndTime,omitempty"`
+	// SaturdayStartTime holds the value of the "saturdayStartTime" field.
+	SaturdayStartTime time.Time `json:"saturdayStartTime,omitempty"`
+	// SaturdayEndTime holds the value of the "saturdayEndTime" field.
+	SaturdayEndTime time.Time `json:"saturdayEndTime,omitempty"`
+	// SundayStartTime holds the value of the "sundayStartTime" field.
+	SundayStartTime time.Time `json:"sundayStartTime,omitempty"`
+	// SundayEndTime holds the value of the "sundayEndTime" field.
+	SundayEndTime time.Time `json:"sundayEndTime,omitempty"`
 	// Edges holds the relations/edges for other nodes in the graph.
 	// The values are being populated by the EntCourseQuery when eager-loading is set.
 	Edges EntCourseEdges `json:"edges"`
@@ -126,7 +154,7 @@ func (*EntCourse) scanValues(columns []string) ([]interface{}, error) {
 			values[i] = new(sql.NullInt64)
 		case entcourse.FieldName, entcourse.FieldCourseUrl, entcourse.FieldPaymentMethod:
 			values[i] = new(sql.NullString)
-		case entcourse.FieldCreatedAt, entcourse.FieldUpdatedAt, entcourse.FieldStartDate, entcourse.FieldEndDate:
+		case entcourse.FieldCreatedAt, entcourse.FieldUpdatedAt, entcourse.FieldStartDate, entcourse.FieldEndDate, entcourse.FieldMondayStartTime, entcourse.FieldMondayEndTime, entcourse.FieldTuesdayStartTime, entcourse.FieldTuesdayEndTime, entcourse.FieldWednesdayStartTime, entcourse.FieldWednesdayEndTime, entcourse.FieldThursdayStartTime, entcourse.FieldThursdayEndTime, entcourse.FieldFridayStartTime, entcourse.FieldFridayEndTime, entcourse.FieldSaturdayStartTime, entcourse.FieldSaturdayEndTime, entcourse.FieldSundayStartTime, entcourse.FieldSundayEndTime:
 			values[i] = new(sql.NullTime)
 		default:
 			return nil, fmt.Errorf("unexpected column %q for type EntCourse", columns[i])
@@ -239,6 +267,90 @@ func (ec *EntCourse) assignValues(columns []string, values []interface{}) error 
 			} else if value.Valid {
 				ec.Sunday = value.Bool
 			}
+		case entcourse.FieldMondayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field mondayStartTime", values[i])
+			} else if value.Valid {
+				ec.MondayStartTime = value.Time
+			}
+		case entcourse.FieldMondayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field mondayEndTime", values[i])
+			} else if value.Valid {
+				ec.MondayEndTime = value.Time
+			}
+		case entcourse.FieldTuesdayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field tuesdayStartTime", values[i])
+			} else if value.Valid {
+				ec.TuesdayStartTime = value.Time
+			}
+		case entcourse.FieldTuesdayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field tuesdayEndTime", values[i])
+			} else if value.Valid {
+				ec.TuesdayEndTime = value.Time
+			}
+		case entcourse.FieldWednesdayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field wednesdayStartTime", values[i])
+			} else if value.Valid {
+				ec.WednesdayStartTime = value.Time
+			}
+		case entcourse.FieldWednesdayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field wednesdayEndTime", values[i])
+			} else if value.Valid {
+				ec.WednesdayEndTime = value.Time
+			}
+		case entcourse.FieldThursdayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field thursdayStartTime", values[i])
+			} else if value.Valid {
+				ec.ThursdayStartTime = value.Time
+			}
+		case entcourse.FieldThursdayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field thursdayEndTime", values[i])
+			} else if value.Valid {
+				ec.ThursdayEndTime = value.Time
+			}
+		case entcourse.FieldFridayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field fridayStartTime", values[i])
+			} else if value.Valid {
+				ec.FridayStartTime = value.Time
+			}
+		case entcourse.FieldFridayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field fridayEndTime", values[i])
+			} else if value.Valid {
+				ec.FridayEndTime = value.Time
+			}
+		case entcourse.FieldSaturdayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field saturdayStartTime", values[i])
+			} else if value.Valid {
+				ec.SaturdayStartTime = value.Time
+			}
+		case entcourse.FieldSaturdayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field saturdayEndTime", values[i])
+			} else if value.Valid {
+				ec.SaturdayEndTime = value.Time
+			}
+		case entcourse.FieldSundayStartTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field sundayStartTime", values[i])
+			} else if value.Valid {
+				ec.SundayStartTime = value.Time
+			}
+		case entcourse.FieldSundayEndTime:
+			if value, ok := values[i].(*sql.NullTime); !ok {
+				return fmt.Errorf("unexpected type %T for field sundayEndTime", values[i])
+			} else if value.Valid {
+				ec.SundayEndTime = value.Time
+			}
 		}
 	}
 	return nil
@@ -336,6 +448,48 @@ func (ec *EntCourse) String() string {
 	builder.WriteString(", ")
 	builder.WriteString("sunday=")
 	builder.WriteString(fmt.Sprintf("%v", ec.Sunday))
+	builder.WriteString(", ")
+	builder.WriteString("mondayStartTime=")
+	builder.WriteString(ec.MondayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("mondayEndTime=")
+	builder.WriteString(ec.MondayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("tuesdayStartTime=")
+	builder.WriteString(ec.TuesdayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("tuesdayEndTime=")
+	builder.WriteString(ec.TuesdayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("wednesdayStartTime=")
+	builder.WriteString(ec.WednesdayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("wednesdayEndTime=")
+	builder.WriteString(ec.WednesdayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("thursdayStartTime=")
+	builder.WriteString(ec.ThursdayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("thursdayEndTime=")
+	builder.WriteString(ec.ThursdayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("fridayStartTime=")
+	builder.WriteString(ec.FridayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("fridayEndTime=")
+	builder.WriteString(ec.FridayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("saturdayStartTime=")
+	builder.WriteString(ec.SaturdayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("saturdayEndTime=")
+	builder.WriteString(ec.SaturdayEndTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("sundayStartTime=")
+	builder.WriteString(ec.SundayStartTime.Format(time.ANSIC))
+	builder.WriteString(", ")
+	builder.WriteString("sundayEndTime=")
+	builder.WriteString(ec.SundayEndTime.Format(time.ANSIC))
 	builder.WriteByte(')')
 	return builder.String()
 }

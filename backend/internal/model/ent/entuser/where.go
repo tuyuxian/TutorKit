@@ -781,20 +781,6 @@ func CountryHasSuffix(v string) predicate.EntUser {
 	})
 }
 
-// CountryIsNil applies the IsNil predicate on the "country" field.
-func CountryIsNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldCountry)))
-	})
-}
-
-// CountryNotNil applies the NotNil predicate on the "country" field.
-func CountryNotNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldCountry)))
-	})
-}
-
 // CountryEqualFold applies the EqualFold predicate on the "country" field.
 func CountryEqualFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
@@ -894,20 +880,6 @@ func PhoneHasSuffix(v string) predicate.EntUser {
 	})
 }
 
-// PhoneIsNil applies the IsNil predicate on the "phone" field.
-func PhoneIsNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldPhone)))
-	})
-}
-
-// PhoneNotNil applies the NotNil predicate on the "phone" field.
-func PhoneNotNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldPhone)))
-	})
-}
-
 // PhoneEqualFold applies the EqualFold predicate on the "phone" field.
 func PhoneEqualFold(v string) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
@@ -983,20 +955,6 @@ func DateOfBirthLT(v time.Time) predicate.EntUser {
 func DateOfBirthLTE(v time.Time) predicate.EntUser {
 	return predicate.EntUser(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDateOfBirth), v))
-	})
-}
-
-// DateOfBirthIsNil applies the IsNil predicate on the "dateOfBirth" field.
-func DateOfBirthIsNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldDateOfBirth)))
-	})
-}
-
-// DateOfBirthNotNil applies the NotNil predicate on the "dateOfBirth" field.
-func DateOfBirthNotNil() predicate.EntUser {
-	return predicate.EntUser(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldDateOfBirth)))
 	})
 }
 

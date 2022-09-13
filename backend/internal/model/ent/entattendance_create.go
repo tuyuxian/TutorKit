@@ -62,39 +62,15 @@ func (eac *EntAttendanceCreate) SetStartTime(t time.Time) *EntAttendanceCreate {
 	return eac
 }
 
-// SetNillableStartTime sets the "startTime" field if the given value is not nil.
-func (eac *EntAttendanceCreate) SetNillableStartTime(t *time.Time) *EntAttendanceCreate {
-	if t != nil {
-		eac.SetStartTime(*t)
-	}
-	return eac
-}
-
 // SetEndTime sets the "endTime" field.
 func (eac *EntAttendanceCreate) SetEndTime(t time.Time) *EntAttendanceCreate {
 	eac.mutation.SetEndTime(t)
 	return eac
 }
 
-// SetNillableEndTime sets the "endTime" field if the given value is not nil.
-func (eac *EntAttendanceCreate) SetNillableEndTime(t *time.Time) *EntAttendanceCreate {
-	if t != nil {
-		eac.SetEndTime(*t)
-	}
-	return eac
-}
-
 // SetDay sets the "day" field.
 func (eac *EntAttendanceCreate) SetDay(t time.Time) *EntAttendanceCreate {
 	eac.mutation.SetDay(t)
-	return eac
-}
-
-// SetNillableDay sets the "day" field if the given value is not nil.
-func (eac *EntAttendanceCreate) SetNillableDay(t *time.Time) *EntAttendanceCreate {
-	if t != nil {
-		eac.SetDay(*t)
-	}
 	return eac
 }
 
@@ -315,6 +291,20 @@ func (eac *EntAttendanceCreate) check() error {
 	}
 	if _, ok := eac.mutation.Date(); !ok {
 		return &ValidationError{Name: "date", err: errors.New(`ent: missing required field "EntAttendance.date"`)}
+	}
+	if _, ok := eac.mutation.StartTime(); !ok {
+		return &ValidationError{Name: "startTime", err: errors.New(`ent: missing required field "EntAttendance.startTime"`)}
+	}
+	if _, ok := eac.mutation.EndTime(); !ok {
+		return &ValidationError{Name: "endTime", err: errors.New(`ent: missing required field "EntAttendance.endTime"`)}
+	}
+	if _, ok := eac.mutation.Day(); !ok {
+		return &ValidationError{Name: "day", err: errors.New(`ent: missing required field "EntAttendance.day"`)}
+	}
+	if v, ok := eac.mutation.Hours(); ok {
+		if err := entattendance.HoursValidator(v); err != nil {
+			return &ValidationError{Name: "hours", err: fmt.Errorf(`ent: validator failed for field "EntAttendance.hours": %w`, err)}
+		}
 	}
 	if _, ok := eac.mutation.CheckedByTutor(); !ok {
 		return &ValidationError{Name: "checkedByTutor", err: errors.New(`ent: missing required field "EntAttendance.checkedByTutor"`)}

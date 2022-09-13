@@ -56,20 +56,6 @@ func (ecu *EntCommentUpdate) SetContent(s string) *EntCommentUpdate {
 	return ecu
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (ecu *EntCommentUpdate) SetNillableContent(s *string) *EntCommentUpdate {
-	if s != nil {
-		ecu.SetContent(*s)
-	}
-	return ecu
-}
-
-// ClearContent clears the value of the "content" field.
-func (ecu *EntCommentUpdate) ClearContent() *EntCommentUpdate {
-	ecu.mutation.ClearContent()
-	return ecu
-}
-
 // SetShare sets the "share" field.
 func (ecu *EntCommentUpdate) SetShare(e entcomment.Share) *EntCommentUpdate {
 	ecu.mutation.SetShare(e)
@@ -81,12 +67,6 @@ func (ecu *EntCommentUpdate) SetNillableShare(e *entcomment.Share) *EntCommentUp
 	if e != nil {
 		ecu.SetShare(*e)
 	}
-	return ecu
-}
-
-// ClearShare clears the value of the "share" field.
-func (ecu *EntCommentUpdate) ClearShare() *EntCommentUpdate {
-	ecu.mutation.ClearShare()
 	return ecu
 }
 
@@ -216,6 +196,11 @@ func (ecu *EntCommentUpdate) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ecu *EntCommentUpdate) check() error {
+	if v, ok := ecu.mutation.Content(); ok {
+		if err := entcomment.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntComment.content": %w`, err)}
+		}
+	}
 	if v, ok := ecu.mutation.Share(); ok {
 		if err := entcomment.ShareValidator(v); err != nil {
 			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntComment.share": %w`, err)}
@@ -263,22 +248,10 @@ func (ecu *EntCommentUpdate) sqlSave(ctx context.Context) (n int, err error) {
 			Column: entcomment.FieldContent,
 		})
 	}
-	if ecu.mutation.ContentCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entcomment.FieldContent,
-		})
-	}
 	if value, ok := ecu.mutation.Share(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entcomment.FieldShare,
-		})
-	}
-	if ecu.mutation.ShareCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entcomment.FieldShare,
 		})
 	}
@@ -397,20 +370,6 @@ func (ecuo *EntCommentUpdateOne) SetContent(s string) *EntCommentUpdateOne {
 	return ecuo
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (ecuo *EntCommentUpdateOne) SetNillableContent(s *string) *EntCommentUpdateOne {
-	if s != nil {
-		ecuo.SetContent(*s)
-	}
-	return ecuo
-}
-
-// ClearContent clears the value of the "content" field.
-func (ecuo *EntCommentUpdateOne) ClearContent() *EntCommentUpdateOne {
-	ecuo.mutation.ClearContent()
-	return ecuo
-}
-
 // SetShare sets the "share" field.
 func (ecuo *EntCommentUpdateOne) SetShare(e entcomment.Share) *EntCommentUpdateOne {
 	ecuo.mutation.SetShare(e)
@@ -422,12 +381,6 @@ func (ecuo *EntCommentUpdateOne) SetNillableShare(e *entcomment.Share) *EntComme
 	if e != nil {
 		ecuo.SetShare(*e)
 	}
-	return ecuo
-}
-
-// ClearShare clears the value of the "share" field.
-func (ecuo *EntCommentUpdateOne) ClearShare() *EntCommentUpdateOne {
-	ecuo.mutation.ClearShare()
 	return ecuo
 }
 
@@ -570,6 +523,11 @@ func (ecuo *EntCommentUpdateOne) defaults() {
 
 // check runs all checks and user-defined validators on the builder.
 func (ecuo *EntCommentUpdateOne) check() error {
+	if v, ok := ecuo.mutation.Content(); ok {
+		if err := entcomment.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntComment.content": %w`, err)}
+		}
+	}
 	if v, ok := ecuo.mutation.Share(); ok {
 		if err := entcomment.ShareValidator(v); err != nil {
 			return &ValidationError{Name: "share", err: fmt.Errorf(`ent: validator failed for field "EntComment.share": %w`, err)}
@@ -634,22 +592,10 @@ func (ecuo *EntCommentUpdateOne) sqlSave(ctx context.Context) (_node *EntComment
 			Column: entcomment.FieldContent,
 		})
 	}
-	if ecuo.mutation.ContentCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeString,
-			Column: entcomment.FieldContent,
-		})
-	}
 	if value, ok := ecuo.mutation.Share(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeEnum,
 			Value:  value,
-			Column: entcomment.FieldShare,
-		})
-	}
-	if ecuo.mutation.ShareCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeEnum,
 			Column: entcomment.FieldShare,
 		})
 	}

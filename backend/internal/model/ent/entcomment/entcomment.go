@@ -85,15 +85,20 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// DefaultTimestamp holds the default value on creation for the "timestamp" field.
 	DefaultTimestamp time.Time
+	// ContentValidator is a validator for the "content" field. It is called by the builders before save.
+	ContentValidator func(string) error
 )
 
 // Share defines the type for the "share" enum field.
 type Share string
 
+// SharePublic is the default value of the Share enum.
+const DefaultShare = SharePublic
+
 // Share values.
 const (
-	SharePublic  Share = "public"
-	SharePrivate Share = "private"
+	SharePublic  Share = "PUBLIC"
+	SharePrivate Share = "PRIVATE"
 )
 
 func (s Share) String() string {

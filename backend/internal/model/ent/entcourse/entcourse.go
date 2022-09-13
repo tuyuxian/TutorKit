@@ -42,6 +42,34 @@ const (
 	FieldSaturday = "saturday"
 	// FieldSunday holds the string denoting the sunday field in the database.
 	FieldSunday = "sunday"
+	// FieldMondayStartTime holds the string denoting the mondaystarttime field in the database.
+	FieldMondayStartTime = "monday_start_time"
+	// FieldMondayEndTime holds the string denoting the mondayendtime field in the database.
+	FieldMondayEndTime = "monday_end_time"
+	// FieldTuesdayStartTime holds the string denoting the tuesdaystarttime field in the database.
+	FieldTuesdayStartTime = "tuesday_start_time"
+	// FieldTuesdayEndTime holds the string denoting the tuesdayendtime field in the database.
+	FieldTuesdayEndTime = "tuesday_end_time"
+	// FieldWednesdayStartTime holds the string denoting the wednesdaystarttime field in the database.
+	FieldWednesdayStartTime = "wednesday_start_time"
+	// FieldWednesdayEndTime holds the string denoting the wednesdayendtime field in the database.
+	FieldWednesdayEndTime = "wednesday_end_time"
+	// FieldThursdayStartTime holds the string denoting the thursdaystarttime field in the database.
+	FieldThursdayStartTime = "thursday_start_time"
+	// FieldThursdayEndTime holds the string denoting the thursdayendtime field in the database.
+	FieldThursdayEndTime = "thursday_end_time"
+	// FieldFridayStartTime holds the string denoting the fridaystarttime field in the database.
+	FieldFridayStartTime = "friday_start_time"
+	// FieldFridayEndTime holds the string denoting the fridayendtime field in the database.
+	FieldFridayEndTime = "friday_end_time"
+	// FieldSaturdayStartTime holds the string denoting the saturdaystarttime field in the database.
+	FieldSaturdayStartTime = "saturday_start_time"
+	// FieldSaturdayEndTime holds the string denoting the saturdayendtime field in the database.
+	FieldSaturdayEndTime = "saturday_end_time"
+	// FieldSundayStartTime holds the string denoting the sundaystarttime field in the database.
+	FieldSundayStartTime = "sunday_start_time"
+	// FieldSundayEndTime holds the string denoting the sundayendtime field in the database.
+	FieldSundayEndTime = "sunday_end_time"
 	// EdgeTodo holds the string denoting the todo edge name in mutations.
 	EdgeTodo = "todo"
 	// EdgeAttendance holds the string denoting the attendance edge name in mutations.
@@ -105,6 +133,20 @@ var Columns = []string{
 	FieldFriday,
 	FieldSaturday,
 	FieldSunday,
+	FieldMondayStartTime,
+	FieldMondayEndTime,
+	FieldTuesdayStartTime,
+	FieldTuesdayEndTime,
+	FieldWednesdayStartTime,
+	FieldWednesdayEndTime,
+	FieldThursdayStartTime,
+	FieldThursdayEndTime,
+	FieldFridayStartTime,
+	FieldFridayEndTime,
+	FieldSaturdayStartTime,
+	FieldSaturdayEndTime,
+	FieldSundayStartTime,
+	FieldSundayEndTime,
 }
 
 var (
@@ -135,6 +177,24 @@ var (
 	UpdateDefaultUpdatedAt func() time.Time
 	// NameValidator is a validator for the "name" field. It is called by the builders before save.
 	NameValidator func(string) error
+	// CourseUrlValidator is a validator for the "courseUrl" field. It is called by the builders before save.
+	CourseUrlValidator func(string) error
+	// PaymentAmountValidator is a validator for the "paymentAmount" field. It is called by the builders before save.
+	PaymentAmountValidator func(float64) error
+	// DefaultMonday holds the default value on creation for the "monday" field.
+	DefaultMonday bool
+	// DefaultTuesday holds the default value on creation for the "tuesday" field.
+	DefaultTuesday bool
+	// DefaultWednesday holds the default value on creation for the "wednesday" field.
+	DefaultWednesday bool
+	// DefaultThursday holds the default value on creation for the "thursday" field.
+	DefaultThursday bool
+	// DefaultFriday holds the default value on creation for the "friday" field.
+	DefaultFriday bool
+	// DefaultSaturday holds the default value on creation for the "saturday" field.
+	DefaultSaturday bool
+	// DefaultSunday holds the default value on creation for the "sunday" field.
+	DefaultSunday bool
 )
 
 // PaymentMethod defines the type for the "paymentMethod" enum field.
@@ -142,8 +202,8 @@ type PaymentMethod string
 
 // PaymentMethod values.
 const (
-	PaymentMethodTimes PaymentMethod = "times"
-	PaymentMethodHours PaymentMethod = "hours"
+	PaymentMethodTimes PaymentMethod = "TIMES"
+	PaymentMethodHours PaymentMethod = "HOURS"
 )
 
 func (pm PaymentMethod) String() string {

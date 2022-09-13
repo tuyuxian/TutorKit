@@ -393,20 +393,6 @@ func StartTimeLTE(v time.Time) predicate.EntTodo {
 	})
 }
 
-// StartTimeIsNil applies the IsNil predicate on the "startTime" field.
-func StartTimeIsNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldStartTime)))
-	})
-}
-
-// StartTimeNotNil applies the NotNil predicate on the "startTime" field.
-func StartTimeNotNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldStartTime)))
-	})
-}
-
 // EndTimeEQ applies the EQ predicate on the "endTime" field.
 func EndTimeEQ(v time.Time) predicate.EntTodo {
 	return predicate.EntTodo(func(s *sql.Selector) {
@@ -471,20 +457,6 @@ func EndTimeLTE(v time.Time) predicate.EntTodo {
 	})
 }
 
-// EndTimeIsNil applies the IsNil predicate on the "endTime" field.
-func EndTimeIsNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldEndTime)))
-	})
-}
-
-// EndTimeNotNil applies the NotNil predicate on the "endTime" field.
-func EndTimeNotNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldEndTime)))
-	})
-}
-
 // DayEQ applies the EQ predicate on the "day" field.
 func DayEQ(v time.Time) predicate.EntTodo {
 	return predicate.EntTodo(func(s *sql.Selector) {
@@ -546,20 +518,6 @@ func DayLT(v time.Time) predicate.EntTodo {
 func DayLTE(v time.Time) predicate.EntTodo {
 	return predicate.EntTodo(func(s *sql.Selector) {
 		s.Where(sql.LTE(s.C(FieldDay), v))
-	})
-}
-
-// DayIsNil applies the IsNil predicate on the "day" field.
-func DayIsNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.IsNull(s.C(FieldDay)))
-	})
-}
-
-// DayNotNil applies the NotNil predicate on the "day" field.
-func DayNotNil() predicate.EntTodo {
-	return predicate.EntTodo(func(s *sql.Selector) {
-		s.Where(sql.NotNull(s.C(FieldDay)))
 	})
 }
 

@@ -71,14 +71,6 @@ func (epc *EntPostCreate) SetContent(s string) *EntPostCreate {
 	return epc
 }
 
-// SetNillableContent sets the "content" field if the given value is not nil.
-func (epc *EntPostCreate) SetNillableContent(s *string) *EntPostCreate {
-	if s != nil {
-		epc.SetContent(*s)
-	}
-	return epc
-}
-
 // SetShare sets the "share" field.
 func (epc *EntPostCreate) SetShare(e entpost.Share) *EntPostCreate {
 	epc.mutation.SetShare(e)
@@ -250,6 +242,10 @@ func (epc *EntPostCreate) defaults() {
 		v := entpost.DefaultTimestamp
 		epc.mutation.SetTimestamp(v)
 	}
+	if _, ok := epc.mutation.Share(); !ok {
+		v := entpost.DefaultShare
+		epc.mutation.SetShare(v)
+	}
 }
 
 // check runs all checks and user-defined validators on the builder.
@@ -262,6 +258,17 @@ func (epc *EntPostCreate) check() error {
 	}
 	if _, ok := epc.mutation.Timestamp(); !ok {
 		return &ValidationError{Name: "timestamp", err: errors.New(`ent: missing required field "EntPost.timestamp"`)}
+	}
+	if _, ok := epc.mutation.Content(); !ok {
+		return &ValidationError{Name: "content", err: errors.New(`ent: missing required field "EntPost.content"`)}
+	}
+	if v, ok := epc.mutation.Content(); ok {
+		if err := entpost.ContentValidator(v); err != nil {
+			return &ValidationError{Name: "content", err: fmt.Errorf(`ent: validator failed for field "EntPost.content": %w`, err)}
+		}
+	}
+	if _, ok := epc.mutation.Share(); !ok {
+		return &ValidationError{Name: "share", err: errors.New(`ent: missing required field "EntPost.share"`)}
 	}
 	if v, ok := epc.mutation.Share(); ok {
 		if err := entpost.ShareValidator(v); err != nil {

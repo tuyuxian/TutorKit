@@ -48,57 +48,15 @@ func (eau *EntAttendanceUpdate) SetStartTime(t time.Time) *EntAttendanceUpdate {
 	return eau
 }
 
-// SetNillableStartTime sets the "startTime" field if the given value is not nil.
-func (eau *EntAttendanceUpdate) SetNillableStartTime(t *time.Time) *EntAttendanceUpdate {
-	if t != nil {
-		eau.SetStartTime(*t)
-	}
-	return eau
-}
-
-// ClearStartTime clears the value of the "startTime" field.
-func (eau *EntAttendanceUpdate) ClearStartTime() *EntAttendanceUpdate {
-	eau.mutation.ClearStartTime()
-	return eau
-}
-
 // SetEndTime sets the "endTime" field.
 func (eau *EntAttendanceUpdate) SetEndTime(t time.Time) *EntAttendanceUpdate {
 	eau.mutation.SetEndTime(t)
 	return eau
 }
 
-// SetNillableEndTime sets the "endTime" field if the given value is not nil.
-func (eau *EntAttendanceUpdate) SetNillableEndTime(t *time.Time) *EntAttendanceUpdate {
-	if t != nil {
-		eau.SetEndTime(*t)
-	}
-	return eau
-}
-
-// ClearEndTime clears the value of the "endTime" field.
-func (eau *EntAttendanceUpdate) ClearEndTime() *EntAttendanceUpdate {
-	eau.mutation.ClearEndTime()
-	return eau
-}
-
 // SetDay sets the "day" field.
 func (eau *EntAttendanceUpdate) SetDay(t time.Time) *EntAttendanceUpdate {
 	eau.mutation.SetDay(t)
-	return eau
-}
-
-// SetNillableDay sets the "day" field if the given value is not nil.
-func (eau *EntAttendanceUpdate) SetNillableDay(t *time.Time) *EntAttendanceUpdate {
-	if t != nil {
-		eau.SetDay(*t)
-	}
-	return eau
-}
-
-// ClearDay clears the value of the "day" field.
-func (eau *EntAttendanceUpdate) ClearDay() *EntAttendanceUpdate {
-	eau.mutation.ClearDay()
 	return eau
 }
 
@@ -254,12 +212,18 @@ func (eau *EntAttendanceUpdate) Save(ctx context.Context) (int, error) {
 	)
 	eau.defaults()
 	if len(eau.hooks) == 0 {
+		if err = eau.check(); err != nil {
+			return 0, err
+		}
 		affected, err = eau.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntAttendanceMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = eau.check(); err != nil {
+				return 0, err
 			}
 			eau.mutation = mutation
 			affected, err = eau.sqlSave(ctx)
@@ -309,6 +273,16 @@ func (eau *EntAttendanceUpdate) defaults() {
 	}
 }
 
+// check runs all checks and user-defined validators on the builder.
+func (eau *EntAttendanceUpdate) check() error {
+	if v, ok := eau.mutation.Hours(); ok {
+		if err := entattendance.HoursValidator(v); err != nil {
+			return &ValidationError{Name: "hours", err: fmt.Errorf(`ent: validator failed for field "EntAttendance.hours": %w`, err)}
+		}
+	}
+	return nil
+}
+
 func (eau *EntAttendanceUpdate) sqlSave(ctx context.Context) (n int, err error) {
 	_spec := &sqlgraph.UpdateSpec{
 		Node: &sqlgraph.NodeSpec{
@@ -348,12 +322,6 @@ func (eau *EntAttendanceUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: entattendance.FieldStartTime,
 		})
 	}
-	if eau.mutation.StartTimeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entattendance.FieldStartTime,
-		})
-	}
 	if value, ok := eau.mutation.EndTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
@@ -361,22 +329,10 @@ func (eau *EntAttendanceUpdate) sqlSave(ctx context.Context) (n int, err error) 
 			Column: entattendance.FieldEndTime,
 		})
 	}
-	if eau.mutation.EndTimeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entattendance.FieldEndTime,
-		})
-	}
 	if value, ok := eau.mutation.Day(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entattendance.FieldDay,
-		})
-	}
-	if eau.mutation.DayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entattendance.FieldDay,
 		})
 	}
@@ -541,57 +497,15 @@ func (eauo *EntAttendanceUpdateOne) SetStartTime(t time.Time) *EntAttendanceUpda
 	return eauo
 }
 
-// SetNillableStartTime sets the "startTime" field if the given value is not nil.
-func (eauo *EntAttendanceUpdateOne) SetNillableStartTime(t *time.Time) *EntAttendanceUpdateOne {
-	if t != nil {
-		eauo.SetStartTime(*t)
-	}
-	return eauo
-}
-
-// ClearStartTime clears the value of the "startTime" field.
-func (eauo *EntAttendanceUpdateOne) ClearStartTime() *EntAttendanceUpdateOne {
-	eauo.mutation.ClearStartTime()
-	return eauo
-}
-
 // SetEndTime sets the "endTime" field.
 func (eauo *EntAttendanceUpdateOne) SetEndTime(t time.Time) *EntAttendanceUpdateOne {
 	eauo.mutation.SetEndTime(t)
 	return eauo
 }
 
-// SetNillableEndTime sets the "endTime" field if the given value is not nil.
-func (eauo *EntAttendanceUpdateOne) SetNillableEndTime(t *time.Time) *EntAttendanceUpdateOne {
-	if t != nil {
-		eauo.SetEndTime(*t)
-	}
-	return eauo
-}
-
-// ClearEndTime clears the value of the "endTime" field.
-func (eauo *EntAttendanceUpdateOne) ClearEndTime() *EntAttendanceUpdateOne {
-	eauo.mutation.ClearEndTime()
-	return eauo
-}
-
 // SetDay sets the "day" field.
 func (eauo *EntAttendanceUpdateOne) SetDay(t time.Time) *EntAttendanceUpdateOne {
 	eauo.mutation.SetDay(t)
-	return eauo
-}
-
-// SetNillableDay sets the "day" field if the given value is not nil.
-func (eauo *EntAttendanceUpdateOne) SetNillableDay(t *time.Time) *EntAttendanceUpdateOne {
-	if t != nil {
-		eauo.SetDay(*t)
-	}
-	return eauo
-}
-
-// ClearDay clears the value of the "day" field.
-func (eauo *EntAttendanceUpdateOne) ClearDay() *EntAttendanceUpdateOne {
-	eauo.mutation.ClearDay()
 	return eauo
 }
 
@@ -754,12 +668,18 @@ func (eauo *EntAttendanceUpdateOne) Save(ctx context.Context) (*EntAttendance, e
 	)
 	eauo.defaults()
 	if len(eauo.hooks) == 0 {
+		if err = eauo.check(); err != nil {
+			return nil, err
+		}
 		node, err = eauo.sqlSave(ctx)
 	} else {
 		var mut Mutator = MutateFunc(func(ctx context.Context, m Mutation) (Value, error) {
 			mutation, ok := m.(*EntAttendanceMutation)
 			if !ok {
 				return nil, fmt.Errorf("unexpected mutation type %T", m)
+			}
+			if err = eauo.check(); err != nil {
+				return nil, err
 			}
 			eauo.mutation = mutation
 			node, err = eauo.sqlSave(ctx)
@@ -813,6 +733,16 @@ func (eauo *EntAttendanceUpdateOne) defaults() {
 		v := entattendance.UpdateDefaultUpdatedAt()
 		eauo.mutation.SetUpdatedAt(v)
 	}
+}
+
+// check runs all checks and user-defined validators on the builder.
+func (eauo *EntAttendanceUpdateOne) check() error {
+	if v, ok := eauo.mutation.Hours(); ok {
+		if err := entattendance.HoursValidator(v); err != nil {
+			return &ValidationError{Name: "hours", err: fmt.Errorf(`ent: validator failed for field "EntAttendance.hours": %w`, err)}
+		}
+	}
+	return nil
 }
 
 func (eauo *EntAttendanceUpdateOne) sqlSave(ctx context.Context) (_node *EntAttendance, err error) {
@@ -871,12 +801,6 @@ func (eauo *EntAttendanceUpdateOne) sqlSave(ctx context.Context) (_node *EntAtte
 			Column: entattendance.FieldStartTime,
 		})
 	}
-	if eauo.mutation.StartTimeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entattendance.FieldStartTime,
-		})
-	}
 	if value, ok := eauo.mutation.EndTime(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
@@ -884,22 +808,10 @@ func (eauo *EntAttendanceUpdateOne) sqlSave(ctx context.Context) (_node *EntAtte
 			Column: entattendance.FieldEndTime,
 		})
 	}
-	if eauo.mutation.EndTimeCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
-			Column: entattendance.FieldEndTime,
-		})
-	}
 	if value, ok := eauo.mutation.Day(); ok {
 		_spec.Fields.Set = append(_spec.Fields.Set, &sqlgraph.FieldSpec{
 			Type:   field.TypeTime,
 			Value:  value,
-			Column: entattendance.FieldDay,
-		})
-	}
-	if eauo.mutation.DayCleared() {
-		_spec.Fields.Clear = append(_spec.Fields.Clear, &sqlgraph.FieldSpec{
-			Type:   field.TypeTime,
 			Column: entattendance.FieldDay,
 		})
 	}

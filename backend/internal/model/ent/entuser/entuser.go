@@ -195,6 +195,8 @@ var (
 	EmailValidator func(string) error
 	// PasswordValidator is a validator for the "password" field. It is called by the builders before save.
 	PasswordValidator func(string) error
+	// CountryValidator is a validator for the "country" field. It is called by the builders before save.
+	CountryValidator func(string) error
 	// PhoneValidator is a validator for the "phone" field. It is called by the builders before save.
 	PhoneValidator func(string) error
 	// DefaultIsTutor holds the default value on creation for the "isTutor" field.
