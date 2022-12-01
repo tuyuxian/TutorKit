@@ -3,19 +3,19 @@ import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
   typography: {
-    fontFamily: ["Rubik", "sans-serif"].join(","),
+    fontFamily: ["Poppins", "sans-serif"].join(","),
     fontSize: 16,
     h1: {
-      fontFamily: ["Rubik", "sans-serif"].join(","),
+      fontFamily: ["Poppins", "sans-serif"].join(","),
       fontSize: 32,
       color: "#000000",
       fontWeight: "bold",
       verticalAlign: "baseline",
     },
     h2: {
-      fontFamily: ["Rubik", "sans-serif"].join(","),
+      fontFamily: ["Poppins", "sans-serif"].join(","),
       fontSize: 28,
-      letterSpacing: "2px",
+      letterSpacing: "1px",
       color: "#7B68EE",
       fontWeight: "bold",
       verticalAlign: "baseline",
@@ -59,19 +59,36 @@ export const theme = createTheme({
         root: {
           transition: "none !important",
           "&.Mui-selected": {
-            backgroundColor: "#F0F0FC",
-            borderRadius: "0 20px 20px 0",
+            backgroundColor: "#E1E3E4",
+            borderRadius: "47px 0 0 47px",
+            height: "60px",
             "&:hover": {
-              backgroundColor: "#F0F0F0",
+              backgroundColor: "#E1E3E4",
+              height: "60px",
             },
-            color: "#000000",
+            "&:before": {
+              position: "absolute",
+              right: "-30.5px",
+              bottom: "12.5px",
+              display: "inline-block",
+              width: "30px",
+              background: "yellow",
+              height: "26px",
+
+              borderLeft: "1px solid",
+              borderBottom: "1px solid",
+
+              zIndex: 2,
+            },
+            color: "#717171",
             "& .MuiListItemIcon-root": {
-              color: "#000000",
+              color: "#717171",
             },
           },
           ":hover": {
-            backgroundColor: "#F0F0F0",
-            borderRadius: "0 20px 20px 0",
+            backgroundColor: "#E1E3E4",
+            borderRadius: "47px 0 0 47px",
+            height: "60px",
             color: "#000000",
             "& .MuiListItemIcon-root": {
               color: "#000000",
@@ -95,13 +112,15 @@ export const styles = {
     justifyContent: "flex-end",
   },
   sideNavContainer: {
-    height: "calc(100% - 64px)",
-    width: "inherit",
+    height: "calc(100% - 10px)",
+    width: "280px",
     position: "absolute",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    // backgroundColor: "rgba(240, 240, 252, 0.6)",
+    backgroundColor: "#F2F2F4",
+    borderRadius: "0 27.8px 27.8px 0",
+    margin: "5px 0 0 0",
   },
   page: {
     display: "flex",
@@ -122,7 +141,7 @@ export const styles = {
   inputLabel: {
     display: "flex",
     alignItems: "flex-end",
-    fontFamily: "Rubik",
+    fontFamily: "Poppins",
     fontSize: 16,
   },
   inputInner: {
@@ -160,7 +179,7 @@ export const styles = {
   button: {
     boxShadow: 0,
     textTransform: "none",
-    fontFamily: "Rubik",
+    fontFamily: "Poppins",
     fontWeight: "bold",
   },
   primaryButton: {

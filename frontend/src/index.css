@@ -2,9 +2,10 @@
 
 body {
   margin: 0;
-  font-family: 'Rubik', -apple-system, sans-serif;
+  font-family: 'Poppins', -apple-system, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background: #F1F3F9;
 }
 
 code {

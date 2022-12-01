@@ -5,5 +5,6 @@ import (
 )
 
 func RegisterRoutes(e *echo.Group) {
-	InitHelloRoute(e)
+	initHelloRoute(e)
+	initUserRoute(e)
 }
