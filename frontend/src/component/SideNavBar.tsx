@@ -2,6 +2,8 @@ import {
   AssignmentTurnedIn,
   Forum,
   Home,
+  LogoutOutlined,
+  SettingsOutlined,
   ViewTimeline,
 } from "@mui/icons-material";
 import {
@@ -23,9 +25,11 @@ import logo from "../asset/logo.png";
 import { styles, theme } from "../asset/style";
 
 const customStyle = {
-  brandLogo: {
+  flex: {
     display: "flex",
     justifyContent: "center",
+  },
+  brandLogo: {
     margin: "16px",
   },
   link: {
@@ -37,22 +41,43 @@ const customStyle = {
   },
   listItem: {
     margin: "30px 0 30px 60px",
+    height: "48px",
   },
-  backgroundDiv1: {
-    height: "calc(100%)",
-    width: "285px",
-    zIndex: "-2",
-    margin: "0 0 0 0",
-    borderRadius: "0 32.8px 32.8px 0",
-    backgroundColor: "#84B140",
-  },
-  backgroundDiv2: {
+  backgroundDiv: {
     height: "calc(100%)",
     width: "285px",
     zIndex: "-1",
     margin: "0 0 0 0",
     borderRadius: "0 32.8px 32.8px 0",
     backgroundColor: "#E1E3E4",
+    boxShadow: "5px 3px 10px rgba(0,0,0,0.2)",
+  },
+  sideBarButton: {
+    height: "40px",
+    width: "220px",
+    border: "2.5px solid #E1E3E4",
+    borderRadius: "11px",
+    margin: "4px 0px 4px 0px",
+  },
+  buttonGroup: {
+    display: "flex",
+    flexDirection: "column",
+    margin: "16px 30px 16px 30px",
+  },
+  divider: {
+    width: "220px",
+    borderBottomWidth: "2.5px",
+    borderRadius: "11px",
+    color: "#E1E3E4",
+  },
+  accountDiv: {
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  accountInfo: {
+    display: "flex",
+    marginLeft: "8px",
   },
 };
 
@@ -86,8 +111,8 @@ const SideNavBar = () => {
     <ThemeProvider theme={theme}>
       <Box component="div" sx={styles.sideNavContainer}>
         <Box>
-          <Box sx={customStyle.brandLogo}>
-            <img src={logo} alt="logo" width={64} height={64} />
+          <Box sx={{ ...customStyle.flex, ...customStyle.brandLogo }}>
+            <img src={logo} alt="logo" width={48} height={48} />
             <Link href="/" underline="none" sx={customStyle.link}>
               <Typography variant="h2" component="div" sx={styles.topNavHeader}>
                 TutorKit
@@ -115,62 +140,57 @@ const SideNavBar = () => {
             ))}
           </List>
         </Box>
-        <Box sx={{ height: "200px" }}>
-          <Divider variant="middle" />
-          <Box
-            sx={{
-              margin: "0 30px 16px 30px",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                flexDirection: "row",
-                alignItems: "center",
-              }}
-            >
+        <Box>
+          <Box sx={customStyle.flex}>
+            <Divider variant="fullWidth" sx={customStyle.divider} />
+          </Box>
+          <Box sx={customStyle.buttonGroup}>
+            <Box sx={customStyle.accountDiv}>
               <Avatar>T</Avatar>
-              <Box sx={{ marginLeft: "8px" }}>
+              <Box>
                 <Typography
                   variant="subtitle1"
                   component="div"
-                  sx={{ display: "flex" }}
+                  color="secondary"
+                  sx={customStyle.accountInfo}
                 >
                   Test User
                 </Typography>
                 <Typography
-                  variant="subtitle2"
+                  variant="body2"
                   component="div"
-                  sx={{ display: "flex" }}
+                  sx={customStyle.accountInfo}
                 >
                   testuser@gmail.com
                 </Typography>
               </Box>
             </Box>
           </Box>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              margin: "16px 30px 16px 30px",
-            }}
-          >
-            <Button variant="contained" disableRipple={true}>
+          <Box sx={customStyle.buttonGroup}>
+            <Button
+              variant="outlined"
+              disableRipple={true}
+              color="secondary"
+              startIcon={<SettingsOutlined />}
+              sx={customStyle.sideBarButton}
+            >
               Settings
             </Button>
-            <Button variant="contained" disableRipple={true}>
-              Log Out
+            <Button
+              variant="outlined"
+              disableRipple={true}
+              color="secondary"
+              startIcon={<LogoutOutlined />}
+              sx={customStyle.sideBarButton}
+            >
+              Logout
             </Button>
           </Box>
         </Box>
       </Box>
       <Box
         component="div"
-        sx={{ ...styles.sideNavContainer, ...customStyle.backgroundDiv1 }}
-      ></Box>
-      <Box
-        component="div"
-        sx={{ ...styles.sideNavContainer, ...customStyle.backgroundDiv2 }}
+        sx={{ ...styles.sideNavContainer, ...customStyle.backgroundDiv }}
       ></Box>
     </ThemeProvider>
   );

@@ -2,6 +2,11 @@ import { checkboxClasses } from "@mui/material/Checkbox";
 import { createTheme } from "@mui/material/styles";
 
 export const theme = createTheme({
+  palette: {
+    secondary: {
+      main: "#7B68EE",
+    },
+  },
   typography: {
     fontFamily: ["Poppins", "sans-serif"].join(","),
     fontSize: 16,
@@ -19,6 +24,9 @@ export const theme = createTheme({
       color: "#7B68EE",
       fontWeight: "bold",
       verticalAlign: "baseline",
+    },
+    button: {
+      textTransform: "none",
     },
   },
   components: {
@@ -60,38 +68,73 @@ export const theme = createTheme({
           transition: "none !important",
           "&.Mui-selected": {
             backgroundColor: "#E1E3E4",
-            borderRadius: "47px 0 0 47px",
-            height: "60px",
+            borderRadius: "48px 0 0 48px",
+            height: "48px",
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              backgroundColor: "none",
+              bottom: "48px",
+              left: "195px",
+              height: "50px",
+              width: "25px",
+              borderRadius: "0 0 25px 0",
+              boxShadow: "0 20px 0 0 #E1E3E4",
+              pointerEvents: "none",
+            },
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              backgroundColor: "none",
+              bottom: "-50px",
+              left: "195px",
+              height: "50px",
+              width: "25px",
+              borderRadius: "0 25px 0 0",
+              boxShadow: "0 -20px 0 0 #E1E3E4",
+              pointerEvents: "none",
+            },
             "&:hover": {
               backgroundColor: "#E1E3E4",
-              height: "60px",
+              borderRadius: "48px 0 0 48px",
+              height: "48px",
             },
-            "&:before": {
-              position: "absolute",
-              right: "-30.5px",
-              bottom: "12.5px",
-              display: "inline-block",
-              width: "30px",
-              background: "yellow",
-              height: "26px",
-
-              borderLeft: "1px solid",
-              borderBottom: "1px solid",
-
-              zIndex: 2,
-            },
-            color: "#717171",
+            color: "#000000",
             "& .MuiListItemIcon-root": {
-              color: "#717171",
+              color: "#000000",
             },
           },
           ":hover": {
             backgroundColor: "#E1E3E4",
-            borderRadius: "47px 0 0 47px",
-            height: "60px",
+            borderRadius: "48px 0 0 48px",
+            height: "48px",
             color: "#000000",
             "& .MuiListItemIcon-root": {
               color: "#000000",
+            },
+            "&::before": {
+              content: '""',
+              position: "absolute",
+              backgroundColor: "none",
+              bottom: "48px",
+              left: "195px",
+              height: "50px",
+              width: "25px",
+              borderRadius: "0 0 25px 0",
+              boxShadow: "0 20px 0 0 #E1E3E4",
+              pointerEvents: "none",
+            },
+            "&::after": {
+              content: '""',
+              position: "absolute",
+              backgroundColor: "none",
+              bottom: "-50px",
+              left: "195px",
+              height: "50px",
+              width: "25px",
+              borderRadius: "0 25px 0 0",
+              boxShadow: "0 -20px 0 0 #E1E3E4",
+              pointerEvents: "none",
             },
           },
         },
@@ -114,7 +157,7 @@ export const styles = {
   sideNavContainer: {
     height: "calc(100% - 10px)",
     width: "280px",
-    position: "absolute",
+    position: "fixed",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
