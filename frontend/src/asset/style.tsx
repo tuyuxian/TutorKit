@@ -62,6 +62,18 @@ export const theme = createTheme({
         },
       },
     },
+    MuiCardHeader: {
+      styleOverrides: {
+        root: {
+          "& .MuiCardHeader-content": {
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "flex-start",
+            width: "100%",
+          },
+        },
+      },
+    },
     MuiListItemButton: {
       styleOverrides: {
         root: {
@@ -155,6 +167,7 @@ export const styles = {
     justifyContent: "flex-end",
   },
   sideNavContainer: {
+    zIndex: 100,
     height: "calc(100% - 10px)",
     width: "280px",
     position: "fixed",
@@ -169,8 +182,8 @@ export const styles = {
     display: "flex",
   },
   pageSideBar: {
-    width: "220px",
     display: "flex",
+    flex: "0 0 300px",
     verticalAlign: "top",
   },
   pageContent: {},
