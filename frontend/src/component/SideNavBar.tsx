@@ -46,7 +46,6 @@ const customStyle = {
   backgroundDiv: {
     height: "calc(100%)",
     width: "285px",
-    zIndex: "-1",
     margin: "0 0 0 0",
     borderRadius: "0 32.8px 32.8px 0",
     backgroundColor: "#E1E3E4",
@@ -109,6 +108,10 @@ const SideNavBar = () => {
   };
   return (
     <ThemeProvider theme={theme}>
+      <Box
+        component="div"
+        sx={{ ...styles.sideNavContainer, ...customStyle.backgroundDiv }}
+      ></Box>
       <Box component="div" sx={styles.sideNavContainer}>
         <Box>
           <Box sx={{ ...customStyle.flex, ...customStyle.brandLogo }}>
@@ -188,10 +191,6 @@ const SideNavBar = () => {
           </Box>
         </Box>
       </Box>
-      <Box
-        component="div"
-        sx={{ ...styles.sideNavContainer, ...customStyle.backgroundDiv }}
-      ></Box>
     </ThemeProvider>
   );
 };

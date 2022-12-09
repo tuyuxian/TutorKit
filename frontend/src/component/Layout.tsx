@@ -14,7 +14,7 @@ export const Page: React.FC<IPageProps> = ({ children }) => {
       <Box sx={styles.pageSideBar}>
         <SideNavBar />
       </Box>
-      {children}
+      <Box>{children}</Box>
     </Box>
   );
 };
