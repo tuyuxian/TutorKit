@@ -11,7 +11,9 @@ const customStyle = {
     borderRadius: "24px",
     borderStyle: "dashed",
     borderWidth: "2px",
-    width: "280px",
+    width: "100%",
+    maxWidth: "280px",
+    minWidth: "260px",
     height: "240px",
     color: "#6B6F7B",
   },
@@ -26,6 +28,7 @@ const customStyle = {
   createCourseTitle: {
     fontSize: "14px",
     fontWeight: "bold",
+    fontFamily: "Poppins",
     marginLeft: "8px",
   },
 };

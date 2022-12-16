@@ -15,13 +15,16 @@ import React from "react";
 const customStyle = {
   courseCardDiv: {
     display: "inline-block",
+    width: "100%",
+    maxWidth: "280px",
+    minWidth: "260px",
     justifyContent: "space-around",
     alignContent: "center",
     margin: "8px",
     boxShadow: "0px 0px 8px rgba(0,0,0,0.2)",
   },
   card: {
-    width: "280px",
+    width: "100%",
     height: "240px",
     borderRadius: "24px",
   },
@@ -41,12 +44,14 @@ const customStyle = {
   cardHeaderTitle: {
     fontSize: "18px",
     fontWeight: "bold",
+    fontFamily: "Poppins",
     textOverflow: "ellipsis",
     overflow: "hidden",
     maxWidth: "220px",
   },
   cardHeaderSubHeader: {
     fontSize: "14px",
+    fontFamily: "Poppins",
   },
   cardContentBox: {
     display: "flex",
@@ -66,6 +71,7 @@ const customStyle = {
     fontSize: "14px",
     fontWeight: "bold",
     marginLeft: "8px",
+    fontFamily: "Poppins",
   },
 };
 

@@ -52,11 +52,15 @@ const customStyle = {
     boxShadow: "5px 3px 10px rgba(0,0,0,0.2)",
   },
   sideBarButton: {
+    fontSize: "14px",
     height: "40px",
     width: "220px",
     border: "2.5px solid #E1E3E4",
     borderRadius: "11px",
     margin: "4px 0px 4px 0px",
+    "&:hover": {
+      border: "2.5px solid #7B68EE",
+    },
   },
   buttonGroup: {
     display: "flex",
@@ -77,6 +81,12 @@ const customStyle = {
   accountInfo: {
     display: "flex",
     marginLeft: "8px",
+  },
+  accountName: {
+    fontSize: "18px",
+  },
+  accountEmail: {
+    fontSize: "14px",
   },
 };
 
@@ -153,16 +163,20 @@ const SideNavBar = () => {
               <Box>
                 <Typography
                   variant="subtitle1"
-                  component="div"
                   color="secondary"
-                  sx={customStyle.accountInfo}
+                  sx={{
+                    ...customStyle.accountInfo,
+                    ...customStyle.accountName,
+                  }}
                 >
                   Test User
                 </Typography>
                 <Typography
                   variant="body2"
-                  component="div"
-                  sx={customStyle.accountInfo}
+                  sx={{
+                    ...customStyle.accountInfo,
+                    ...customStyle.accountEmail,
+                  }}
                 >
                   testuser@gmail.com
                 </Typography>
